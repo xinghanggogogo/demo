@@ -41,20 +41,21 @@ wx.ready(function() {
     		);
     	#分享到朋友圈
     	wx.onMenuShareTimeline({
-        		title: "没文化真可怕，Angelababy已经被土哭了，快来给宝宝起个终身受益的英文名字吧！！！",
-        		link: window.location.href,
-        		imgUrl: "http://coupon.ktvsky.com/static/images/share.png",
+        		title: "分享标题",
+        		link: window.location.href, #当前链接
+        		imgUrl: "图片链接",
         		success: function() {
+    				#成功之后回调函数
         			},
        	 	cancel: function() {
         		}
    	 });
     	#分享到微信内消息
     	wx.onMenuShareAppMessage({
-        		title: "没文化真可怕，Angelababy已经被土哭了，快来给宝宝起个终身受益的英文名字吧！！！",
-        		desc:'我是英国Beautiful Name公司的CEO以及创始人－Monica Miller。在过去的12年，我经常到访中国。每当我在中国的时候，我经常会被同事要求帮他们和他们的孩子取一个特别的英文名。如同中文名一样，当会见朋友或工作伙伴时，他们会将英文名与您孩子的性格紧密联系在一起，同时名字也会给别人留下重要的第一印象。因此给孩子取名字不仅是极高的殊荣也是一份重大的责任。在将来，您的孩子的英文名字会出现在他们的大学申请书上，亦或是名片上。他们的名字应该代表他们希望被人记住的形象。',
+        		title: "分享标题"
+        		desc:'分享描述',
         		link: window.location.href,
-        		imgUrl: "http://coupon.ktvsky.com/static/getName/images/share.png",
+        		imgUrl: "图片链接",
        		type: "link",
         		dataUrl: "",
         		success: function() {
