@@ -1,0 +1,17 @@
+CREATE TABLE `namegame_order` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `openid` varchar(64) NOT NULL DEFAULT '' COMMENT '支付的用户openid',
+  `nickname` varchar(128) NOT NULL DEFAULT '' COMMENT 'wx nickname',
+  `img_url` varchar(256) NOT NULL DEFAULT '',
+  `order_id` varchar(128) NOT NULL DEFAULT '' COMMENT '自身的order id',
+  `wx_pay_id` varchar(128) NOT NULL DEFAULT '' COMMENT '微信的订单id',
+  `state` tinyint(1) NOT NULL DEFAULT '0' COMMENT '订单状态: 0订单创建, 1订单未支付, 2订单已支付 3订单撤销，4订单关闭，5订单退款申请，6订单退款成功，7订单退款失败',
+  `charactors` varchar(64) NOT NULL DEFAULT '' COMMENT '性格',
+  `fee` int(11) NOT NULL DEFAULT '0' COMMENT '费用',
+  `sex` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'male 1, female 0',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  
+  PRIMARY KEY (`id`),
+  KEY `idx_order_id` (`order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 |

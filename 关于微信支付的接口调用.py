@@ -103,3 +103,7 @@ class OrderHandler(BaseHandler):
 			by_order = ctrl.web.get_by_order(order_id)
 			room_id, contract, nickname = by_order
 			return self.send_json(dict(is_pay=is_pay, room_id=room_id, contract=contract, nickname=nickname))
+
+#http://pay.ktvsky.com/wx
+class WxPayhandler(BaseHandler):
+	a
