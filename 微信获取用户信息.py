@@ -70,7 +70,7 @@ class yourhandlercodeurlHandler(BaseHandler):
 			raise APIError(errcode=10001)
 
 		#此时必然已经有了code:
-	       user_info = async self.get_user_info(code)
+		   user_info = async self.get_user_info(code)
 		logging.info('user: %s' % user_info)
 		self.set_cookie('openid': user_info['openid'])
 		return self.redirect(uniquote(state))
@@ -79,5 +79,58 @@ class yourhandlercodeurlHandler(BaseHandler):
 
 
 
+#一个实际的例子：
+class WxCallBackHandler(BaseHandler):
+
+	async def get_wx_user_info(self, code):
+
+		http_client = utils.get_async_client()
+		try:
+			url = 'https://api.weixin.qq.com/sns/oauth2/access_token'
+			params = {
+				'appid': WX_SYY_CONF['appid'],
+				'secret': WX_SYY_CONF['appsecret'],
+				'code': code,
+				'grant_type': 'authorization_code',
+			}
+			response = await http_client.fetch(url_concat(url, params), connect_timeout=20, request_timeout=20)
+			r = json.loads(response.body.decode())
+
+		except Exception as e:
+			logging.error(e)
+			raise utils.APIError(errcode=10001, errmsg='获取web access失败')
+
+		http_client = utils.get_async_client()
+		try:
+			url = 'https://api.weixin.qq.com/sns/userinfo'
+			params = {
+				'access_token': r['access_token'],
+				'openid': r['openid'],
+				'lang': 'zh_CN'
+			}
+			response = await http_client.fetch(url_concat(url, params), connect_timeout=20, request_timeout=20)
+			user_info = json.loads(response.body.decode())
+			return user_info
+
+		except Exception as e:
+			logging.error(e)
+			raise utils.APIError(errcode=10001, errmsg='获取web user失败')
+
+
+	async def get(self):
+		state = self.get_argument('state', '/ktv/order/namegame')
+		code = self.get_argument('code', '')
+		if code:
+			user_info = await self.get_wx_user_info(code)
+			self.set_cookie('openid', user_info['openid'])
+			self.get_cookie('user_info',user_info)
+			return self.redirect(unquote(state))
+
+		url = WX_USERINFO_GRANT_URL.format(
+			appid=WX_SYY_CONF['appid'],
+			redirect_uri=quote(WX_REDIRECT_URL),
+			state=state
+		)
+		return self.redirect(url)
 
 

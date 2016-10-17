@@ -46,6 +46,7 @@ class OrderHandler(BaseHandler):
 				"data":json_dumps({
 					"paraOutTradeNo":order['wx_pay_id']
 					})
+				}
 			url = 'http://pay.ktvsky.com/wx'
 			http_client = utils.get_async_client()
 			request = httpclient.HTTPRequest(url_concat(url, params), method='POST', body=' ', headers={}, connect_time=10, request_timeout=10 )
@@ -103,7 +104,3 @@ class OrderHandler(BaseHandler):
 			by_order = ctrl.web.get_by_order(order_id)
 			room_id, contract, nickname = by_order
 			return self.send_json(dict(is_pay=is_pay, room_id=room_id, contract=contract, nickname=nickname))
-
-#http://pay.ktvsky.com/wx
-class WxPayhandler(BaseHandler):
-	a

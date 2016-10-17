@@ -7,7 +7,7 @@ class FetchQrcodeHandler(BaseHandler):
 			loggint.error(e)
 			raise APIError(errcode = 10001) #附加错误信息
 		try:
-			access_token = await utils.async_common_api('/wx/token', dict(flag=1)) #flag与公众号开发账号相关
+			access_token = await utils.async_common_api('/wx/token', dict(flag=1)) #flag与公众号开发账号相关，后台根据flag选定公众号，然后跟局appid和secrect返回access_token(字典类型)
 			access_token = access_token['access_token']
 			url = QRCODE_TICKET.format(access_token=access_token) #根据令牌（已经包含了唯一的公众号信息）去获取微信附带信息二维码的生成url
 			params = dict(action_name='QR_LIMIT_STR_SCENE', expire_seconds=36000, action_info=dict(scene=dict(scene_str='%s,%s')%(ktv_id, client_id)))
@@ -48,4 +48,5 @@ class WxCallBackHandler(BaseHandler):
 			if msg['type'] = 2:
 				return
 		await utils.async_common_api('/wx/custom/send', dict(openid=openid, text='https://erp.ktvsky.com/ktv_fin_curdata'))
+
 

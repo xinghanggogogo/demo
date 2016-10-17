@@ -26,9 +26,9 @@ class FiveColorHandler(BaseHandler):
 		#获取access_token
 		http_client = utils.get_async_client()
 		try:
-			url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={appid}&secret={secret}'.format(
+			url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={appid}&secret={secret}'.format(  
 				appid=conf['APPID'], secret=conf['APPSECRET'])
-			response = yield http_client.fetch(url, connect_timeout=20, request_timeout=20)
+			response = yield http_client.fetch(url, connect_timeout=20, request_timeout=20)  #get请求的写法
 			r = json.loads(response.body.decode())
 			logging.info(r)
 			access_token = r['access_token'] #获取access_token
@@ -46,7 +46,7 @@ class FiveColorHandler(BaseHandler):
 				body=json.dumps(data, ensure_ascii=False).encode(),
 				connect_timeout=2,
 				request_timeout=3)
-			response = yield utils.fetch(http_client, request)
+			response = yield utils.fetch(http_client, request)  #post请求方式
 			r = json.loads(response.body.decode())
 			logging.info(r)
 			return r

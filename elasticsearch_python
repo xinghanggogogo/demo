@@ -1,0 +1,317 @@
+&&&&&&&&&&&&&&&&&&&&&&&&
+建立一个索引并且插入数据：
+curl -X PUT localhost:9200/test/test/1 -d'{"name":"asdf"}'	#id=1  注：es中有关于自动建立索引的配置，默认为true
+
+按照id查询：
+curl localhost:9200/test/test/1
+>>>{"_index":"test","_type":"test","_id":"1","_version":2,"found":true,"_source":{"name":"asdf"}}
+
+内容查询：
+curl localhost:9200/test/_search?q=a
+>>>{"took":347,"timed_out":false,"_shards":{"total":5,"successful":5,"failed":0},"hits":{"total":0,"max_score":null,"hits":[]}}
+curl localhost:9200/test/_search?q=asdf
+>>>{"took":88,"timed_out":false,"_shards":{"total":5,"successful":5,"failed":0},"hits":{"total":1,"max_score":0.30685282,"hits":[{"_index":"test","_type":"test","_id":"1","_score":0.30685282,"_source":{"name":"asdf"}}]}}
+
+suggestion查询：
+注意：这里的index和type之前已经存在
+建立索引结构：
+curl -X PUT localhost:9200/test/test/_mapping -d '{
+ "test" : {
+        "properties" : {
+            "name" : { "type" : "string" },
+            "suggest" : { "type" : "completion",
+                                 "analyzer" : "simple",
+                                 "search_analyzer" : "simple",
+                                 "payloads" : true
+            }
+        }
+    }
+}'
+>>>{"acknowledged":true}
+插入数据：
+curl -X PUT 'localhost:9200/test/test/2?refresh=true' -d '{
+    "name" : "Nevermind",
+    "suggest" : {
+        "input": [ "Nevermind", "Nirvana" ],
+        "output": "Nirvana - Nevermind",
+        "weight" : 100
+    }
+}'
+>>>{"_index":"test","_type":"test","_id":"2","_version":1,"_shards":{"total":2,"successful":1,"failed":0}
+请求：
+curl -X POST 'localhost:9200/test/_suggest?pretty' -d '{
+    "test-suggest" : {
+        "text" : "ne",
+        "completion" : {
+            "field" : "suggest"
+        }
+    }
+}'
+返回suggestion：
+{
+  "_shards" : {
+    "total" : 5,
+    "successful" : 5,
+    "failed" : 0
+  },
+  "test-suggest" : [ {
+    "text" : "n",
+    "offset" : 0,
+    "length" : 1,
+    "options" : [ {
+      "text" : "Nirvana - Nevermind",
+      "score" : 100.0
+    } ]
+  } ]
+}
+
+curl -X PUT localhost:9200/test1/test_suggest/_mapping -d '{
+  "test" : {
+        "properties" : {
+            "name" : { "type" : "string" },
+            "suggest" : { "type" : "completion",
+                                 "analyzer" : "simple",
+                                 "search_analyzer" : "simple",
+                                 "payloads" : true
+            }
+        }
+    }
+}'
+>>>exception
+
+真·初始化
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+建立一个默认配置的索引：
+curl -X PUT localhost:9200/asdfasdf -d'{}'
+>>>{"acknowledged":true}
+
+定义索引内部type结构：
+curl -X PUT localhost:9200/asdfasdf/_mapping/asdfasdf?pretty -d '{
+         "properties":{
+                   "name":{"type":"string"},
+                   "published":{"type":"string"},
+	     "suggest" : {
+	     	   "type" : "completion",
+	     	   "analyzer" : "simple",
+	     	   "search_analyzer" : "simple",
+	     	   "payloads" : true
+            }
+         }
+}'
+
+插入数据：
+curl -X PUT 'localhost:9200/asdfasdf/asdfasdf/1?refresh=true' -d '{
+    "name" : "xinghang",
+    "published": "南京",
+    "suggest" : {
+        "input": [ "xinghang", "wenyi", "nanjing" ],
+        "output": "xinghang",
+        "weight" : 100
+    }
+}'
+>>>{"_index":"asdfasdf","_type":"asdfasdf","_id":"1","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
+
+curl -X PUT 'localhost:9200/asdfasdf/asdfasdf/1?refresh=true' -d '{
+    "name" : "xinghang_1",
+    "published": "nanjing",
+    "suggest" : {
+        "input": [ "xinghang", "wenyi", "nanjing" ],
+        "output": "xinghang",
+        "weight" : 100
+    }
+}'
+>>>success
+
+按照id查询：
+curl localhost:9200/asdfasdf/asdfasdf/1
+>>>
+{"_index":"asdfasdf","_type":"asdfasdf","_id":"1","_version":1,"found":true,"_source":{
+    "name" : "xinghang",
+    "published": "南京",
+    "suggest" : {
+        "input": [ "xinghang", "wenyi", "nanjing" ],
+        "output": "xinghang",
+        "weight" : 100
+    }
+}}
+
+按照内容查询（完全匹配任意字段）：
+curl localhost:9200/asdfasdf/_search?q=南京	#无法直接识别中文
+>>>fail！！！
+curl localhost:9200/asdfasdf/_search?q=xinghang
+>>>success
+curl localhost:9200/asdfasdf/_search?q=nanjing
+>>>success
+
+suggest查询：（结构包含suggest字段，之前已经定义过）
+curl -X POST 'localhost:9200/asdfasdf/_suggest?pretty' -d '{
+    "test-suggest" : {
+        "text" : "x",		#"xinghang","nan","weny"都成功了
+        "completion" : {
+            "field" : "suggest"
+        }
+    }
+}'
+>>>{
+  "_shards" : {
+    "total" : 5,
+    "successful" : 5,
+    "failed" : 0
+  },
+  "test-suggest" : [ {
+    "text" : "weny",
+    "offset" : 0,
+    "length" : 4,
+    "options" : [ {
+      "text" : "xinghang",
+      "score" : 100.0
+    } ]
+  } ]
+}
+
+
+-----------------------------------------------
+直接建立一个index和type：
+curl -X PUT http://localhost:9200/index_name -d'{
+"mappings": {
+     "type_name": {
+          "properties": {
+              "id": {
+                  "type": "long"
+              },
+            "name": {
+                "index": "not_analyzed",
+                "type": "string"
+              },
+            "suggest" : {
+                "type" : "completion",
+                "analyzer" : "simple",
+                "search_analyzer" : "simple",
+                "payloads" : true
+            }
+          }
+    }
+}
+}
+'
+>>>{"acknowledged":true}
+-----------------------------------------------
+在python中的使用
+安装pyes
+pip install pyes
+
+#coding:utf-8
+import pyes
+
+conn = pyes.ES(['127.0.0.1:9200'])#连接es，9200为默认端口
+conn.create_index(''test-index')#新建一个索引
+
+#定义索引中type的结构
+mapping = { 
+              u'parsedtext': {
+    'boost': 1.0,
+    'index': 'analyzed',
+    'store': 'yes',
+    'type': u'string',
+    "term_vector" : "with_positions_offsets"
+    },
+              u'name': {
+    'boost': 1.0,
+    'index': 'analyzed',
+    'store': 'yes',
+    'type': u'string',
+    "term_vector" : "with_positions_offsets"
+                         },
+              u'title': {
+    'boost': 1.0,
+    'index': 'analyzed',
+    'store': 'yes',
+    'type': u'string',
+    "term_vector" : "with_positions_offsets"
+                         },
+              u'position': {
+    'store': 'yes',
+    'type': u'integer'
+                         },
+              u'uuid': {
+    'boost': 1.0,
+    'index': 'not_analyzed',
+    'store': 'yes',
+    'type': u'string'
+                        }
+        }
+
+#定义test-type，类似表结构，参数一次为type名，type结构，所属索引
+conn.put_mapping("test-type", {'properties':mapping}, ["test-index"])
+#从test-type继承
+conn.put_mapping("test-type2", {"_parent" : {"type" : "test-type"}}, ["test-index"])
+
+#插入索引数据，#这部分在工程中必然要用数据库操作代替
+#{"name":"Joe Tester", "parsedtext":"Joe Testere nice guy", "uuid":"11111", "position":1}: 文档数据
+#test-index：索引名称
+#test-type: 类型
+#1: id 注：id可以不给，系统会自动生成
+conn.index({"name":"Joe Tester", "parsedtext":"Joe Testere nice guy", "uuid":"11111", "position":1}, "test-index", "test-type", 1)
+conn.index({"name":"data1", "value":"value1"}, "test-index", "test-type2", 1, parent=1)
+conn.index({"name":"Bill Baloney", "parsedtext":"Bill Testere nice guy", "uuid":"22222", "position":2}, "test-index", "test-type", 2)
+conn.index({"name":"data2", "value":"value2"}, "test-index", "test-type2", 2, parent=2)
+conn.index({"name":u"百 度 中 国"}, "test-index", "test-type")#这个相当于中文的一元切分吧-_-
+conn.index({"name":u"百 中 度"}, "test-index", "test-type")
+
+#设置默认的索引
+conn.default_indices=["test-index"]
+
+#刷新以获得最新插入的文档
+conn.refresh()
+
+q = pyes.TermQuery("name", "bill")
+#查询name中包含bill的记录
+results = conn.search(q)
+for r in results:
+    print r
+
+#查询name中包含 百度 的数据
+q = pyes.StringQuery(u"百 度",'name')
+results = conn.search(q)
+for r in results:
+    print r
+
+#查询name中包含 百度 或着 中度 的数据
+q = pyes.StringQuery(u"百 度 OR 中 度",'name')
+results = conn.search(q)
+for r in results:
+    print r
+
+-----------------------------------------------------------
+es - python-suggest
+
+from elasticsearch import Elasticsearch
+
+es = Elasticsearch()
+text = 'anythingyouwant' 
+suggDoc = {
+           "entity-suggest" : { #这里已经指明了type：entity（实体）
+                'text' : text,
+                "completion" : {
+                    "field" : "suggest"
+                }
+            }
+        }
+
+res = es.suggest(body=suggDoc, index="auto_sugg", params=None)  #注意这里仅仅指定了index，type隐藏在body中，“entity-suggest”
+print(res)
+
+#Make sure you have indexed each document with suggest field
+  sample_entity= {
+          'id' : 'test123',
+          'name': 'Ramtin Seraj',
+          'title' : 'XYZ',    
+          "suggest" : {
+              "input": [ 'Ramtin', 'Seraj', 'XYZ'],
+              "output": "Ramtin Seraj",
+              "weight" : 34   # a prior weight 
+          }
+        }
+----------------------------------------------------------
+关于es至此。

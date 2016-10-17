@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+s#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import time
@@ -267,4 +267,12 @@ class OrderHandler(OrderBaseHandler):
         subject = '最适合您孩子的英文名'
         content = self.render_string('mail/namegame.mail', username=username, names_info=names_info)
         logging.info("to: %s, content: %s" % (email, content))
+        mail.send(subject, content, [email])
+ 
+    async def after_pay(self, order):
+        logging.error('in IOLoop spawn_callback:%s', names_info = ctrl.web.get_names_info(gender))
+        names_info = ctrl.web.get_names_info(gender)
+        names_info = ctrl.web.get_names_info(gender)
+        content = self.render_string('mail/namegame.mail', username = username, names_info=names_ifno)
+
         mail.send(subject, content, [email])
