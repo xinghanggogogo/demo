@@ -1,0 +1,1515 @@
+
+redis-
+
+
+
+nx(set if not exit):
+	Redis有一系列的命令，特点是以NX结尾，NX是Not eXists的缩写
+	利用它可以非常简单的实现分布式锁,分布式的锁。
+	客户端想要获得一个名字为foo的锁，使用以下命令：SETNX lock.foo <current Unix time + lock timeout + 1> ,如返回1，则该客户端获得锁，把lock.foo的键值设置为时间值表示该键已被锁定，该客户端最后可以通过DEL lock.foo来释放该锁。如返
+	回0，表明该锁已被其他客户端取得，这时我们可以先返回或进行重试等对方完成或等待锁超时。
+	示例伪代码:
+	#get lock
+	lock = 0 
+	while lock != 1: 
+    timestamp = current Unix time + lock timeout + 1 
+    lock = SETNX lock.foo timestamp 
+    if lock == 1 or (now() > (GET lock.foo) and now() > (GETSET lock.foo timestamp)): 
+        break; 
+    else: 
+        sleep(10ms) 
+
+	# do your job 
+	do_job() 
+
+	# release 
+	if now() < GET lock.foo: 
+    DEL lock.fo
+    
+    link：http://my.oschina.net/u/1995545/blog/366381
+   	
+   	python操作redis的方法:
+   	http://www.jb51.net/article/82632.htm  下拉框有很多python-redis的教程
+   	
+关于python中的getattr：
+class ApplyHandler(BaseHandler):
+
+    def intro(self, r):
+        self.render('apply.tpl',
+            body_class = 'apply',
+            r=r)  #这里的r就是‘intro’字符串
+
+    def regist(self, r):
+        self.render('apply.tpl',
+            body_class = 'apply',
+            r=r)
+
+    def submit(self, r):
+        self.render('apply.tpl',
+            body_class = 'apply',           
+            r=r)
+
+    @web.authenticated
+    def get(self):
+        r = self.get_argument('r', 'intro')
+        getattr(self, r)(r)   #getattr这里实际上就是这个类内部的属性。
+        
+关于G
+setattr使用的一次实例：
+     def _join_cashier_info(self,items,openid):
+         res = []
+         cashier_info = ctrl.cms.get_cashier_info(openid)
+         for item in items:
+             print ('****************************')
+             print (type(cashier_info))
+             cashier_info = dict(cashier_info)
+             print (cashier_info)
+             for k, v in cashier_info.items():  //python3.X
+                 setattr(item, k, v)
+             # item['headimgurl'] = cashier_info['headimgurl']
+             # item['nickname'] = cashier_info['nickname']
+             res.append(item)
+         return res
+        
+后台执行：
+	nohup python init.py
+	nohup 不挂断地运行命令.忽略所有挂断（SIGHUP）信号,添加 & （ 表示“and”的符号）到命令的尾部。 　　
+	如果不将 nohup 命令的输出重定向，输出将附加到当前目录的 nohup.out 文件中
+输出日志：
+	tail -f nohup.out 
+	tail 命令从指定点开始将文件写到标准输出.tail -f filename会把filename里最尾部的内容显示在屏幕上,并且不但刷新,使你看到最新的文件内容
+
+关于进程管理工具supervisor
+
+终端启动redis：
+	redis-cli
+
+20160712
+路由指示器：
+URLS = [
+    	(r'cms\.ktvsky\.com',
+    	(r'/cashier/withdrawlog','handler.cms.Cashierwithdrawlog'),]
+处理类：
+class Cashierwithdrawlog(BaseHandler):
+
+    def get(self):
+        openid = self.get_argument('openid', '')
+        print('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&') 可以打印
+        #print openid 出错？
+        withdrawlogs = ctrl.cms.get_withdrawlogs(openid)  #crtl.cms???
+        self.render('withdrawlog.tpl'
+                     withdrawlogs = withdrawlogs
+        )
+        
+def get_withdrawlogs(self,openid):
+      sql = 'select * from cashier_withdraw where openid = "%s"' % openid
+      return self.slave.execute(sql).fetchall()
+      
+	
+<td><a href = "/cashier/withdrawlog?openid={{item['openid']}}">{{ item['withdraw_cash_sum']}}<a></td>
+
+
+            <td><img src="{{ item['headimgurl'] }}" style="max-width: 50px;max-height: 50px;"/></td>
+            <td>{{ item['nickname'] }}</td>
+
+杀死进程
+netstat -apn|grep 9000
+kill num
+
+关于一次实例的错误与解决：
+	根据id到数据库中fetchone(),取到的的内容并不是一个字典！而是一个：
+		<class 'sqlalchemy.engine.result.RowProxy'>
+		并且非常奇怪的是：这个类型可以在前端中以key-value的形式取值！
+						 这个类型用利刚写的类型转换装饰器转换类型时出错！
+	解决方案，在后台代码中通过dict()进行类型转换。
+	
+关于多次添加的一个
+
+实例：
+class CashierHandler(BaseHandler):
+
+	def _join_ktvnames(cashiers):
+		ktvids = set()
+		for cashier in cashiers:
+			ktvids.add(cashier.get('ktv_id',0))
+		ktv_id_name_dict = ctrl.cms.ktv_id_name_dict(list(ktvids))
+		for cashier in cashiers:
+			cashier['ktv_name'] = ktv_id_name_dict.get(cashier.get.(ktv_id,None),'')
+		return cashiers
+		
+	def _join_withdrawsums(self,cashiers):
+		for cashier in cashiers:
+			cashisr['withdrawsum'] = ctrl.cms.get_withdrawsum(cashier[openid])
+		return cashiers
+		
+
+	def get(self):
+		ktv_name = self.get_argument('ktv_name','')
+		cashiers = ctrl.cms.get_cashier(ktv_name)
+		cashiers = self._join_ktvnames(cashiers)
+		
+		slef.render
+			(
+				'cashier.tpl'
+				 cashiers = cashiers,
+				 username = username,
+				 modules = modules,
+				 body_class = MODULES['cashiser']
+				 
+			)
+
+control/cms.py:
+@models_to_list
+def get_cashiers(ktv_name):
+	ktvs = self.find_ktv(ktv_name)
+ 	#ktvs = list(self.slave.query(Ktvstore).filter(Ktvstore.name.like("%"+ktv_name+"%")).all())
+	ktvids = [ktv['store_id'] for ktv in ktvs]  //列表生成器
+	return self.slave.query(Cashier).filter(Cashier.ktv_id in (ktvids)).order_by(Cashier.update_time.desc()).all()
+
+
+@moders_to_list
+def find_ktv(self, ktv_name):
+    return self.slave.query(KtvStore).filter(KtvStore.name.like("%" + ktv_name + "%")).all()
+name_xinghang_xinghgna_query_(ktvstore).filter(KtvStore.name.like("%" ))
+
+def ktv_id_name_dict(ktvids)
+	res = {}
+	ktvs = self.slave.query(KtvStore).filer(KtvStore.store_id.in (ktvids)).all()
+	for ktv in ktvs:
+		res[ktv['store_id']] = ktv.name
+	return res 
+	
+for item in items:
+	for k,v in dict.items()
+		setattr(item,k,v)
+
+关于json形式的返回：
+	dict = {
+			a:a
+			b:b
+			}
+	dict = json.dumps(dict)
+	self.renser(
+				'mtv.tpl'
+				dict = dict
+				)
+				
+关于redis的实例：
+	
+mm_room_<id>:
+	{
+		name:
+		create:openid
+		stege:是否已经结算
+		create_time:
+	}
+	
+
+7月18日
+1.init.py 
+	define中的help？
+	第二个define中的debug？
+	option.parse_command_line()?
+2.app.py
+	lib
+	raven.contrib
+	关于url的字符串处理？
+3.init.py
+	lijiebuliao
+
+检查微信授权：
+	def check_openid(func):
+		def wrap(*arg,**kwag):
+			self = arg[0]
+			openid = self.get_cookie('openid')
+			logging.info('openid:%s' % openid)
+			if not openid:
+				 url = WX_USERINFO_GRANT_URL.format( #参数 )
+				 	   #WX_USERINFO_GRANT_URL = 'WWW.****/?{}{}'
+					return self.redirect(url)
+			return func(*arg,**kw)
+		return wrap
+		
+检查阿里授权：
+	def check_alipay_user_id(func):
+		def wrap(*arg,**kwag):
+			self = arg[0]
+			openid = self.get_cookie('openid')
+			logging.info('alipay_user_id:%s' % alipay_user_id)
+			if not alipay_user_id:
+				url = ALI_GRANT_URL.format(
+					appid = ALICONF['APPID'],
+					rediect_uri = quote(ALICONF['AUTH_URL']),
+					state = self .request.path
+				)
+				logging.info(url)
+				return self.rediect(url)
+			return func(*arg,**kw)
+		return wrap
+		
+7月19日：
+ligang的格式转换装饰器其一：
+这个装饰器的使用：self.slave.query(Cashier).filter(Cashier.id in kids).order_by(Cashier.update_time.desc()).all()
+def model_to_list(func):
+	def wrap(*arg,**kwarg):
+		ret = func(*arg,**kwarg)     
+		return [model2dic(r) for r in ret]
+	return wrap
+	
+	
+一个BaseHandler:
+class BaseHandler(web.RequestHandler,SentryMixin): #SentryMixin是raven相关
+	def check_xsrf_cookie(self):
+		super(BaseHandler,self).check_xsrf_cookie()
+		#python中的super：
+		#解决多重继承问题 
+		#http://www.xker.com/page/e2015/05/191327.html
+		
+	def _login(self,username):
+		self.set_secure_cookie(AUTHONRITY['cookie'],username,expires_day = 1)
+		
+	def _logout(self):
+		self.clear_cookie(AUTHORITY['cookie'])
+	
+	@property #把一个方法变成属性方便使用
+	def username(self):
+		username = self.get_secure_cookie(AUTHORITY['cookie']) #get_secure_cookie()这里取出的是name啊！
+		if username:
+			if username.decode() not in AUTHORITY:
+				self._logout()	
+				return                
+			self.modules = AUTHORITY[username.decode()]['modules']  #不需要定义，绑定modules
+		return username
+		#关于secure_cookie
+	
+	def	get_current_user(self):
+		username = self.username
+		id not username:
+			self._logout()
+			return
+		return username.decode()
+		
+	def dict_args(self):
+		_rq_args = self.request.arguments
+		rq_args = dict(k,_rq_args[k][0].decode for k in _rq_args)
+		logging.info(rq_args)
+		return rq_args
+	
+	def initialize(self):
+		ctrl.pdb.close()
+	
+	def on_finish(self):
+		ctrl.pdb.close()
+	
+	def send_json(self, data={}, errcode=0, status_code=200):
+        res = {
+            'errcode': errcode,
+            'errmsg': ERR_MSG[errcode]
+        }
+        res.update(data)
+        self.set_header('Content-Type', 'application/json')
+        self.set_status(status_code)
+        json_str = uimethods.json_format(self, res)
+        self.write(json_str)
+
+    def write_error(self, status_code=200, **kwargs):
+        if 'exc_info' in kwargs:
+            err_object = kwargs['exc_info'][1]
+            traceback.format_exception(*kwargs['exc_info'])
+
+            if isinstance(err_object, utils.ParamError):
+                err_info = err_object.kwargs
+                self.send_json(**err_info)
+                return
+
+        if not options.debug:
+            self.captureException(**kwargs)
+  
+由上         
+登入登出的handler：
+class LoginHangler(BaseHandler):
+	def post(self):
+		username = self.get_argument('username')
+		password = self.get_argument('password')
+		if username in AUTHONRITY and password == AUTHORITY[username]['passwrod']
+			self._login(username)  #_login仅仅是设置了secure_cookie
+								   #未设置之前的cookie是ATUTHORITY中的‘cookie’键值
+			next = self.get_argument('next',None)	
+			logging.info(next) 	   #这个next可能是前端传过来的
+			if next:
+                self.redirect(next)
+            elif username == ROOT_USER:
+                self.redirect('/')
+            elif username == FINANCE_USER:
+                self.redirect('/pay')
+            elif username == STAT_USER:
+                self.redirect('/stat')
+		else:
+			self.render(
+				login.tpl,
+				errmsg = '账号或密码错误'	
+			)
+	def get(self):
+		next = self.get_argument('next','')
+		logging.info(next)
+		self.render(
+			'login.tpl',
+			next = next  #这个next参数可以由前端返回跳转前的地址，直接传入
+			errmst = ''				
+		)
+		
+class LogoutHandler(BaseHandler):
+	def get(self):
+		self._logout()  #_logout仅仅是删除了安全cookie
+		sefl.redirect('/login') #重定向
+
+username函数的使用
+关于property装饰器
+就是把一个方法变成属性方便使用：
+
+chromeBrowser：
+https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+cd 下载
+sudo dpkg -i google-chrome-stable_current_amd64.deb 
+查找chrome浏览器
+
+佳丽助手：
+	创建房间？post？
+	修改房间信息部署
+	关于创建房间信息和修改房间信息的接口：
+		点击创建房间(/room?openid)，这个请求方式必然是get,
+		response填好房间名，我的房间，可编辑，编辑后可提交，同样是这个url，方式为post
+		传递房间名，传递房间id，将房间id push进对应openid的redis列表当中
+		
+vim配置文件相关:http://www.cnblogs.com/xia520pi/archive/2014/04/11/3659386.html
+.vimrc
+vundle
+	vundel安装
+	修改vimrc的的默认路径
+
+7月20日：继续佳丽助手
+ 	:
+	key:del key
+		dump key 序列化一个key
+		exist key 
+		expire key timeperiod  超时时间  
+		expireat key TIME_IN_UNIX_TIMESTAMP  超市时间戳
+		keys adc* 查找key
+		ttl 查看剩余时间
+		randomkey 从redis返回随机键
+		type 用来获取键值的类型
+		rename 更改键的名称 rename a b
+	
+	string:
+		set key value
+		mset key1 value1 key2 value2
+		setnx key value  只有当键值不存在时设置key_value
+		get key 获得键值
+		mget key1 key2 获取所有键的值		
+		getrange key num num
+		getset key value 设置键的字符串值，并返回旧值s
+		msetnx key1 value2 key1 value2
+		setex key <time> value
+		srtlen key 键的值的长度
+		incr/derc key   当key的键值为整数时，+1
+		incrby/dercby key num 制定增加值
+		append key newvalue 追加值到一个key追加追加追加
+		
+	hash:wanmeicunchuduixiang  键值类似字典
+		hset key name "xinghang"
+		hmset key filde1 value1 filed1 value2		
+		hsetnx key name "xinghang"
+		hget key filed1
+		hmget key filed1 filed2
+		hdel key filed1		
+		hexist key filed1  判断一个键对应的键值中是否含有某字段
+		hgetall key   shuchuyige leisizidian
+		hincrby key filed1 num
+		hkeys key  获取key对应的所有的哈希字段
+		hvals key  获取key所对应的所有的哈希值
+		hlen  key  key所对应的hash字段的个数
+
+		
+	list:key [value1,value2,value3]
+		rpush key_name value1 value2 
+		rpop key_name 第一个元素
+		lrang key_name 0 -1
+		llen key_name 
+		lset key index value  指定位置的设置list
+		lrem key_name sitenum value 从指定位置删除所有指定字符串
+
+		
+	set：
+		sadd key value
+		scard key 长度
+		sinter key1 key2 交集
+		sunion key1 key2 并集
+		smemembers key 查看一个集合
+		srandmember key 随机输出一个元素
+		spop key 随机删除
+		srem key value1 删除
+		smove key1 key2 value 将value从key1移动到key2
+		
+	zset:  key [score name]
+		zadd  key [score name]
+		zrange key index1 index2
+		zrange key index1 index2 withscores
+		zscore key name  返回这个name的score
+		zcount key min_score max_score  返回在权值范围内的name个数
+		zrank key name 返回score排名的index
+		zcard key 基数
+		zrem key name
+		
+一个用redis只缓存今日数据的实例：
+	def back_get_wx_order_sum(self,date)
+		if date = when.today():
+			raise
+		key = self.get_wx_order_sum_key_ctl(date)
+		order_sum = self.ctrl.rs.get(key)
+		if order_sum:
+			return eval(order_sum)
+		order_sum = self.api.back_get_wx_order_sum_key(date)
+		data = self.api.back_get_order_sum_by_ids(date,[str(o['ktv_id']) for o in order_sum])	
+		for o in order_sum:
+			for d in data:
+				if d['ktv_id'] == o['ktv_id']
+				o.update(d)
+		self.ctrl.rs.set(key,order_sum,A_DAY)  //redis sum
+		self.ctrl.rs.set(key,order_sum,A_Day)
+		
+vim:	
+	i x :wq dd(剪切板) p :help(退出用:q)  hjkl
+	a o O cw(替换光标后的一个单词)
+	0 ^ 
+	$ g_ /
+	u <C+r>
+	:e <path>
+	:w
+	:q!
+	:n(同时打开多个文件，n到下一个文件)
+	.
+	2dd
+	3pee
+	:N 移动到某
+	gg 第一行
+	G 最后一行
+	w+hjkl
+	e 到下外一个单词的结尾
+	% 匹配括号移动
+	* # 匹配上一个或下一个当前单词	
+	<C+n>自动补齐
+	:split :vsplit
+	
+shanchubaohuwenjianjia：rm -rf dir
+
+7月21:
+测试服本地：mysql -umombaby -h192.168.0.172 -P3308 -p098f6bcd4621d373cade4e832627b4f6
+show databases
+use database_name 
+show tables 
+select * from table_name \G;
+insert into mytable (filed1,filed2) values('xinghang',0)
+	
+git diff <path_to_file> showdifference 66
+	
+taolu：
+def function()：
+	res = []
+	items = self.slave.execute(sql).fetchall()
+	items = [model2dict(r) for r in items] #将取出来的每一个iterator变成字典（事先导入一个函数见下）
+	for item in items:
+		res.append(item)
+	return res
+	
+def model2dict(model):
+    if not model:
+        return {}
+    fields = class_mapper(model.__class__).columns.keys()
+    return dict((col, getattr(model, col)) for col in fields)  manmanlijie吧
+    
+佳丽助手提现统计：
+	计数的后台方法：
+	def get_**_cun(self):
+		q = self.slave.query(func.count('1')).select_from(***)
+		return q.scalar()
+	返回值需要进行int强制类型转换
+	
+关于join方法：
+def _join_bt_info(self,items):
+	res = []
+	for item in items:
+		bt_info_dict = dict(ctrl.cms.get_bt_info(item['openid'])) #必须进行类型转换
+		item['aa'] = bt_info_dict.get('aa','')
+		item['bb'] = bt_info_dict.get('bb','')
+		res.append(item)
+		
+从数据库某个表取出的的一个数据元素，类型并不是dict,而是model，通过self.slave.query().***可以用ligang的装饰器进行转换，用self.slave.excute(sql).***用利刚的装饰器出错，必须用dict(),or[model2dict for r in items]
+		
+		
+7月22日：
+获取openid:
+首先是使用一个装饰器来完成对微信认证的调用:
+def check_openid(func):
+    def wrap(*args, **kw):
+        self = args[0]
+        openid = self.get_cookie('openid')
+        logging.info('openid: %s' % openid)
+        if not openid:
+            url = WX_USERINFO_GRANT_URL.format(
+                appid=WX_CONF['appid'],
+                redirect_uri=quote(WX_REDIRECT_URL),
+                state=quote(self.request.path)
+            )# 跳转去授权
+            return self.redirect(url)
+        return func(*args, **kw)
+    return wrap
+    
+WX_USERINFO_GRANT_URL = 
+'https://open.weixin.qq.com/connect/oauth2/authorize?appid={appid}&redirect_uri={redirect_uri}&response_type=code&scope=snsapi_userinfo&state={state}&connect_redirect=1#wechat_redirect'
+
+WX_REDIRECT_URL = 
+'http://wx.handle.ktvdaren.com/coupon/wx'
+
+app.py : (r'/coupon/wx', 'handler.web.WxCallBackHandler'),
+
+class WxCallBackHandler(WxBaseHandler): 
+	在这个类中的工作的具体流程是这样的：
+		1.引导用户进入授权页面同意授权，获取code，
+
+
+
+调接口：https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET
+调接口：https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
+	
+微信用户信息返回乱码解决，更改浏览器的编码方式：更多工具_编码方式_自动编码
+
+关于git冲突的实例：
+在github上建了一个测试库，然后在里面新添加了一个文件，然后和同学各自clone一份到本地，同时对同一文件进行修改(并且是同一地方，都是在文件末尾追加)，分别add——commit,同学先push，然后我再pull，这时pull便会产生冲突。
+pull下来git会提示有冲突啊，然后在冲突的文件中，寻找用=====隔开的两部分，HEAD是你的内容，另外一部分是repos的内容，然后手工修改保留你想要的部分，在git add 和git commit然后再git push上去就好了。多人协作经常都会遇到冲突的，要习惯解决冲突的流程。
+
+关于微信授权：
+点击登陆获取code：
+		https://open.weixin.qq.com/connect/oauth2/authorize?
+		appid=APPID&redirect_uri=REDIRECT_URL&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect
+		appid为公众号唯一标识;redirect_uri为获取code之后的处理url;
+		code说明:code,由微信提供，作为换取access_token的票据，每次用户授权带上的code将不一样，code只能使用一次，5分钟未被使用自动过期。
+
+跳转url获取某特定网页授权access_token：
+		https://api.weixin.qq.com/sns/oauth2/access_token?
+		appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code
+		返回值：
+   			 {"access_token":"ACCESS_TOKEN",
+  			  "expires_in":7200,
+  			  "refresh_token":"REFRESH_TOKEN",
+   			  "openid":"OPENID",
+   			  "scope":"SCOPE"}
+获取用户信息：
+		https://api.weixin.qq.com/sns/userinfo?
+		access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
+
+		返回值是：	
+  				{"openid":" OPENID",
+   				 "nickname": NICKNAME,
+  				 "sex":"1",
+  				 "province":"PROVINCE"
+  				 "city":"CITY",
+  				 "country":"COUNTRY",
+   				 "headimgurl":    "HEADiMG_URL", 
+				 "privilege":[
+					"PRIVILEGE1"
+					"PRIVILEGE2"
+    				],
+    			 "unionid": "o6_bmasdasdsad6_2sgVt7hMZOPfL"
+}
+
+在一个函数内部实现http请求与返回的实例：
+	url = "****"
+	http_client = utils.get_async.client()
+	request = utils.http_request(url)
+	response = await http_client.fetch(request)
+	response = josn.loads(response.body.decode())
+	return response
+
+
+
+pos机表:
+CREATE TABLE `pos` ( 
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id', 
+  `term_id` varchar(32) NOT NULL DEFAULT '' COMMENT 'POS机唯一标识',
+  `ktv_id` int(11) NOT NULL  COMMENT 'ktv_id', 
+  `ktv_name` varchar(128) NOT NULL DEFAULT '' COMMENT 'ktv_name', 
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
+   PRIMARY KEY (`id`)  
+); 
+
+pos_order
+|| pos_order | CREATE TABLE `pos_order` (
+  `order_id` int(11) NOT NULL COMMENT '订单ID',
+  `amount` int(11) NOT NULL DEFAULT '0' COMMENT '交易金额，单位：分',
+  `term_id` varchar(32) NOT NULL COMMENT '终端号',
+  `merchant_id` varchar(32) NOT NULL DEFAULT '' COMMENT '平台商户号',
+  `pay_type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0：银行卡，1：微信，2：支付宝',
+  `term_serno` varchar(32) NOT NULL DEFAULT '' COMMENT '终端流水号',
+  `order_no` varchar(32) NOT NULL DEFAULT '' COMMENT '订单编号',
+  
+  `rate_fee` int(11) NOT NULL DEFAULT '0' COMMENT '交易手续费，单位：分',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`order_id`),
+  KEY `idx_term_time` (`term_id`,`create_time`),
+  KEY `idx_order_no` (`order_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 |
+
+
+关于从数据库中去除的一条记录：
+	如果是用excute(sql)的方式执行，则取出来的一个记录是一个tuple
+	如果是query的方式执行，则取出来的一个记录是一个modle
+	
+7月25日：
+!mysql
+drop tabel table_name
+mysql的编码utf-8不然会出现乱码
+	
+alert($(this).parent().parent('tr').find('td:first-child').text());
+
+ALTER TABLE table_name ADD sex BIT NOT NULL DEFAULT 
+
+在jquery中传递数据的一个实例：
+	<td data-app="{{ json_format(item)}}"><a hraf="" class=edit_pos>添加内容</td>
+	$('table .edit_pos').on('click',function(evt)){ .选择一个class；.选择一个id
+		var ktv = JSON.parse($(this).parent().attr('data-app'))
+		var body = tpl('t:edit_pos',{
+					   ' ktv_id':ktv.store_id,
+					   ' ktv_name':ktv.name,
+		}
+		)
+	}
+	$('#modal_dialog_save').on('click',function(evt){
+			var ktv_id = $('.ktv-edit input[name=ktv_id]').val(),
+			var ktv_name = $('.ktv-edit input[name=ktv_name]').val()
+			LB.post('/save_pos',{
+				'ktv_id':ktv_id,
+				'ktv_name':ktv_name,}
+				,function(){
+				locatio.reload(true);
+				});
+				});
+				
+				
+unexpected tolen var ;;;;;;;;;;;;
+
+7月26:
+JS
+7月28:
+一个实例(为收银员增加绑定)：
+tpl/cashier.tpl:
+<td data={{item['openid']}}> <button class='**' value='解绑'></td>
+$('.unbunding').on('click', function(){
+	var openid = $(this).parent().attr('data');
+    console.log(openid)
+    LB.post('/cashier', {'openid':openid}, function(){
+            console.log(openid) //JS打印错误信息 return
+            alert("解绑成功");
+            location.reload(true);//重新刷新
+        })
+    });
+handler/cms.py
+class CashierHandler(BaseHandler)
+    def post(self):
+        try:
+            openid = self.get_argument('openid')
+        except Exception as  e:
+            logging.error(e)
+            raise utils.ParamError(errcode=1001)  #报错的信息
+        data = {'client_id':0}
+        ctrl.cms.update_cashier_ctl(openid,data) #C层  （加了ctl意味着操纵control层，这里就是调用Cms()中的update_cashier()函数）
+
+        #ctrl.cms.update_cashier(openid,data)    #M层
+        # ctrl.rs.delete(ctrl.rs.get_cashier_key(openid))
+        
+control/cms.py
+def update_cashier(self, openid, data):
+    self.api.update_cashier(openid, data)
+    self.ctrl.rs.delete(self.get_cashier_key_ctl(openid))  注意括号内部的内容。
+    
+ligang的一个搜索实例：
+ktv名字(回车进行搜索): <input id='ktv_name' placeholder='回车进行搜索' hint='回车进行搜索' />
+$('#ktv_name').bind('keypress',function(event){
+    if(event.keyCode == "13")
+    {
+        var url = window.location.href;
+        var out_url = LB.setUrlParam(url, 'ktv_name', $('#ktv_name').val())
+        out_url = LB.setUrlParam(out_url, 'page', '1')
+        window.location.href = out_url;
+    }
+});
+$('#ktv_name').bind('keypress',function(event)){
+	if(event.keyCode == "13")
+	{
+		var url = windows.localtion.href;
+		var out_url = LB.setUrlParam(url,'ktv_name',$('ktv_name').val())
+			out_url = LB.setUrlParam(url,'page','1')
+			window.location.href = out_url; //这个是自动访问的
+	}
+
+}
+
+Create Table: CREATE TABLE `pos_order` (
+  `order_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '??ID',
+  `amount` int(11) NOT NULL DEFAULT '0' COMMENT '?????????',
+  `term_id` varchar(32) NOT NULL COMMENT '???',
+  `ktv_id` int(11) NOT NULL DEFAULT '0' COMMENT '??id',
+  `merchant_id` varchar(32) NOT NULL DEFAULT '' COMMENT '?????',
+  `pay_type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0?????1????2????',
+  `term_serno` varchar(32) NOT NULL DEFAULT '' COMMENT '?????',
+  `order_no` varchar(32) NOT NULL DEFAULT '' COMMENT '????',
+  `rate_fee` int(11) NOT NULL DEFAULT '0' COMMENT '??????????',
+  `state` tinyint(1) NOT NULL DEFAULT '0' COMMENT '?????1????0???',
+  `finish_time` datetime DEFAULT NULL COMMENT '??????',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`order_id`),
+  KEY `idx_order_no` (`order_no`),
+  KEY `idx_kid_state_time` (`ktv_id`,`state`,`finish_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf
+
+	
+        item = self.slave.query(KtvStore).filter(KtvStore.store_id == ktvid).scalar()  one()的差别
+        item = self.sla
+        
+8月3日：
+关于一次调用接口的实例：
+gen.coroutine()异步
+def post(self):
+	try:
+		pay_id = self.get_argument("pay_id")
+		openid = self.get_arguemnt("openid")
+	except:
+		raise ParamError(errocode=10000)
+	url = ""
+	logging.error(url)
+	http_client = utils.get_async_client()
+	request = httpclient.HTTPRequest(url,method = 'GET',headers={})
+	res = yield http_client.fetch(request)
+	if：
+		self.write()
+	else:
+		self.write()
+
+
+angularJS
+angular.module('routingDemoApp',['ngRoute']) 定义了一个以ngRoute模块为依赖模块的routingDemoApp的一个module，这个module的主营模块是routingDeomoApp
+
+angularJSfinal实例：
+
+<html ng-app="myNoteApp">
+<head>
+<meta charset="utf-8">
+<script src="http://apps.bdimg.com/libs/angular.js/1.4.6/angular.min.js">
+</script>
+</head>
+<body>
+
+<div ng-controller="myNoteCtrl">
+
+<h2>我的笔记</h2>
+
+<p><textarea ng-model="message" cols="40" rows="10"></textarea></p>
+
+<p>
+<button ng-click="save()">保存</button>
+<button ng-click="clear()">清除</button>
+</p>
+
+<p>Number of characters left: <span ng-bind="left()"></span></p>
+
+</div>
+
+<script src="myNoteApp.js"></script>
+<script src="myNoteCtrl.js"></script>
+
+</body>
+</html>
+
+应用程序文件 "myNoteApp.js":
+var app = angular.module("myNoteApp", []);
+
+控制器文件 "myNoteCtrl.js":
+app.controller("myNoteCtrl", function($scope) {
+    $scope.message = "";
+    $scope.left  = function() {return 100 - $scope.message.length;};
+    $scope.clear = function() {$scope.message = "";};
+    $scope.save  = function() {alert("Note Saved");};
+});
+
+
+8月4日：
+class RoomListHandler(WxBaseHandler):
+	@check_beauty_openid
+	async def get(self):
+		try:
+			openid = self.get_cookie('btopenid')
+		except Exception as e:
+			raise utils.APIError(errcode = 10001)
+		
+		roos_list = ctrl_beauty.get_beauty_room_list_ctl(openid)
+		ui = ctrl.beauty.get_beauty_meta_ctl(openid)
+		self.render2('beauty.room.list.tpl',room_list = room_list ui = ui)
+		
+class Roomhandler(Basehandler): //创建房间
+	def post(self):
+		try:
+			openid = self.get_cookie('btopenid')
+			rname = self.get_argument('rname')
+		except Exceptiong as e:
+			raise utils.APIError(errcode = 10001)
+		ui = ctrl.beauty.get_beauty_meta_ctl(openid)
+		room_id = str(uuid.uuid().hex)
+		ctrl.beauty.set_beauty_room_ctl(room_id,"name",rname)
+		ctrl.beauty.set_beauty_room_ctl(room_id,"cteator",openid)
+		ctrl.beauty.set_beauty_room_ctl(room_id,"create_time",datetime.datetime.now())
+		ctrl.beauty.set_beauty_room_ctl(room_id,"state",0)
+		
+		ctrl.beauty.add_beauty_room_list_ctl(openid,room_id)
+		ctrl.beauty.add_beauty_room_ul_list_ctl(room_id,dict(openid,ui['value']))
+		
+		self.send_json({
+			'url':self.request.host+"/beauty/room/info/%s" % room_id
+		})
+		
+class RoomInfoHandler(WxBaseHandler)://修改房间信息
+	@check_beauty_openid
+	async def get(self,room_id)
+		try:
+			openid = self.get_cookie(''btopenid)
+			room = ctrl.beauty.get_beauty_room_ctl(room_id)
+			assert room
+			assert room['state'] != 1
+			ui = ctrl.beauty.get_beauty_meta_ctl(openid)
+			assert ui
+			logging.info('user:%s enter room %s' % (ui['nickname'],room['name']) )
+		except Exception as e:
+			raise utils.APIError(errcode = 10001,errmessage = "房间正在结算")
+		
+		room_ul = ctrl.beauty.get_beauty_room_ul_ctl(room_id)
+		
+		#首次进入房间:
+		if not list(filter(lamda o:o['openid']==openid,room_ul))
+			data = dict(openid = openid ,value = ui['value'])
+			ctrl.beauty.add_beauty_room_ul_ctl(room_id,data)
+			data.updata(ui)
+			room_ul.append(data)
+			
+		tp = 'beauty'
+		res = {
+			"tp":tp,
+			"list":room_ul
+		}	
+		
+		total_fee = 0
+		if room['cteator'] == openid:
+			tp = "mm"
+			total_fee = reduce(lamda x,y:x+y,[o['value'] for o in room_ul,0])
+			res.update({
+				'tp':tp
+				'total':total
+			})
+		self.render('beauty.room.tpl',room_name = room['name'],room_id = room_id,room_ul = room_ul,tp = tp, total_fee = total_fee)
+		
+	def post(self,room_id):
+		#修改房间名
+		try:
+			openid = self.get_cookie("btopenid")
+			room = ctrl.beauty.get_beauty_room_ctl(room_id)
+			assert (room and room['cteater'] == openid)
+			name = self.get_argument('name')
+		except Exception as e:
+			raise APIError(errcode = 100001)
+		
+		ctrl.beauty.set_beauty_room_ctl(room_id,'name',name)
+		self.send_json()
+		
+class RoomPayHandler(WxBaseHandler):
+
+	async def query_pay(self,room_id)
+		res = dict(is_pay = 0)
+		room_order = ctrl.beauty.get_beauty_room_order(room_id)
+		if not room_order:
+			raise utils.APIError(errcode = 10001)
+		if not room_order['pay_id']:
+			return res
+		try:
+			params = {
+				"op":"query",
+				"ktvid":BEAUTY_KTV,
+				"paytype":"wx",
+				"data":json.dumps({  //类似javascript中的JSON.stringify json.dumps
+					"paraOuTradeNo":room_order['pay_id']
+				}),
+			http_client = utils.get_async_client()
+			request = http_client.HTTPRequest(url_concat(WX_PAY,params),method="POST",body = "",****)
+			res = await http_client.fetch(request)
+			logging.info(res)
+			res['is_pay']==0
+			if utils.is_success_pay("wx",res):
+				self.after_pay(room_order)
+				res['is_pay']=1
+		except Exception as e:
+			logging.error(e)
+			raise utils.APIError(errcode = 10001)
+		return res
+			}
+	def after_pay(self,room_order)
+		logging.info('after pay %s' % room_order)
+		room = ctrl.beauty.get_beauty_room_ctl(room_order['room_id'])
+		logging.info('room info %s' % room )
+		if int(room['state']==1) or ctrl.beauty.get_beauty_order_by_payid(room_order['pay_id'])
+			return
+		
+		ctrl.beauty.update_beauty_room_order(room_order['room_id'],data = dict(state = 1))
+		dtc = eval(room_order['detail']) //支付平台订单
+		logging.info('after pay begin update %s' % dts)
+		for o in dts:
+			values = o.pop('value','0')
+			o.update(dict(fee=value,pay_id = room_order['pay_id'],name = room['name']))
+			ctrl.beauty.update_beauty_meta_ctl(o['openid'],dict(value = value))
+		
+		ctrl.beauty.add_group_beauty_order(dts)
+		ctrl.beauty.set_beauty_room_ctl(room_order['room_id','state',1])
+	
+	async get(self,room_id):
+		room = ctrl.beauty.get_beauty_room_ctl(room_id)
+		logging.info('query room % s payinfo %s') % (room_id,room)
+		if int(room['state'])==1:
+			self.send_json({"is_pay":1})
+			return
+			
+		res = await self.pay_query(room['room_id'])
+		self.send_json(res)
+
+8月8日:
+关于python中的web.authonticatied的实例：
+class LoginHandler(BaseHandler)：
+	def get(self):
+		self.render(login.tpl)
+	def post(self):
+		username = self.get_aurument("username")
+		password = self.get_argument("password")
+		<judge>
+		if password == pw:
+			self.set_secure_cookie("key","value",EMPIRE)
+			redirect("/***")
+		else:
+			self.redirect("/login")
+
+class BaseHandler(web.RequestHandler,SentryMixin):
+	def get_current_user(self):
+		username = self.get_secure_cookie("key")
+		return username.decode()
+		
+#首先验证用户名密码，验证成功之后，将用户名写在secure_cookie中，随后就是跳转的url，实现跳转需要进行web.authonticatied验证，这时重写get_current_user函数，返回值就是currrent_user，只要current_user有值，那么web.authonticatied就是验证成功，而current_user这个参数以后就可以直接使用。
+
+建立一个调用接口的客户端：
+	单位的复写：
+		http_client = utils.get_asnyc_client()
+		request = utils.http_request(url)
+		response = await http_client.fetch(request)
+		response = json.loads(response.body.decode())
+	
+	直接调用：
+		http_client = httpclient.AsyncHTTPClient()
+		http_request = httpclient.HTTPRequest(url,method,connect_time,request_time,**wargs)	
+		response = await http_client.fetch(http_requsest)
+		response = json.load(response.body.decode())
+		
+	汉字的编码：
+		params = {"phone_num":username,"content":content}
+		url = COMMON_ULR+"/**/**?"+urlencode(params)
+		http_client
+		http_request
+		response = http_client.fetch(http_request)
+		response = json.load(response.body.decode())
+		
+class WxCallBackHandler(WxBaseHandler):
+	async def get(self):
+		state = self.get_argument(state,'/beauty/room/list')
+		code = self.get_argument('code','')
+		ui = await self.get_wx_web_user(code):
+		logging.info('user %s' %s)
+		self.set_cookie('btopenid',ui['openid'])
+		return self.redirect(unquote(state))
+		
+appid == WxCallBackHandler(WxBasehangler):
+	params = {"phone_num":username,"content":content}
+	state = self.get_argument("state","/beauty/list")
+	http_client = httpclint.AsyncHTTPClient()
+	http_request = utils.http_request(params={stage:xinghang,name:xinghang})
+	response = http_client.fetch(http_client)
+	code = self.get_argument("code",http_client)
+	WX_PAY_URL = "http://103.59.128.117:9002:/wx"
+	BAEUTY_KTV = '84579'	
+	type_sync = sync_type
+	interrupt_sync = sync_type
+	type_sync_interrupt = sync_type
+
+def check_beauty_openid(func):
+	def wrap(*args,**kw)
+		self = arg[0]
+		openid = self.get_cookit("btopenid")
+		pprint('openid:%s' % openid)
+		if not openid:
+			url = WX_USER_GRANT_URL.fomat(
+					appid = WX_CONF['appid']
+					redirect_uri = quote(WX_REDIRECT_URL)
+					state = quote(self.request.path)
+				)
+			return self.redirect(url)
+		return func(*arg,**kw)
+	return wrap
+	
+if option.debug:
+	WX_GRANT_URL = "http://gzh.ktvsky.com/beauty/wx"
+	
+	
+8月11日：
+关于微信公众号的测试：
+1.appid：×××
+  appsecrect:033695a9c8a4a0e5e4108642b5003146
+  运行域名：103.59.128.117:7890
+2.关注测试号
+3.设计通过网页获取用户信息权限登记
+4.代码中登记WX_REDIECT_URL(http://)(这个url接受了code)
+5.微信打开链接
+
+关于获取用户信息的处理函数：
+async def get_wx_user_info(self,code):
+	key = 'wx_web_beauty_user_%s' % code
+	if ctrl.rs.exist(key):
+		return eval(ctrl.rs.get(key))
+	http_client = utils.get_async_client()
+	FETCH_OPENID_ULR+PARAMS
+	response = await http_client_fetch(url_concat(FETCH_OPENID_URL,params),connect_timeout=20,requeset_timeout=20)
+	r = json.load(response.body.decode())
+	beauty_user = ctrl.beauty.get_beauty_meta_ctl(r['openid'])
+	if beauty_user:
+		ctrl.re.set(key,v,60*10)
+		return beauty_user
+	http_client = utils.get_async_client()	
+	FETCH_USER_INFO_URL,PARAMS
+	response = await http_client.fetch(url_concat(FETCH_USER_INFO_URL,params),connect_timeout=20,requset_timeout=20)
+	r = json.load(response.body.decode())
+	ctrl.rs.set(key,r,60*10)
+	ctrl.beauty.add_beauty_info_ctl(
+		"openid":r['openid'],
+		"nickname":r['nickname'],
+		"headimg":r['headimg']
+	)
+	return r
+	
+async def get_user_info(self,code):
+	key = "wx_user_info_%s" % code
+	if ctrl.rs.exist(key):
+		return eval(ctrk.rs.get(key))
+	http_client = utils.get_async_client()
+	FETCH_OPENID_INFO_URL+params
+	response = await http_client.fetch(url_concat(FETCH_USER_INFO_ULR,params),connect_time=60*10,request_timeout=60*10)
+	r = json.load(response.body.decode())
+	openid = r['openid']
+	beauty_info = ctrl.beauty.get_beauty_info_ctrl(openid)
+	if beauty_info:
+		ctrl.rs.set(key,beauty_info,10*60)
+		return beauty_info
+	http_client = utils.get_async_client()
+	FETCH_BEAUTY_INFO_URL+params
+	response = http_client.fetch(url_connat(FETCH_BEAUTY_INFO_URL,p),connect_time=60*10,request_timeout=60*10)
+	response = json.load(response.body.decode())
+	ctrl.rs.set(key,response,10*60)
+	ctrl.beauty.add_beauty_info(
+		openid:r['openid'],
+		nickname:r['nickname'],
+		headimg:r['heanimg']
+		)
+	return response
+	
+class RoomlistHandler(WxBaseHandler):
+	
+	@check_beauty_openid
+	async def get(self):
+		try:
+			openid = self.get_cookie("btcookie")
+		except Exception as e:
+			raise util.APIError(errcode=10001)	
+		room_list = ctrl.beauty.get_beauty_room_list_ctl(openid)
+		ui = ctrl.beauty.get_beauty_meta_ctl(openidopenid)
+		render(
+			'beauty.room.list.tpl',
+			room_list:room_list,
+			ui:ui
+		)
+		
+class RoomlistHandler(BaseHandler)：
+	
+	@check_beauty_openid
+	async def get(sefl):
+		try:
+			openid = self.get_cookie("btcookie")
+		except Exception as e:
+			raise utils.APIError(errocode=10001)
+		 room_list = ctrl.beauty.get_beauty_room_list_ctl(openid)
+		 ui = ctrl.beauty.get_beauty_meta_ctl(openid)
+		 render(
+		 	'beauty.room.list.tpl',
+		 	room_list:room_list,
+		 	ui:ui
+		 )
+一个方便的实例：
+def update_ktv_fin_account(self,**data)
+	q = self.master.query(Ktv_Finance_Account).filter_by(data['username'])
+	if q.scalar():
+		q.update(data)
+	else:
+		self.master.add(KtvFinanceAccount(**data))
+	self.master.commit()
+	
+pardon:
+def update_ktv_fin_account(self,**data)
+	q = self.master.query(Ktv_Finance_Account).filter_by(data['username'])
+	if q.scalar():
+		q.update(data)
+	else:
+		self.master.add(KtvFinanceAccount(**data))
+	self.master.commit()
+
+8月17日：
+class LoginHandler(BaseHandler):
+
+    def post(self):
+        try:
+            username = int(self.get_argument("username"))
+            password = self.get_argument("password")
+        except Exception as e:
+            raise utils.APIError(status_code=10001)
+
+        user = ctrl.pay.get_ktv_fin_account(username)
+        if password == user['password_org']:
+            username = str(username)
+            self.set_secure_cookie("erp_ktvsky_com", username, expires_days=1)
+            self.redirect('/login_set')
+        elif password == user['password']:
+            username = str(username)
+            self.set_secure_cookie("erp_ktvsky_com", username, expires_days=1)
+            self.redirect('/ktv_fin_in?ktv_id=%s' % user["ktv_id"])
+        else:
+            self.redirect("/login?username=%s" % username)
+
+    def get(self):
+        username = self.get_argument("username",'')
+        self.render('login.tpl',
+                     username=username
+                    )
+
+
+class LoginForgetHandler(BaseHandler):
+
+    def random_code(self):
+        n = random.randint(99999,1000000)
+        return n
+
+    async def post(self):
+        try:
+            username = self.get_argument("username")
+            password_org = self.get_argument("password_org")
+        except Exception as e:
+            logging.error(e)
+            raise utils.APIError(errcode=10001)
+        data = {'info':''}
+
+        if not ctrl.pay.get_ktv_fin_account(username):
+            data.update({'info':'用户不存在，请先注册'})
+            self.send_json(data)
+
+        elif not password_org:
+            username = int(username)
+            password_org = self.random_code()
+            content = "密码重置验证：%s（5分钟内有效），请您尽快完成登陆密码的重置。如有问题请电询：010-51667307" % password_org
+            ctrl.pay.send_message_ctl(username,password_org,content)
+
+        else:
+            user = ctrl.pay.get_ktv_fin_account(username)
+            if password_org == user['password_org']:
+                username = str(username)
+                self.set_secure_cookie("erp_ktvsky_com", username, expires_days=1)
+                self.redirect('/login_set')
+            else:
+                data.update({'info':'验证码有误'})
+                self.send_json(data)
+
+    def get(self):
+        username = self.get_argument("username",'')
+        self.render('login_for.tpl',
+                     username = username,
+                    )
+
+
+class LoginSetHandler(BaseHandler):
+
+    @web.authenticated
+    def get(self):
+        self.render("login_set.tpl")
+
+    @web.authenticated
+    def post(self):
+        try:
+            password1 = self.get_argument("password1")
+            password2 = self.get_argument("password2")
+        except Exception as e:
+            logging.error(e)
+            raise utils.APIError(errcode = 10001)
+
+        username = int(self.get_secure_cookie("erp_ktvsky_com"))
+        user = ctrl.pay.get_ktv_fin_account(username)
+        data = {}
+        if password1==None or password2==None:
+            data.update({'info':'密码不能为空！'})
+            self.send_json(data)
+        elif password1 != password2:
+            data.update({'info':'两次输入密码不一致！'})
+            self.send_json(data)
+        else:
+            ctrl.pay.update_ktv_fin_account(username=username,password=password1)
+            self.redirect('/ktv_fin_in?ktv_id=%s' % user["ktv_id"])
+
+
+class KtvFinnanceCDHandler(BaseHandler):
+
+    @web.authenticated
+    async def get(self):
+        username = int(self.get_secure_cookie("erp_ktvsky_com"))
+        user = ctrl.pay.get_ktv_fin_account(username)
+        ktv = ctrl.pay.get_ktv_ctl(user['ktv_id'])
+
+        http_client = utils.get_async_client()
+        http_request = utils.http_request(APIS['ktv_fin_curdata'].format(ktv_id=ktv['ktv_id']), method='POST', body='')
+        response = await http_client.fetch(http_request)
+        curdata = json.loads(response.body.decode())
+
+        self.send_json(curdata)
+
+
+class KtvFinanceWithdrawHandler(BaseHandler):
+    '''登记银行信息'''
+    @web.authenticated
+    async def get(self):
+        username = int(self.get_secure_cookie("erp_ktvsky_com"))
+        user = ctrl.pay.get_ktv_fin_account(username)
+        ktv = ctrl.pay.get_ktv_ctl(user['ktv_id'])
+        if ktv['bank_account'] == '':
+
+            self.render(
+                "ktv_fin_wd_bank.tpl",
+                 ktv = ktv
+            )
+
+        else:
+            http_client = utils.get_async_client()
+            http_request = utils.http_request(APIS['withdraw_account'].format(ktv_id=ktv['ktv_id']), method='POST', body='')
+            response = await http_client.fetch(http_request)
+            withdraw_info = json.loads(response.body.decode())
+            bank_info = ctrl.erp.get_bank_info_ctl(ktv['store_id'])
+
+            self.render(
+                "ktv_fin_wd.tpl",
+                 withdrawl_info =withdraw_info,
+                 bank_info = bank_info,
+                 ktv = ktv,
+            )
+
+
+class WithdrawHandler(BaseHandler):
+    '''提现按钮'''
+    @web.authenticated
+    async def post(self):
+        username = int(self.get_secure_cookie("erp_ktvsky_com"))
+        user = ctrl.pay.get_ktv_fin_account(username)
+        ktv = ctrl.pay.get_ktv_ctl(user['ktv_id'])
+        http_client = utils.get_async_client()
+        http_request = utils.http_request(APIS['withdraw'].format(ktv_id=ktv['ktv_id']), method='POST', body='')
+        response = await http_client.fetch(http_request)
+        response = json.loads(response.body.decode())
+
+        self.send_json(response)
+
+
+class KtvFinanceWDListHandler(BaseHandler):
+
+    @web.authenticated
+    async def get(self):
+        username = int(self.get_argument("erp_ktvsky_com"))
+        user = ctrl.pay.get_ktv_fin_account(username)
+        ktv = ctrl.pay.get_ktv_ctl(user['ktv_id'])
+
+        wd_list = await utils.async_common_api('/wx/withdraw/%d' % int(user['ktv_id']))
+
+        self.render(
+            "ktv_fin_wd_list.tpl",
+             wd_list = wd_list,
+             ktv = ktv,
+        )
+
+
+class KtvFinanceIncomeHandler(BaseHandler):
+    '''营业流水'''
+    @web.authenticated
+    async def get(self):
+        try:
+            ktv_id = self.get_argument("ktv_id")
+            pay_type = self.get_argument('pay_type', 'wechat')
+            start_date = self.get_argument('start_date', None)
+            end_date = self.get_argument('end_date', None)
+
+        except Exception as e:
+            raise utils.APIError(status_code=10001)
+
+        ktv = ctrl.pay.get_ktv_ctl(ktv_id)
+        ktv_name = ktv["name"]
+        params = {}
+        params['ktv_id'] = ktv_id
+        params['pay_type'] = pay_type
+        if start_date:
+            params['start_date'] = start_date
+        if end_date:
+            params['end_date'] = end_date
+
+        income_list = await ctrl.erp.get_pay_orders_ctl(**params)
+
+        if pay_type=='pos':
+            for item in income_list:
+                item.update({'total_fee':item['amount']})
+
+        self.render(
+            'ktv_fin_in_list.tpl',
+             pay_type = pay_type,
+             ktv_name = ktv_name,
+             income_list = income_list,
+        )
+
+    async def post(self):
+        try:
+            pay_type = self.get_argument('pay_type')
+            order_id = self.get_argument('order_id')
+        except:
+            raise utils.APIError(statue_code=10001)
+
+        order = ctrl.pay.get_order_by_orderid_ctl(pay_type=pay_type,order_id=order_id)
+        if order.has_key('amount'):
+            order.update({'total_fee':order['amount']})
+        self.send_json(order)
+        
+def (pay_type = pay_type,order_id = order_id):
+	if order_if.has_key(''amount'):
+	order.update({'total_fee':order['amount']})
+	
+	
+关于用户验证登陆的secure_cookie:
+class LoginHandler(BaseHandler):
+	def post(self):
+		if password == user['password']
+			self.set_secure_cookie('erp_ktvsky_com',str(username),expire_days=1)
+			//self._login(username)
+  
+@web.authenticatied
+class WorkHandler(BaseHandler)：
+	'''
+	'''
+
+@web.authenticatied装饰器会调用self.current_user
+这是一个属性也是一个方法：
+	调用get_current_user()
+	def get_current_user(self):
+		username = self.get_secure_cookie("erp_ktvsky_com")
+		if not username:
+			self._logout()
+		return username.decode()
+
+从此以后，username = self.current_user(self)
+
+
+安装：
+sudo apt-get install nginx
+开启：
+sudo service nginx start   (sudo /etc/init.d/nginx start)
+sudo service nginx restart
+sudo service nginx stop
+检查：
+http://localhost
+默认配置文件：
+/etc/niginx/nginx.conf
+文件末尾行：include /etc/nginx/sites-enabled/*;
+这一行加载了一个外部的配置文件，sites-enabled文件夹下只有一个default文件，这个外部的配置文件就是默认的nginx的配置文件
+文件内容：
+server {
+	server_name localhost;   #这里是你的域名，即服务器名称，即访问者的所填写url中的host（主机名），两者对应
+	listen 80 default_server;
+	listen [::]:80 default_server ipv6only=on;
+
+	location / {
+		proxy_pass http://127.0.0.1:8000 #实现反向代理，这个端口运行着工程  80是非常关键的，涉及到微信的认证
+	}
+
+	location /article {
+		proxy_pass http://127.0.0.1:8000/article #二级路由
+		proxy_redirect default ;
+
+	}
+
+}
+文件的另外一个末尾行：include /etc/nginx/confid.d/*.conf
+添加文件：test.conf
+写入内容：
+server {
+	listen       8088;    # 修改端口号
+	server_name  localhost;
+
+	location / {
+		root /usr/share/nginx/html;        #当访问http://localhost:8088时，定位到此根目录，然后按找顺序查找下列文件
+		index index.html index.htm;
+	}
+}   
+访问：http://localhost:8088 出现nginx的欢迎页
+
+至此，nignx的初始配置基本完成了
+几个可能会用到的命令
+sudo vim 
+sudo nginx -t 查看启动日志，如果启动或重启失败，可以由此查找错误信息
+
+另：nginx的负载均衡
+upstream backend {
+	ip_hash;    
+	server backend1.example.com;
+	server backend2.example.com;
+	server backend3.example.com;
+	server backend4.example.com;
+}
+location / {
+	proxy_pass http://backend;
+}
+
+http://erp.ktvsky.com/
+
+查看日志，查杀进程，重启服务
+
+stage:
+nginx位置：/usr/local/nginx/conf/nginx.conf 查到服务端口号
+tail -f nohup.out
+lsof -i:端口号
+kill 进程号
+nohup python init.py --port=9503 &
+
+work:
+tail -f /data/torn_log/*coupon*  |grep "/namegame" -C 10
+
+查找文件或者路径的指令：
+find . -name 'pyspider' 
+locate nginx.
+

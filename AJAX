@@ -1,0 +1,74 @@
+无需加载整个页面，更新部分网页，异步的JS，用于快速创建动态的网页
+通过在后台与服务器进行少量的数据交换，实现网页的异步更新
+XMLHttpRequeset用于在后台与服务器狡猾数据，这意味这可以不用加载真个页面的情况下，对页面进行刷新
+一个实例：
+<html><!DOCTYPE html>
+<html>
+<head>
+<script>
+function loadXMLDoc(url)
+{
+var xmlhttp;
+xmlhttp=new XMLHttpRequest()
+xmlhttp.onreadystatechange=function()
+    {
+  	if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById('p1').innerHTML=xmlhttp.getAllResponseHeaders();
+    }
+  }
+xmlhttp.open("GET",url,true);
+xmlhttp.send();
+}
+</script>
+</head>
+<body>
+
+<p id="p1">The getAllResponseHeaders() function returns the header information of a resource, like length, server-type, content-type, last-modified, etc.</p>
+<button onclick="loadXMLDoc('/try/ajax/ajax_info.txt')">Get header information</button>
+
+</body>
+</html>
+
+XMLHttpRequest对象有三个属性：
+	1.onreadystatechange 存储函数，每当readystate属性发生变化时，自动调用该函数。
+	2.readyState 存有XMLHttpRequest的状态，从0到4发生变化
+	3.status 200 404
+	
+var xmlhttp
+xmlhttp = new XMLHttpRequest()
+xmlhttp.onereadystatechange = function(){
+	if xmlhttp.readystate==4
+}
+
+XMLHttpRequest对象的send()函数
+	1.
+	  var url = "login.jsp?user=XXX&pwd=XXX";
+	  xmlHttpRequest.open("GET",url,true);
+	  xmlHttpRequset.send(null);
+	2.
+      xmlHttpRequest.open("POST","login.jsp",true);
+      xmlHttpRequest.setRequestHeder("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
+      xmlHttpRequest.send("user="+username+"&pwd="+password);
+  
+一个AJAX的最简单的实例：
+html:
+<form id='test_ajax'>
+	<input type='text' name='data'>
+	<input type='button' value='提交' id='submit'>
+</form>
+<div></div>
+
+js:
+$('#submit').click(function(){
+	$.ajax({
+		url:''
+		type:"POST"
+		data:$('#form').serialize(),
+		success:function(data){
+			$('#result').text(data) //填补text
+		}	
+	})
+})
+
+

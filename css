@@ -1,0 +1,131 @@
+外部样式表：
+<head>
+<link rel="stylesheet" type="text/css" href="mystyle.css" />
+</head> //rel：relation（相关） 
+
+mystyle.css:
+hr {color: sienna;}
+p {margin-left: 20px;}
+body {background-image: url("images/back40.gif");}
+
+内部样式表：
+<head>
+<style type="text/css">  type  可省
+  hr {color: sienna;}
+  p {margin-left: 20px;}
+  body {background-image: url("images/back40.gif");}
+</style>
+</head>
+
+内联样式表：
+<p style="color: sienna; margin-left: 20px">
+This is a paragraph
+</p>
+
+CSS3被拆分为"模块"。旧规范已拆分成小块，还增加了新的，一些最重要CSS3模块：
+选择器
+盒模型
+背景和边框 
+	border-radius 属性被用于创建圆角
+		div {
+    		border-radius: 15px 50px 30px 5px; //对应四个角消失的色素个数
+    		background: #8AC007;
+    		padding: 20px，15px; //上下左右的内边距，这里只上下边距是20px，左右边距是15px  
+    		width: 200px;
+    		height: 150px; 
+			}
+	box-shadow 属性被用来添加阴影
+	border-image 属性被用来添加背景图片
+	background-img 添加背景图片
+		div {
+    		background-image: url(img_flwr.gif), url(paper.gif);
+    		background-position: right bottom, left top;
+    		background-repeat: no-repeat, repeat;
+    		padding: 15px;
+}
+文字特效管局
+2D/3D转换
+动画
+多列布局
+用户界面
+
+一个常用的css的属性列表：
+http://www.cnblogs.com/gaoweipeng/archive/2009/07/02/1515549.html
+
+关于多重样式：
+如果某些属性在不同的样式表中被同样的选择器定义，那么属性值将从更具体的样式表中被继承过来。 
+例如，外部样式表拥有针对 h3 选择器的三个属性：
+h3
+{
+color:red;
+text-align:left;
+font-size:8pt;
+}
+而内部样式表拥有针对 h3 选择器的两个属性：
+h3
+{
+text-align:right;
+font-size:20pt;
+}
+假如拥有内部样式表的这个页面同时与外部样式表链接，那么 h3 得到的样式是：
+color:red;
+text-align:right;
+font-size:20pt;
+即颜色属性将被继承于外部样式表，而文字排列（text-alignment）和字体尺寸（font-size）会被内部样式表中的规则取代
+多重样式表将会按照下列顺序重叠为一个:
+
+backrground属性：
+background-color
+background-image 
+background-repeat //默认水平和垂直平铺
+background-attachment //是否固定
+background-position
+背景的简写属性：
+body {background:#ffffff url('img_tree.png') no-repeat right top;}
+background background
+
+文本属性：
+color	设置文本颜色
+direction	设置文本方向。
+letter-spacing	设置字符间距
+line-height	设置行高
+text-align	对齐元素中的文本
+text-decoration	向文本添加修饰
+text-indent	缩进元素中文本的首行
+text-shadow	设置文本阴影
+text-transform	控制元素中的字母
+
+字体属性：
+font	在一个声明中设置所有的字体属性
+font-family	指定文本的字体系列
+	font-family 属性应该设置几个字体名称作为一种"后备"机制，如果浏览器不支持第一种字体，他将尝试下一种字体。
+	eg：p{font-family:"Times New Roman", Times,sans-serif, serif;}
+font-size	指定文本的字体大小 单位可以用px
+	eg:
+		h1 {font-size:2.5em;} /* 40px/16=2.5em */
+		h2 {font-size:1.875em;} /* 30px/16=1.875em */
+		p {font-size:0.875em;} /* 14px/16=0.875em 
+font-style	指定文本的字体样式
+	eg:p.normal {font-style:normal;}
+	   p.italic {font-style:italic;}
+	   p.oblique {font-style:oblique;
+font-variant	以小型大写字体或者正常字体显示文本。
+font-weight	指定字体的粗细
+
+链接属性：
+a:link {color:#FF0000;text-decoration:none;background-color:#B2FF99;}      /* 未访问链接*/
+a:visited {color:#00FF00;}  /* 已访问链接 */
+a:hover {color:#FF00FF;}  /* 鼠标移动到链接上 */
+a:active {color:#0000FF;}  /* 已访问过的链接 *
+
+有序无序list元素的序号风格：
+ul.a {list-style-type:circle;}
+ul.b {list-style-type:square;}
+ol.c {list-style-type:upper-roman;}
+ol.d {list-style-type:lower-alpha;}
+ol.e {list-style-image: url('sqpurple.gif');}
+ol.e {list-style:square url("sqpurple.gif");} 图像风格转化
+http://www.runoob.com/try/try.php?filename=trycss_list-style-type_ex
+
+table:
+	

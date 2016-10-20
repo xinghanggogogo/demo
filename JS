@@ -1,0 +1,717 @@
+title属性，元素的额外信息，鼠标放置会显示额外信息
+align属性，规定div元素中内容的水平的对其格式
+text-align（对齐） text-indent（缩进）
+#id .class [任意属性]
+head中的meta元素，涉及编码：<meta charset='utf-8'>
+
+定义一个button:
+	<input type="button" onclick="func() or www.baidu.com",value="按钮">
+
+一个确认按钮的实例
+<html>
+<head>
+<script type="text/javascript">
+function show_confirm()
+{
+var r=confirm("Press a button!");
+if (r==true)
+  {
+  alert("You pressed OK!");
+  }
+else
+  {
+  alert("You pressed Cancel!");
+  }
+}
+</script>
+</head>
+<body>
+<input type="button" onclick="show_confirm()" value="Show a confirm box" />
+</body>
+</html>
+
+一个输入提示框的实例：
+<html>
+<head>
+<script type="text/javascript">
+function disp_prompt()
+  {
+  var name=prompt("请输入您的名字","Bill Gates")
+  if (name!=null && name!="")
+    {
+    document.write("你好！" + name + " 今天过得怎么样？")
+    }
+  }
+</script>
+</head>
+<body>
+<input type="button" onclick="disp_prompt()" value="显示提示框" />
+</body>
+</html>
+
+：
+一个javascript便利数组的实例：
+<html>
+<body>
+<script type="text/javascript">
+var x
+var mycars = new Array() //申请一个数组 var mycar = new Array();.
+mycars[0] = "宝马"
+mycars[1] = "奔驰"
+mycars[2] = "宾利"
+
+for (x in mycars)
+{
+document.write(mycars[x] + "<br />")
+}
+</script>
+</body>
+</html>
+
+JS使用try...catch来捕获错误信息：
+<html>
+<head>
+<script type="text/javascript">
+var txt=""
+function message()
+{
+try
+   {
+   adddlert("Welcome guest!")
+   }
+catch(err)
+   {
+   txt="本页中存在错误。\n\n"
+   txt+="错误描述：" + err.description + "\n\n"
+   txt+="点击“确定”继续。\n\n"
+   alert(txt)
+   }
+}
+</script>
+</head>
+
+<body>
+<input type="button" value="查看消息" onclick="message()" />
+</body>
+
+</html>
+
+关于onerror的一个实例：
+<html>
+<head>
+<script type="text/javascript">
+onerror=handleErr
+var txt=""
+
+function handleErr(msg,url,l)
+{
+txt="本页中存在错误。\n\n"
+txt+="错误：" + msg + "\n"
+txt+="URL: " + url + "\n"
+txt+="行：" + l + "\n\n"
+txt+="点击“确定”继续。\n\n"
+alert(txt)
+return true
+}
+
+function message()
+{
+adddlert("Welcome guest!")
+}
+</script>
+</head>
+
+<body>
+<input type="button" value="查看消息" onclick="message()" />
+</body>
+
+</html>
+
+img下的alt属性，鼠标放置之后显示的文字:
+一个实例:
+<img border="0" alt="Visit W3School!" src="/i/eg_mouse2.jpg" name="b1"  onmouseover="mouseOver()" onmouseout="mouseOut()" /></a>
+
+JS更改样式的实例：
+document.getElementById('**').style.color = "blue"
+document.getElementById('**').innerHTML = "#####"
+document.getElementById('**').src = "/&&/&&"
+
+<h1 onclick="this.innerHTML='bb'">aa</h1>
+
+<script>**</script>
+<script src="/static/js/adc.js"> //更加有利于维护，且可以多页面调用
+<script type='text/script'> //加上type属性并不是必要的
+JS的调试:
+找到console(控制台)，在这个控制台中可以输入js代码然后按enter执行
+要查看某个变量的内容:console.log(a)
+js中并不是必须要加分号，js引擎会自动的为每一个语句机上分号，但是偶尔这会改变语义
+这是js中的注释号// /* */
+js严格区分大小写
+数据类型：number，字符串‘’ “”  布尔值（true or false） 和数组[] 和对象{}
+比较运算符：==和===
+false == 0; // true
+false === 0; // false 它不会自动转换数据类型，如果数据类型不一致，返回false，如果一致，再比较
+null表示一个“空”的值，它和0以及空字符串''不同，0是一个数值，''表示长度为0的字符串，而null表示“空”，Python中用None
+而undefined表示未定义
+创建一个数组：var arr= new Array(1,2,3,4)   arr[0]=1
+创建一个对象: var person = {name:'bob',age:20,zipcode:null}   //js对象的所有键值都是字符串类型
+js动态语言，定义一个变量都用 var
+strict模式：一个变量不用var声明会变成全局变量，可能会产生冲突，用'use strict'模式可以强制性的必须输入var,以免报错
+字符串中的转义字符 \ :  'I\'m\"ok\!"'  '\u4e2d\u6587'; //unicode字符，完全等同于 '中文'
+`定义多行换上字符串`而不用使用\n
+字符串的函数：
+	var s='Hello,world'
+	s.length s[0] s.toUpperCase() s.tuLowerCase() s.indexOf('world') s.substring(0,5)
+数组的函数
+	var arr=[1,2,3.14,'Hello',null,true]
+	arr.length arr.length=6 arr.length=3
+	arr[1]=99  arr[10]=0
+	arr.indexOf(3.14)
+	arr.slice(0,3)
+	arr.push arr.pop 尾部
+	arr.unshift arr.shift 头部
+	arr.sort
+	arr.concat([5,6,7])
+	arr.join('-')
+对象的函数
+	var xiaoming={name:'xiaoming',middle-school:'NO.1'}
+	xiaoming.name xiaoming['middle-school']
+	xiaoming.age=18
+一个ifelse的实例：
+if(){
+}else if(){
+}else{
+}
+
+Map和set：
+	var m=new Map([['michael',95],['Bob',75]])  //这是一个二维数组..
+	m.set('michael',95) m.has('Bob') m.get('Bob') m.delete('Bob')
+	var s=new set([1,2,3]) 
+	s.add() s.delete
+
+关于forEach()函数：
+var a=['A','B']
+a.forEach(function(element)){
+	alert(element)
+}
+
+var m = new Map([[1, 'x'], [2, 'y'], [3, 'z']]);
+m.forEach(function (value, key, map) {
+    alert(value);
+});
+
+function的两种定义方法 function func(){} ; var a=function(){}
+js允许传入多个参数，多传入的参数并不影响
+function中的arguments参数和rest参数：
+arguments永远指向当前函数调用者传入的所有的参数 arguments[1] arguments.length
+rest永远指向当前函数调用者传入的所有参数的剩余参数
+function foo(a,b,...rest){
+	console.log('a='+a)
+	console.log('b='+b)
+	console.log(rest)
+}
+foo(1,2,3,5)
+foo(1) 
+
+注意return语句：
+function foo() {
+    return
+        { name: 'foo' };
+}
+
+foo(); // undefined
+实际变成了：
+function foo() {
+    return; // 自动添加了分号，相当于return undefined;
+        { name: 'foo' }; // 这行语句已经没法执行到了
+}
+
+js函数当中的变量提升eg：
+function foo(){
+	var x='hello,'+y;
+	alert (x);
+	var y='bob'
+}
+正是由于这样的特性，在JS函数中定义变量时，应该严格遵守函数内部首先申明所有变量这一规则
+eg：
+function foo(){
+	var
+		x=1,
+		y=x+1,
+		z=y+1;  //注意标点符号
+		
+	...
+}
+全局作用域：
+不在任何函数中定义的变量就具有全局属性，eg：
+var a=1
+function foo1(){}
+function foo2(){}
+实际上，js默认一个全局对象window，全局作用域变量被绑定到window的一个属性
+
+a=window.a  alert=window.alert 一个实例：
+'use strict';
+window.alert('调用window.alert()');
+// 把alert保存到另一个变量:
+var old_alert = window.alert;
+// 给alert赋一个新函数:
+window.alert = function () {}
+alert("**") //没有作用
+
+const 定义常量
+let 块级作用域
+
+js中的作用域，全局变量在函数外部，函数嵌套内部的函数可以使用外部函数的变量，外部函数不能使用内部函数的变量，可是除了for循环，eg：
+function foo() {
+    for (var i=0; i<100; i++) {
+    	...
+    }
+    i += 100; // 仍然可以引用变量i
+}
+引入let：
+function foo(){
+	for (let i=0;i<100;i++){
+		...
+	}
+	i +=100; //不能引用
+}
+变量函数属性方法
+function getAge(){
+	var y = new Date().getFullYear();
+	return y=this.birth
+}
+
+var xiaoming={
+	name:'小明'，
+	birth:1900,
+	age:getAge
+}
+调用方法
+1.xiaoming.age()
+2.getAge.apply(xiaoming,[]) //传入list
+3.getAge.call(xiaoming,null) //逐个传入参数
+
+用apply复写函数：
+var count = 0;
+var oldParseInt = parseInt; // 保存原函数
+window.parseInt = function () {
+    count += 1;
+    return oldParseInt.apply(null, arguments); // 调用原函数
+};
+// 测试:
+parseInt('10');
+parseInt('20');
+parseInt('30');
+count;
+
+那么一个函数就可以接收另一个函数作为参数，这种函数就称之为高阶函数，一个高阶函数的eg：
+function add(x,y,f){
+	return f(x)+f(y)
+}
+
+map和reduce fitler函数同python
+function pos(x){
+	return x*x
+}
+var arr=[1,3,5]
+arr.map(pos) //[1,9,25] 也是一个数组
+
+function sum(arr){
+	return arr.reduce(function(x,y)){
+		return x+y
+	}
+}
+sum([1,2,3,4])
+
+var arr=[1,3,4,5,6]
+var arr_filter = arr.filter(function(x){
+		return x%2==0		
+	}
+)
+
+JS中的sort()函数很特殊，默认将所有元素转换成字符串，然后根据ASCII码进行排序
+python中的list[] tuple() dic{}  JS中的array数组 [] 称呼不同
+
+Json：
+web传递数据的数据类型，实质就是字符串
+number：和JavaScript的number完全一致；
+boolean：就是JavaScript的true或false；
+string：就是JavaScript的string；
+null：就是JavaScript的null；
+array：就是JavaScript的Array表示方式——[]；
+object：就是JavaScript的{ ... }表示方式。
+编码必然是utf-8
+把任何JavaScript对象变成JSON，就是把这个对象序列化成一个JSON格式的字符串，这样才能够通过网络传递给其他计算机。
+如果我们收到一个JSON格式的字符串，只需要把它反序列化成一个JavaScript对象，就可以在JavaScript中直接使用这个对象了
+实例：
+var xiaoming = {
+    name: '小明',
+    age: 14,
+    gender: true,
+    height: 1.65,
+    grade: null,
+    skills: ['JavaScript', 'Java', 'Python', 'Lisp']
+};
+JSON.stringify(xiaoming) //JSON字符串
+	"{"name":"小明","age":14,"gender":true,"height":1.65,"grade":null,"skills":["JavaScript","Java","Python","Lisp"]}"
+JSON.stringify(xiaoming,null,'') //加上参数实现缩进
+JSON.stringify(xiaoming,['name','skills'],'')//选择输出
+JSON.stringify(xiaoming，func，'')
+将JSON字符串转换成JS对象：
+JSON.parse('{"name":"小明","age":14,"gender":true,"height":1.65,"grade":null,"skills":["JavaScript","Java","Python","Lisp"]}') //''
+	
+
+window对象不但充担全局作用域，还指窗口，window.innerWidth window.innerHeight
+navigator对象,表示浏览器，navigator.appName：浏览器名称
+screen对象表示屏幕信息，screen.width
+document对象表示当前页面，document.title属性是从HTML文档中<title>**</title>读出，可以动态改变，document.cookie
+location对象表示当前页面URL信息，如location.href
+
+操作DOM:
+取:
+document.getElementById
+document.getElementByClassName
+document.getElementByTagName
+取出来的是一个或多个节点  <>*****</>
+更新:
+var p = document.getElementById('p-id')
+p.innerHTML = 'ABC'
+p.innerHTML = 'ABC<span style="color:red">RED</span>XYZ'  
+p.innerTEXT = 'ABC<span style="coler:red">RED</span>XYZ' //TEXT格式不能初始化html
+p.style.color = '#ff0000'
+p.style.fontSize = '20px'
+插入：
+<div id="list">
+    <p id="java">Java</p>
+    <p id="python">Python</p>
+    <p id="scheme">Scheme</p>
+    <p id="js">JavaScript</p>
+</div>
+
+var
+    list = document.getElementById('list'),
+    haskell = document.createElement('p');
+haskell.id = 'haskell';
+haskell.innerText = 'Haskell';
+list.appendChild(haskell);
+	指定位置插入：
+var
+    list = document.getElementById('list'),
+    ref = document.getElementById('python'),
+    haskell = document.createElement('p');
+haskell.id = 'haskell';
+haskell.innerText = 'Haskell';
+list.insertBefore(haskell, ref)
+
+删除：
+<div id="parent">
+    <p>First</p>
+    <p>Second</p>
+</div>
+
+var parent = document.getElementById('parent');
+parent.removeChild(parent.children[0]);
+parent.removeChild(parent.children[1]); // <-- 浏览器报错注意变化
+
+操作表单：
+文本框，对应的<input type="text">，用于输入文本；
+口令框，对应的<input type="password">，用于输入口令；
+单选框，对应的<input type="radio">，用于选择一项；
+复选框，对应的<input type="checkbox">，用于选择多项；
+下拉框，对应的<select>，用于选择一项；
+隐藏文本，对应的<input type="hidden">，用户不可见，但表单提交时会把隐藏文本发送到服务器
+
+获取值
+// <input type="text" id="email">
+var input = document.getElementById('email').value //用户输入的值
+输入值
+var input = document,getElementById('email')
+input.value = '*****'
+
+JQUERY:
+JQuery把所有功能全部封装在一个全局变量jQuery中，而$也是一个合法的变量名，它是变量jQuery的别名,$本质上就是一个函数，但是函数也是对象，于是$除了可以直接调用外，也可以有很多其他属性。
+
+css:
+body {
+	**:**
+	**:**
+}
+.response_img {
+	**:**
+	**:**
+}
+a:hover {
+	**:**
+}
+a:focus {
+	**:**
+}
+ol order
+ul unorder
+dl define  list
+
+bootstrap定义一个悬浮变色的基本表格：
+<table class='table-hover'>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+bootstrap定义一个表单的实例：
+<form role="form"> //必加
+   <div class="form-group"> //获取最佳间距
+      <label for="name">名称</label>
+      <input type="text" class="form-control" id="name" 
+         placeholder="请输入名称">
+   </div>
+   <div class="form-group">
+      <label for="inputfile">文件输入</label>
+      <input type="file" id="inputfile">
+      <p class="help-block">这里是块级帮助文本的实例。</p>
+   </div>
+   <div class="checkbox">
+      <label>
+      <input type="checkbox"> 请打勾
+      </label>
+   </div>
+   <button type="submit" class="btn btn-default">提交</button> //一个好看的按钮
+</form>
+
+点击按钮弹出交互对话框
+console.log(***)
+debugger设置断点debugger 调试模式下刷新即可停止运行
+
+JavaScirpt弹窗：
+3种消息框：警告，确认，提示框
+
+警告框，window.alert('some text') 需要点击确认按钮
+<input type="button" onclick="myFunction()",value="显示警告框">
+
+确认框，window.confirm() or confirm() 当你点击确认的时候，确认狂返回true，否则返回false
+一个实例：
+<html>
+<head>
+<meta charset="utf-8">
+</head>
+<body>
+<p>点击按钮，显示确认框。</p>
+<button onclick="myFunction()">点我</button>
+<p id="demo"></p>
+<script>
+function myFunction(){
+	var x;
+	var r=confirm("按下按钮!");//弹出确认框
+	if (r==true){
+		x="你按下了"确定"按钮!";
+	}
+	else{
+		x="你按下了"取消"按钮!";
+	}
+	document.getElementById("demo").innerHTML=x;
+}
+</script>
+</body>
+</html>
+
+提示框：用于提示用户输入某个值，当提示框出现之后，用户需要手动输入某个值，然后点击确认才能向下进行，输入完成之后，如果用户点击确认，那么返回值将会是用户的输入值，否则返回值为null
+window.prompt("sometext","defaulevalue"),一个实例：
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+</head>
+<body>
+<p>点击按钮查看输入的对话框。</p>
+<button onclick="myFunction()">点我</button>
+<p id="demo"></p>
+<script>
+function myFunction(){
+	var x;
+	var person=prompt("请输入你的名字","Harry Potter");
+	if (person!=null && person!=""){
+	    x="你好 " + person + "! 今天感觉如何?";
+	    document.getElementById("demo").innerHTML=x;
+	}
+}
+</script>
+</body>
+</html>
+
+javascipt中的 javascript：void(0)
+void是JavaScript中的非常中主要的关键字，该操作符制定要计算一个表达式但是不返回值
+<!DOCTYPE html> 
+
+<html> 
+<head> 
+<meta charset="utf-8"> 
+<script type="text/javascript">
+function getValue(){
+   var a,b,c;
+   a = void ( b = 5, c = 7 );
+   document.write('a = ' + a + ' b = ' + b +' c = ' + c );
+}
+</script>
+</head>
+<body>
+<p>点击以下按钮查看结果：</p>
+<form>
+<input type="button" value="点我" onclick="getValue();" />
+</form>
+</body>
+</html>
+
+href="#"与href="javascript:void(0)"的区别
+#包含了一个位置信息，默认的锚#top，也就是是页面的顶部，而javascript：void(0)仅仅标示一个死链接
+eg:
+<a href="javascript:void(0);">点我没有反应的!</a> 
+<a href="#pos">点我定位到指定位置!</a> 
+<br> 
+... 
+<br> 
+<p id="pos">尾部定位点</p
+
+关于void()的另外一个实例：
+<p>点击以下链接查看结果：</p>
+<a href="javascript:void(alert('Warning!!!'))">点我!</a>  //会弹出警告框
+
+javascipt中的常见的事件： 格式eg:onmouseover="yourfunction()"
+onchange	HTML 元素改变
+onclick		用户点击 HTML 元素
+onmouseover	用户在一个HTML元素上移动鼠标
+onmouseout	用户从一个HTML元素上移开鼠标
+onkeydown	用户按下键盘按键
+onload		浏览器已完成页面的加载
+
+javascript中的正则表达式：
+JavaScript中的正则表达式常用的两个方法：
+search()；replase()；两种方法都可以使用正则模式和字符串模式
+search的实例：
+	使用正表达式：
+		var str = "Visit w3cschool";
+		var n = str.search(/w3cschool/i);  //找不到返回-1
+	使用字符串：
+		var str = "Visit w3cschool!";
+		var n = str.search("w3cschool");
+replace的实例：
+	使用正则表达式：
+		var	str = "Visit Microsoft!";
+		var res = str.replace(/microsoft/i, "w3cschool");
+	使用字符串:
+		var	str = "Visit Microsoft!";
+		var res = str.replace(/microsoft/i, "w3cschool");
+关于test()方法：
+	var patt = /e/;
+	patt.test("The best things in life are free!"); //返回为true
+	不用设置正则变量，直接检测：/e/.test("*******")
+关于exec()方法：
+	/e/.exec("the best thing in life are free") //返回为e
+		
+javascript中的定义一个数组的三种方法：
+1: 常规方式:
+var myCars=new Array(); 
+myCars[0]="Saab";       
+myCars[1]="Volvo";
+myCars[2]="BMW";
+2: 简洁方式:
+var myCars=new Array("Saab","Volvo","BMW");
+3: 字面:
+var myCars=["Saab","Volvo","BMW"]
+
+8月8日：
+1.document.write("") //输出文本
+2.document.write("<h1>***</h1>")
+3.document.write(document.anchors.length) //页面当中锚的数量
+4.document.write(document.anchors[0].innerHTML) //第一个锚的HTML
+5.document.write(document.forms.length)
+6.document.write(document.forms[0].name)
+7.document.write(document.imgs.length)
+8.document.write(document.imgs[0].id)
+9.document.write(document.cookie)  //返回cookie的所有的键值对
+10.document.write(document.domain) //加载这个文件的域名
+11.document.write(document.referrer) //返回文档的url
+12.一个写入文件的实例:
+	<input type="button" value="新文档" onclick="createDoc()">
+	<script>
+		function createDoc(){
+			var doc = document.open()("text/html","replace")
+			var text = "<!DOCTYPE><html><body>*****</body></html>"
+			doc.write(txt)
+			doc.close()
+		}	
+	</script>
+13.弹出一个制定节点的innerHTML：
+	<input id="11" onclick="getElement()">
+	<script>
+		function getElement(){
+			var x= document.getElementById("11").innerHTML
+			alert (x)
+		}
+	</script>
+14.点击让一个某一个按钮不可用：
+	<button onclick="disableElement()">取消按钮</button>
+	<script>
+		function disableElement(){
+			document.getElementById("first").disabled=true;
+		}
+	</script>
+	
+关于表单：
+1.返回一个表单当中的所有的value：
+  	for(var i=0;i<=x.length;i++)
+		document.write(x.element[i].value)
+2.重置表单:
+	<form id="qwer">
+		<input **>
+		<input **>
+		<input type="button" onclick="formReset()" value="重置表单">
+	</form>
+	
+	<script>
+		function formReset(){
+			document.getElementById("qwer").reset
+		}
+	</script>
+3.表单提交的两种方式：
+ 1.	<form id="qwer">
+		<input **>
+		<input **>
+		<input type="submit"  value="重置表单">
+	</form>
+	
+ 2. <form id="qwer">
+		<input **>
+		<input **>
+		<input type="button" onclick="submitfunction()" value="重置表单">
+	</form>
+	
+	<script>
+		function submitfunction(){
+			document.getElementById("qwer").submit()
+		}
+	</script>
+
+关于表格：
+1.cellpadding:格子间距
+2.显示一行的innerHTML：
+		funciton showRow(){
+			document.getElementById("qwer").row[0].innerHTML		
+		}
+3.改变一个格子的innerHTML:
+		function changecell(){
+			var x=document.getElementById("qwer").row[0].cell[1].innerHTML="QWER"
+		}
+4.删除某一行:
+	关于表格节点的父节点：
+	function deleteRow(r){
+		var i= r.parentNode.parentNode.rowIndex;	
+		document.getElementByid("myTable").deleteRow(i)
+	}

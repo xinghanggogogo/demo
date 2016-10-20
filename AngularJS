@@ -1,0 +1,115 @@
+一个angular的实例：
+angular.module('myApp',[]).controller('namesCtrl',function($scope)){
+	$scope.names = [
+		{names:'jani',country:'Norway'},
+		{names:'hege',country:'Sweden'},
+		{name:'kai',country:'Denmarl'}			
+		}
+	]
+}
+
+一个通过angular访问接口的实例：
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="http://apps.bdimg.com/libs/angular.js/1.4.6/angular.min.js"></script>
+</head>
+<body>
+
+<div ng-app="myApp" ng-controller="customersCtrl"> 
+
+<ul>
+  <li ng-repeat="x in names">
+    {{ x.Name + ', ' + x.Country }}
+  </li>
+</ul>
+
+</div>
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('customersCtrl', function($scope, $http) {
+  $http.get("http://www.runoob.com/try/angularjs/data/Customers_JSON.php")
+  .success(function (response) {$scope.names = response.records;});
+});
+</script>
+
+</body>
+</html
+
+一个angular通过请求json接口输入表格的实例：
+<script src="http://apps.bdimg.com/libs/angular.js/1.4.6/angular.min.js"></script>
+</head>
+<body>
+
+<div ng-app="myApp" ng-controller="customersCtrl"> 
+
+<table border=0>
+  <tr ng-repeat="x in names">
+    <td>{{ x.Name }}</td>
+    <td>{{ x.Country }}</td>
+  </tr>
+</table>
+
+</div>
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('customersCtrl', function($scope, $http) {
+    $http.get("/try/angularjs/data/Customers_JSON.php")
+    .success(function (response) {$scope.names = response.records;});
+});
+</script>
+
+</body>
+</html>
+使用angular通过访问json接口输出一个表格的实例：
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="http://apps.bdimg.com/libs/angular.js/1.4.6/angular.min.js"></script>
+<style>
+table, th , td  {
+  border: 1px solid grey;
+  border-collapse: collapse;
+  padding: 5px;
+}
+table tr:nth-child(odd)	{
+  background-color: #f1f1f1;
+}
+table tr:nth-child(even) {
+  background-color: #ffffff;
+}
+</style>
+</head>
+<body>
+
+<div ng-app="myApp" ng-controller="customersCtrl"> 
+
+<table>
+  <tr ng-repeat="x in names|orderBy:'Country'"
+    <td>{{ $index + 1 }}</td>
+    <td>{{ x.Name }}</td>
+    <td>{{ x.Country }}</td>
+  	<td>{{ x.secondName}}</td>
+  </tr>
+</table>
+
+</div>
+<div ng-app="myApp" ng-controller="mycontroller">
+<div ng-app="myApp" ng-controller="mycontroller">
+<div ng-app="myApp" ng-controller="mycontroller">
+<script>
+var app = angular.module('myApp', []);
+app.controller('customersCtrl', function($scope, $http) {
+    $http.get("/try/angularjs/data/Customers_JSON.php")
+    .success(function (response) {$scope.names = response.records;});
+});
+</script>
+
+</body>
+</html>
+
+
