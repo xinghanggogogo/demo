@@ -13,9 +13,10 @@ class OpenShareHandler(BaseHandler):
 	config['signature'] = sha1(urlparams.encode()).hexdigest()
 	config['appId'] = WXCOF['APPID']
 	self.render(
-			'***.tpl',
-			config = config,
+		'***.tpl',
+		config = config,
 		)
+
 
 前端引入：
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>

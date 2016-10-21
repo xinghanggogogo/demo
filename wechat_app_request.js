@@ -39,7 +39,8 @@ Page({
 		bookList: []
 	},
 
-	onLoat:function(){
+	onLoat:function(params){
+		var param = params.asdf
 		var that = this;
 		wx.request({
 			url: '***',
@@ -64,3 +65,4 @@ Page({
 	}
 })
 //流程：data-onLoad-request-success-callback-setData
+---------------

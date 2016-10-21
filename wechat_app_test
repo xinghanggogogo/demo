@@ -1,0 +1,88 @@
+‘--------
+form表单
+<form bindsubmit="funcsubmit" bindreset="funcreset">
+	<view class="form-section">
+		<view class="form-text">section1</view>
+		<slider name="slider" show-value/>asd
+	</view>
+	<view class="form-section">
+		<view class="form-text">section2</view>
+		<radio-group name="radio-group">
+			<label><radio value="radio1">value</radio></label>
+			<label><radio value="radio1">value</radio></label>
+		</radio-group>
+	</view>
+	<view class="btn-area">
+		<button formtype="submit">Submit</button>
+		<button formtype="reset">Reset</button>
+	</view>
+</form>
+--------
+底部弹出菜单栏 action-sheet
+<button class='btn' type="default" bindtap="actionSheetTap">弹出底部菜单栏</button>
+<action-sheet hidden="{{actionSheetHidden}}" bindchange="actionSheetChange">
+	<block wx:for="{{items}}">
+		<action-sheet-item class="item" bindtap="bindItemTap" data-name="{{item}}">{{item}}</action-sheet-item>	#传递参数
+	</block>
+	<action-sheet-cancel class="cancel">取消</action-sheet-cancel>
+</action-sheet>
+--------
+模态框 modal
+title, no-cancel, confirm-text, cancel-text, bindconfirm, bindcancel
+<modal title="标题" confirm-text="确认" cancel-text="取消" hidden="{{modalHidden}}" bindconfirm="modalChange" bindcancel="modalChange">
+	这是对话框的内容。
+</modal>
+<modal class="modal" hidden="{{modalHidden2}}" no-cancel bindconfirm="modalChange2">
+	<view> 内容可以插入节点 </view>
+</modal>
+<view class="btn-area">
+	<button type="default" bindtap="modalTap">点击弹出modal</button>
+	<button type="default" bindtap="modalTap2">点击弹出modal2</button>
+</view>
+--------
+消息提示框 toast
+<view class="body-view">
+	<toast hidden="{{toast1Hidden}}" bindchange="toast1Change">
+		默认
+	</toast>
+	<button type="default" bindtap="toast1Tap">点击弹出默认toast</button>
+</view>
+<view class="body-view">
+-------
+	<toast hidden="{{toast2Hidden}}" duration="3000" bindchange="toast2Change">
+		点击弹出有duration的toast
+	</toast>
+	<button type="default" bindtap="toast2Tap">点击弹出设置duration的toast</button>
+</view>
+--------
+loading 加载提示
+<view class="body-view">
+	<loading hidden="{{hidden}}" bindchange="loadingChange">加载中</loading>
+	<button type="default" bindtap="loadingTap">点击弹出loading</button>
+</view>
+--------
+navigator导航栏
+url redirect hover-class(点击状态的样式)
+<view class="btn-area">
+	<navigator url="navigate?title=navigate" hover-class="navigator-hover">跳转到新页面</navigator>
+	<navigator url="redirect?title=redirect" redirect hover-class="other-navigator-hover">在当前页打开</navigator>
+</view>
+-------
+关于本地缓存，类似redis
+wx.setStorage;wx.getStorage;wx.clearStorage 最大为10M
+------
+关于位置
+wx.getLocation();wx.openLocation();
+wx.getLocation(){
+	type: 'gcj02',
+	success:function(res){
+		var latitude = res.latitude
+		var longtitude = res.longtitude
+		wx.openLocation({
+			latitude:latitude,
+			longtitude:longtitude,
+			scale:28
+		})
+	}
+}
+--------
