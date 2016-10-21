@@ -147,7 +147,7 @@ curl localhost:9200/asdfasdf/_search?q=nanjing
 suggest查询：（结构包含suggest字段，之前已经定义过）
 curl -X POST 'localhost:9200/asdfasdf/_suggest?pretty' -d '{
     "test-suggest" : {
-        "text" : "x",		#"xinghang","nan","weny"都成功了
+        "text" : "xing weny",
         "completion" : {
             "field" : "suggest"
         }
@@ -315,3 +315,6 @@ print(res)
         }
 ----------------------------------------------------------
 关于es至此。
+
+
+curl -X GET http://www.ip138.com/ -d'{"proxies":""}'  #id=1  注：es中有关于自动建立索引的配置，默认为true

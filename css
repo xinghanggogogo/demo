@@ -1,7 +1,8 @@
 外部样式表：
 <head>
 <link rel="stylesheet" type="text/css" href="mystyle.css" />
-</head> //rel：relation（相关） 
+</head> 
+//rel：relation（相关） 
 
 mystyle.css:
 hr {color: sienna;}
@@ -104,7 +105,7 @@ font-size	指定文本的字体大小 单位可以用px
 	eg:
 		h1 {font-size:2.5em;} /* 40px/16=2.5em */
 		h2 {font-size:1.875em;} /* 30px/16=1.875em */
-		p {font-size:0.875em;} /* 14px/16=0.875em 
+		p {font-size:0.875em;} /* 14px/16=0.875em */
 font-style	指定文本的字体样式
 	eg:p.normal {font-style:normal;}
 	   p.italic {font-style:italic;}
@@ -116,7 +117,7 @@ font-weight	指定字体的粗细
 a:link {color:#FF0000;text-decoration:none;background-color:#B2FF99;}      /* 未访问链接*/
 a:visited {color:#00FF00;}  /* 已访问链接 */
 a:hover {color:#FF00FF;}  /* 鼠标移动到链接上 */
-a:active {color:#0000FF;}  /* 已访问过的链接 *
+a:active {color:#0000FF;}  /* 已访问过的链接 */
 
 有序无序list元素的序号风格：
 ul.a {list-style-type:circle;}

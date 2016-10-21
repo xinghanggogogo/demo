@@ -96,6 +96,7 @@ class OrderHandler(BaseHandler):
 		key = 'order_%s' % openid
 		if not ctrl.rs.setnx(key, 1):
 			raise utils.APIError(errcode=18001, errmsg='已经支付过')
+
 		ctrl.rs.expire(key, 3*60)
 		erp_id = gen_erp_id(openid, arg1, arg2)
 		ctrl.web.update_order_with_erp_id(dict(openid=openid, erp_id=erp_id, fee=fee))
