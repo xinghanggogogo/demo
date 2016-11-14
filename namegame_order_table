@@ -4,6 +4,7 @@ CREATE TABLE `namegame_order` (
   `username` varchar(64) NOT NULL DEFAULT '' COMMENT '用户名',
   `email` varchar(64) NOT NULL DEFAULT '' COMMENT '用户邮箱',
   `body` varchar(64) NOT NULL DEFAULT '' COMMENT '详情',
+  `names` varchar(64) NOT NULL DEFAULT '' COMMENT '本次获取的姓名',
   `nickname` varchar(128) NOT NULL DEFAULT '' COMMENT 'wx nickname',
   `img_url` varchar(256) NOT NULL DEFAULT '',
   `order_id` varchar(128) NOT NULL DEFAULT '' COMMENT '自身的order id',
@@ -93,6 +94,7 @@ CREATE TABLE `namegame_order` (
   `charactors` varchar(64) NOT NULL DEFAULT '' COMMENT '性格',
   `fee` int(11) NOT NULL DEFAULT '0' COMMENT '费用',
   `sex` varchar(12) NOT NULL DEFAULT '0' COMMENT 'boy and girl',
+  `names` varchar(64) NOT NULL DEFAULT '0' COMMENT '本次获取的姓名',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
@@ -127,3 +129,10 @@ CREATE TABLE `books_meta` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `ebook_md5` (`md5`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+
+curl -i -H 'Accept:application/json' -H 'Content-Type:application/json' -XPOST -d '{"button":[{"type":"click","name":"开始点歌","key":"singing","sub_button":[]},{"name":"愤怒的宝宝","type":"view","url"    :"http://static.ktvsky.com/bq/game.html","sub_button":[]},{},{"name":"我的","sub_button":[{"type":"view","name":"我的代金券","url":"http://wx.handle.ktvdaren.com/coupon/my","sub_button":[]},{"type":"click    ","name":"我的订单","key":"my_order","sub_button":[]},{"type":"click","name":"我的会员卡","key":"my_card","sub_button":[]},{"type":"click","name":"我收的礼物","key":"mygifts","sub_button":[]},{"type":"    click","name":"我送的礼物","key":"sendgifts","sub_button":[]}]}]}' 'https://api.weixin.qq.com/cgi-bin/menu/create?access_token=YWAetNbDXjLIMI6u_24htxXjRusGSMK9ibyXgVSvcRLKRQyEmtjFA287Bq6T53SLpSngKKQvEu    WedAIre2REpSMWdFnHw4KyyFl8jCUeCkFX4cR62ssp_1-r4Hfo5CE8ANUgAIAHUB'
+
+curl -i -H 'Accept:application/json' -H 'Content-Type:application/json' -XPOST -d '{"button": [{"type":"click","name":"开始点歌","key":"singing","sub_button":[]},{"name":"愤怒的宝宝","sub_button": [{"type": "view","name": "愤怒的宝宝", "url": "http://static.ktvsky.com/bq/game.html","sub_button": []}, {"type": "view",  "name": "宝宝的英文名","url": "http://s.51shuotu.com/ng/ktv/order/namegame","sub_button": []}]},  {"name": "我的","sub_button": [{"type": "view","name": "我的代金券","url": "http://wx.handle.ktvdaren.com/coupon/my",  "sub_button": []  },{"type": "click","name": "我的订单","key": "my_order","sub_button": []},  {"type": "click","name": "我的会员卡","key": "my_card","sub_button": []},{"type": "click","name": "我收的礼物","key": "mygifts","sub_button": []},{"type": "click","name": "我送的礼物","key": "sendgifts","sub_button": []}]}]}' 'https: //api.weixin.qq.com/cgi-bin/menu/create?access_token=aHhH4M5qVx1_yOvVWvtE2HUPqvgvij1oXnF4uJlJ0QHIR6CsERWYx3Dhdlok1eRdbEU5Y2FS08IkKConmu5SrzTc7PqUdsJxus-LggBHdhTgzDF_mCG849vHCDJQ9R-RBZZeABAECC'
+
+curl 'http://gm.ktvsky.3231266f50027675yg.custom.ucloud.cn/wx/token'

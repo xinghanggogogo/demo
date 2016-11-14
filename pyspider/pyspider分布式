@@ -1,0 +1,236 @@
+参考来源:
+https://imlonghao.com/10.html
+http://www.jianshu.com/p/8eb248697475/comments/4834069
+
+centos7分布式部署pyspider
+centos&python3.5.1
+1.搭建python3环境
+2.安装mariaDB
+	MariaDB数据库管理系统是MySQL的一个分支，主要由开源社区在维护，采用GPL授权许可 MariaDB的目的是完全兼容MySQL，包括API和命令行，使之能轻松成为MySQL的代替品
+	用mysql替代
+3.安装pyspider
+4.安装supervisor
+	yum install supervisor -y
+	检测安装是否成功:echo_supervisord_conf
+	启动:sudo supervisord
+	启动suervisord的命令行窗口:sudo supdervisorctl
+
+5.分布式
+服务器名称 ip  说明
+centos01  10.211.55.22  redis,mariaDB, scheduler
+centos02  10.211.55.23  fetcher, processor, result_worker,phantomjs
+centos03  10.211.55.24  fetcher, processor,,result_worker,webui
+
+centos01:
+进入服务器centos01，经过第一步，基本环境已经搭好(mariadb,radis,)，首先编辑配置文件/pyspider/config.json
+{
+	//各种数据库,schedule部署在01
+	"taskdb": "mysql+taskdb://user_name:user_pass@10.211.55.22:3306/taskdb",
+	"projectdb": "mysql+projectdb://user_name:user_pass@10.211.55.22:3306/projectdb",
+	"resultdb": "mysql+resultdb://user_name:user_pass@10.211.55.22:3306/resultdb",
+	"message_queue": "redis://10.211.55.22:6379/db",
+	"logging-config": "/pyspider/logging.conf",
+
+	//phantomjs部署在02
+	"phantomjs-proxy":"10.211.55.23:25555",
+
+	//webui部署在03
+	"webui": {
+		"username": "",
+		"password": "",
+		"need-auth": false,
+		"host":"10.211.55.24",
+		"port":"5000",
+		"scheduler-rpc":"http:// 10.211.55.22:5002",
+		"fetcher-rpc":"http://10.211.55.23:5001"
+	},
+
+	//fetcher
+	"fetcher": {
+		"xmlrpc":true,
+		"xmlrpc-host": "0.0.0.0",//含义是什么呢!
+		"xmlrpc-port": "5001"
+	},
+	
+	//scheduler	
+	"scheduler": {
+		"xmlrpc":true,
+		"xmlrpc-host": "0.0.0.0",
+		"xmlrpc-port": "5002"
+	}
+}
+
+首先在终端尝试运行直到成功:(下文格式为python pyspider -c pyspider_config):
+	/root/anaconda3/envs/sbird/bin/python /root/git/pyspider/run.py -c /pyspider/config
+	输出:
+	[I 161010 15:57:25 scheduler:644] scheduler starting...
+	[I 161010 15:57:25 scheduler:779] scheduler.xmlrpc listening on 0.0.0.0:5002
+	[I 161010 15:57:25 scheduler:583] in 5m: new:0,success:0,retry:0,failed:0
+
+尝试运行成功后,用supervisor进程管理工具进行监控:
+	更改/etc/supervisord.d/pyspider01.ini,写入下面内容:
+
+	[program:pyspider01]
+	command =/root/anaconda3/envs/sbird/bin/python /root/git/pyspider/run.py -c /pyspider/config.json scheduler 	//这里表明了是schedu
+	directory = /root/git/pyspider 	//执行commond的目录
+	user = root
+	process_name = %(program_name)s
+	autostart = true
+	autorestart = true
+	startsecs = 3
+
+	redirect_stderr  = true
+	stdout_logfile_maxbytes = 500MB
+	stdout_logfile_backups  = 10
+	stdout_logfile = /pyspider/supervisor/pyspider01.log
+重载supervisorctl:
+	supervisorctl reload
+	supervisorctl status
+
+centos02:
+在centos02中，需要运行result_worker、processor、phantomjs、fetcher
+分别建立文件:
+
+/etc/supervisord.d/result_worker.ini
+写入:
+[program:result_worker]
+command      = /root/anaconda3/envs/sbird/bin/python /root/git/pyspider/run.py -c /pyspider/config.json result_worker
+directory    = /root/git/pyspider
+user         = root
+process_name = %(program_name)s
+autostart    = true
+autorestart  = true
+
+startsecs    = 3
+redirect_stderr         = true
+stdout_logfile_maxbytes = 500MB
+stdout_logfile_backups  = 10
+stdout_logfile          = /pyspider/supervisor/result_worker.log
+
+/etc/supervisord.d/processor.ini
+写入:
+[program:processor]
+command      = /root/anaconda3/envs/sbird/bin/python /root/git/pyspider/run.py -c /pyspider/config.json processor
+directory    = /root/git/pyspider
+user         = root
+process_name = %(program_name)s
+autostart    = true
+autorestart  = true
+startsecs    = 3
+
+redirect_stderr         = true
+stdout_logfile_maxbytes = 500MB
+stdout_logfile_backups  = 10
+stdout_logfile          = /pyspider/supervisor/processor.log
+
+/etc/supervisord.d/phantomjs.ini
+写入:
+[program:phantomjs]
+command      = /pyspider/phantomjs --config=/pyspider/pjsconfig.json /pyspider/phantomjs_fetcher.js 25555
+directory    = /root/git/pyspider
+user         = root
+process_name = %(program_name)s
+autostart    = true
+autorestart  = true
+startsecs    = 3
+
+redirect_stderr         = true
+stdout_logfile_maxbytes = 500MB
+stdout_logfile_backups  = 10
+stdout_logfile          = /pyspider/supervisor/phantomjs.log
+
+/etc/supervisord.d/fetcher.ini
+写入:
+[program:fetcher]
+command      = /root/anaconda3/envs/sbird/bin/python /root/git/pyspider/run.py -c /pyspider/config.json fetcher
+directory    = /root/git/pyspider
+user         = root
+process_name = %(program_name)s
+autostart    = true
+autorestart  = true
+startsecs    = 3
+
+redirect_stderr         = true
+stdout_logfile_maxbytes = 500MB
+stdout_logfile_backups  = 10
+stdout_logfile          = /pyspider/supervisor/fetcher.log
+
+然后安装phantomjs
+在pyspider目录中建立pjsconfig.json
+
+{
+  /*--ignore-ssl-errors=true */
+  "ignoreSslErrors": true,
+
+  /*--ssl-protocol=true */
+  "sslprotocol": "any",
+
+  /* Same as: --output-encoding=utf8 */
+  "outputEncoding": "utf8",
+
+  /* persistent Cookies. */
+  /*cookiesfile="e:/phontjscookies.txt",*/
+  cookiesfile="pyspider/phontjscookies.txt",
+
+  /* load image */
+  autoLoadImages = false
+}
+下载phantomjs至/pyspider/文件夹，将git/pyspider/pyspider/fetcher/phantomjs_fetcher.js复制到phantomjs_fetcher.js
+
+重载supervisor:
+	supervisorctl reload
+	supervisorctl status
+	# output
+	fetcher                          RUNNING   pid 3446, uptime 0:00:07
+	phantomjs                        RUNNING   pid 3448, uptime 0:00:07
+	processor                        RUNNING   pid 3447, uptime 0:00:07
+	result_worker                    RUNNING   pid 3445, uptime 0:00:07
+
+
+centos02:
+部署这三个进程fetcher, processor, result_worker和centos02 一样，本服务器主要是在前面的基础上加上webui
+建立文件：
+
+/etc/supervisord.d/webui.ini
+
+[program:webui]
+
+command      = /root/anaconda3/envs/sbird/bin/python /root/git/pyspider/run.py -c /pyspider/config.json webui
+directory    = /root/git/pyspider
+user         = root
+process_name = %(program_name)s
+autostart    = true
+autorestart  = true
+startsecs    = 3
+
+redirect_stderr         = true
+stdout_logfile_maxbytes = 500MB
+stdout_logfile_backups  = 10
+stdout_logfile          = /pyspider/supervisor/webui.log
+# 重载
+supervisorctl reload
+supervisorctl status
+	#output
+	fetcher                          RUNNING   pid 2724, uptime 0:00:07
+	processor                        RUNNING   pid 2725, uptime 0:00:07
+	result_worker                    RUNNING   pid 2723, uptime 0:00:07
+	webui                            RUNNING   pid 2726, uptime 0:00:07
+
+
+{
+  "taskdb": "mysql+taskdb://mombaby:098f6bcd4621d373cade4e832627b4f6@127.0.0.1:3308/taskdb",
+  "projectdb": "mysql+projectdb://mombaby:098f6bcd4621d373cade4e832627b4f6@127.0.0.1:3308/projectdb",
+  "resultdb": "mysql+resultdb://mombaby:098f6bcd4621d373cade4e832627b4f6@127.0.0.1:3308/resultdb",
+  "message_queue": "redis://127.0.0.1:6379/db",
+  "phantomjs-proxy": "127.0.0.1:25555",
+  "scheduler" : {
+    "xmlrpc-host": "0.0.0.0",
+    "delete-time": 3600
+  },
+  "webui": {
+    "port": 5555,
+    "username": "xinghang",
+    "password": "xinghang",
+    "need-auth": true
+  }
+}

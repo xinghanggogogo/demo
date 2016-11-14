@@ -1,0 +1,54 @@
+CREATE TABLE `tvshow` (
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`room_id` varchar(16) NOT NULL DEFAULT '' COMMENT '本站房间号',
+	`title` varchar(128) NOT NULL DEFAULT '' COMMENT '直播标题',
+	`link` varchar(128) NOT NULL DEFAULT '' COMMENT '直播页面链接',
+	`video_link` varchar(128) NOT NULL DEFAULT '' COMMENT '直播流链接',
+	`anchor` varchar(32) NOT NULL DEFAULT '' COMMENT '主播名',
+	`head_img` varchar(128) NOT NULL DEFAULT '' COMMENT '主播头像',
+	`source` varchar(64) NOT NULL DEFAULT '' COMMENT '爬取来源',
+	`category` varchar(32) NOT NULL DEFAULT '' COMMENT '类别', 
+	`num` varchar(64) NOT NULL DEFAULT '' COMMENT '本次获取的姓名', 
+	`show_img` varchar(128) NOT NULL DEFAULT '' COMMENT '直播截图',
+	`create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+		PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+https://www.douyu.com/  斗鱼tv    (提供有开发接口)
+http://hdla.douyucdn.cn/live/39300ryvYtemtSoO.flv?wsAuth=13b73433d9500c83066a40d7368c97f7&token=web-douyu-0-39300-519a0229b0593717ab5a86d3f99394a6&logo=0&expire=0&did=F63FAE164B710A9E83977467710704E9&ver=2016110111(失效)
+
+/live/274874rSKoZm2Rtd_550.flv?wsAuth=abb0456ddd013bf479dc909fe7baaa90&token=web-douyu-0-274874-42bbece48705c6b88e0081208883a735&logo=0&expire=0&did=F63FAE164B710A9E83977467710704E9&ver=2016110411
+
+https://www.zhanqi.tv/
+http://wshdl.load.cdn.zhanqi.tv/zqlive/23632_1gFr7.flv?get_url=1
+
+http://www.shengui.tv/  神龟tv      
+
+http://www.quanmin.tv/game/all  全民直播 
+http://flv.quanmin.tv/live/333_L4.flv
+
+http://www.huya.com/  虎牙直播
+
+http://www.longzhu.com/ 龙珠直播
+http://42.81.9.39/flv1.plu.cn/live/daidai.flv?wsSecret=0b6019e9d91bebef4cfea8eab0596d90&wsTime=581ac4f2&wshc_tag=1&wsts_tag=581ac4f7&wsid_tag=1ca7dda&wsiphost=ipdbm
+
+http://www.huomao.com/ 火猫直播
+未找到
+
+http://www.bilibili.com     B站
+http://live-play.acgvideo.com:80/live/494/live_110631_5953326.flv?wsSecret=f20f163aafc8e21f33f06daef956d136&wsTime=57f32daf
+
+http://www.huajiao.com/  花椒直播   (无)
+
+
+映客直播
+http://101.201.40.173:81/socket.io/1/?uid=&place=room&sid=1&roomid=1478237337904434&token=&time=1478239514&nonce=q1j5qpFvTi&sec=54e796f3049f0f70053022f489a54c6a&t=1478239515141
+
+大米,咪,只有移动端
+
+CREATE TABLE `tvshow_test` (
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`title` varchar(128) NOT NULL DEFAULT '' COMMENT '直播标题',
+		PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8

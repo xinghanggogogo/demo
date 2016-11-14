@@ -42,6 +42,7 @@ class OrderHandler(BaseHandler):
 	async def pay_query(self, order_id, loop=1):
 		logging.info("\n\npay_query_loop=%s, order_id=%s"%(loop, order_id))
 		order = ctrl.web.get_order_by_order_id(order_id)
+		
 		if not order:
 			raise utils.APIError(errcode=10001)
 		try:
@@ -329,4 +330,3 @@ class OrderCbHandler(BaseHandler):
 			raise utils.APIError(errcode=10001, errmsg='验签错误')
 		order_id = res['out_trade_no']
 		ctrl.web.update_namegame_order(data=dict(order_id=order_id, state=2))
-

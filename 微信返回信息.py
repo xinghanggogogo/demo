@@ -52,5 +52,7 @@ class FiveColorHandler(BaseHandler):
 			return r
 		except Exception as e:
 			logging.error(e)
-			raise utils.APIError(errcode=10001, errmsg='发消息失败')
+			raise utils.API(errcode=10001, errmsg='参数错') 
+
+
 

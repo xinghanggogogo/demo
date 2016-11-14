@@ -1,0 +1,15 @@
+http://www.bookdepository.com
+http://www.freetechbooks.com/topics
+http://www.ebookdb.org
+http://www.isbnsearch.org
+http://www.openisbn.com
+http://www.gutenberg.org/ebooks
+
+
+FreeBookSpot //注册,每月限制下载次数5次
+http://manybooks.net/signup //注册,每天推送
+http://www.getfreeebooks.com //下载链接打不开
+http://www.gutenberg.org //限制访问次数,语音验证,没有isbn
+http://onlinebooks.library.upenn.edu/search.html //没有isbn,找不到爬取入口
+https://dailylit.com 注册,推送
+
