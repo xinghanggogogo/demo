@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.clearfix:after {
+			content: '.';
+			visibility:  hidden;
+			display: block;
+			height: 0;
+			clear: both;
+		}
+		body {
+			width: 930px;
+			margin: 0 auto;
+		}
+		article {
+			width: 800px;
+			float: left;
+			margin-right: 10px;
+		}
+		/* 能占位就占位了, css是贪婪的*/
+		aside {
+			width:120px;
+			float: right;
+		}
+	</style>
+</head>
+<body class='clearfix'>
+	<article>
+		<h1>Title</h1>
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, quam, fugit. Accusamus voluptates nesciunt in, autem ipsa assumenda a iusto, reiciendis earum repudiandae, nulla natus blanditiis, aliquam asperiores commodi qui.</p>
+	</article>
+	<aside>
+		<h3>Aside</h3>
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, quam, fugit. Accusamus voluptates nesciunt in, autem ipsa assumenda a iusto, reiciendis earum repudiandae, nulla natus blanditiis, aliquam asperiores commodi qui.</p>
+	</aside>
+</body>
+</html>

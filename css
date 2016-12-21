@@ -109,7 +109,7 @@ font-size	指定文本的字体大小 单位可以用px
 font-style	指定文本的字体样式
 	eg:p.normal {font-style:normal;}
 	   p.italic {font-style:italic;}
-	   p.oblique {font-style:oblique;
+	   p.oblique {font-style:oblique;}
 font-variant	以小型大写字体或者正常字体显示文本。
 font-weight	指定字体的粗细
 

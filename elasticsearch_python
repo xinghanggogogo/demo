@@ -17,65 +17,65 @@ suggestion查询：
 建立索引结构：
 curl -X PUT localhost:9200/test/test/_mapping -d '{
  "test" : {
-        "properties" : {
-            "name" : { "type" : "string" },
-            "suggest" : { "type" : "completion",
-                                 "analyzer" : "simple",
-                                 "search_analyzer" : "simple",
-                                 "payloads" : true
-            }
-        }
-    }
+				"properties" : {
+						"name" : { "type" : "string" },
+						"suggest" : { "type" : "completion",
+																 "analyzer" : "simple",
+																 "search_analyzer" : "simple",
+																 "payloads" : true
+						}
+				}
+		}
 }'
 >>>{"acknowledged":true}
 插入数据：
 curl -X PUT 'localhost:9200/test/test/2?refresh=true' -d '{
-    "name" : "Nevermind",
-    "suggest" : {
-        "input": [ "Nevermind", "Nirvana" ],
-        "output": "Nirvana - Nevermind",
-        "weight" : 100
-    }
+		"name" : "Nevermind",
+		"suggest" : {
+				"input": [ "Nevermind", "Nirvana" ],
+				"output": "Nirvana - Nevermind",
+				"weight" : 100
+		}
 }'
 >>>{"_index":"test","_type":"test","_id":"2","_version":1,"_shards":{"total":2,"successful":1,"failed":0}
 请求：
 curl -X POST 'localhost:9200/test/_suggest?pretty' -d '{
-    "test-suggest" : {
-        "text" : "ne",
-        "completion" : {
-            "field" : "suggest"
-        }
-    }
+		"test-suggest" : {
+				"text" : "ne",
+				"completion" : {
+						"field" : "suggest"
+				}
+		}
 }'
 返回suggestion：
 {
-  "_shards" : {
-    "total" : 5,
-    "successful" : 5,
-    "failed" : 0
-  },
-  "test-suggest" : [ {
-    "text" : "n",
-    "offset" : 0,
-    "length" : 1,
-    "options" : [ {
-      "text" : "Nirvana - Nevermind",
-      "score" : 100.0
-    } ]
-  } ]
+	"_shards" : {
+		"total" : 5,
+		"successful" : 5,
+		"failed" : 0
+	},
+	"test-suggest" : [ {
+		"text" : "n",
+		"offset" : 0,
+		"length" : 1,
+		"options" : [ {
+			"text" : "Nirvana - Nevermind",
+			"score" : 100.0
+		} ]
+	} ]
 }
 
 curl -X PUT localhost:9200/test1/test_suggest/_mapping -d '{
-  "test" : {
-        "properties" : {
-            "name" : { "type" : "string" },
-            "suggest" : { "type" : "completion",
-                                 "analyzer" : "simple",
-                                 "search_analyzer" : "simple",
-                                 "payloads" : true
-            }
-        }
-    }
+	"test" : {
+				"properties" : {
+						"name" : { "type" : "string" },
+						"suggest" : { "type" : "completion",
+																 "analyzer" : "simple",
+																 "search_analyzer" : "simple",
+																 "payloads" : true
+						}
+				}
+		}
 }'
 >>>exception
 
@@ -88,38 +88,38 @@ curl -X PUT localhost:9200/asdfasdf -d'{}'
 
 定义索引内部type结构：
 curl -X PUT localhost:9200/asdfasdf/_mapping/asdfasdf?pretty -d '{
-         "properties":{
-                   "name":{"type":"string"},
-                   "published":{"type":"string"},
-	     "suggest" : {
-	     	   "type" : "completion",
-	     	   "analyzer" : "simple",
-	     	   "search_analyzer" : "simple",
-	     	   "payloads" : true
-            }
-         }
+				 "properties":{
+									 "name":{"type":"string"},
+									 "published":{"type":"string"},
+			 "suggest" : {
+					 "type" : "completion",
+					 "analyzer" : "simple",
+					 "search_analyzer" : "simple",
+					 "payloads" : true
+						}
+				 }
 }'
 
 插入数据：
 curl -X PUT 'localhost:9200/asdfasdf/asdfasdf/1?refresh=true' -d '{
-    "name" : "xinghang",
-    "published": "南京",
-    "suggest" : {
-        "input": [ "xinghang", "wenyi", "nanjing" ],
-        "output": "xinghang",
-        "weight" : 100
-    }
+		"name" : "xinghangq",
+		"published": "南京",
+		"suggest" : {
+				"input": [ "xinghang", "wenyi", "nanjing" ],
+				"output": "xinghang",
+				"weight" : 
+		}
 }'
 >>>{"_index":"asdfasdf","_type":"asdfasdf","_id":"1","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 
 curl -X PUT 'localhost:9200/asdfasdf/asdfasdf/1?refresh=true' -d '{
-    "name" : "xinghang_1",
-    "published": "nanjing",
-    "suggest" : {
-        "input": [ "xinghang", "wenyi", "nanjing" ],
-        "output": "xinghang",
-        "weight" : 100
-    }
+		"name" : "xinghang_1",
+		"published": "nanjingq",
+		"suggest" : {
+				"input": [ "xinghangs", "wenyi", "nanjing" ],
+				"output": "xinghang",
+				"weight" : 100
+		}
 }'
 >>>success
 
@@ -127,13 +127,13 @@ curl -X PUT 'localhost:9200/asdfasdf/asdfasdf/1?refresh=true' -d '{
 curl localhost:9200/asdfasdf/asdfasdf/1
 >>>
 {"_index":"asdfasdf","_type":"asdfasdf","_id":"1","_version":1,"found":true,"_source":{
-    "name" : "xinghang",
-    "published": "南京",
-    "suggest" : {
-        "input": [ "xinghang", "wenyi", "nanjing" ],
-        "output": "xinghang",
-        "weight" : 100
-    }
+		"name" : "xinghang",
+		"published": "南京",
+		"suggest" : {
+				"input": [ "xinghang", "wenyi", "nanjing" ],
+				"output": "xinghang",
+				"weight" : 100
+		}
 }}
 
 按照内容查询（完全匹配任意字段）：
@@ -146,28 +146,28 @@ curl localhost:9200/asdfasdf/_search?q=nanjing
 
 suggest查询：（结构包含suggest字段，之前已经定义过）
 curl -X POST 'localhost:9200/asdfasdf/_suggest?pretty' -d '{
-    "test-suggest" : {
-        "text" : "xing weny",
-        "completion" : {
-            "field" : "suggest"
-        }
-    }
+		"test-suggest" : {
+				"text" : "xing weny",
+				"completion" : {
+						"field" : "suggest"
+				}
+		}
 }'
 >>>{
-  "_shards" : {
-    "total" : 5,
-    "successful" : 5,
-    "failed" : 0
-  },
-  "test-suggest" : [ {
-    "text" : "weny",
-    "offset" : 0,
-    "length" : 4,
-    "options" : [ {
-      "text" : "xinghang",
-      "score" : 100.0
-    } ]
-  } ]
+	"_shards" : {
+		"total" : 5,
+		"successful" : 5,
+		"failed" : 0
+	},
+	"test-suggest" : [ {
+		"text" : "weny",
+		"offset" : 0,
+		"length" : 4,
+		"options" : [ {
+			"text" : "xinghang",
+			"score" : 100.0
+		} ]
+	} ]
 }
 
 
@@ -175,23 +175,23 @@ curl -X POST 'localhost:9200/asdfasdf/_suggest?pretty' -d '{
 直接建立一个index和type：
 curl -X PUT http://localhost:9200/index_name -d'{
 "mappings": {
-     "type_name": {
-          "properties": {
-              "id": {
-                  "type": "long"
-              },
-            "name": {
-                "index": "not_analyzed",
-                "type": "string"
-              },
-            "suggest" : {
-                "type" : "completion",
-                "analyzer" : "simple",
-                "search_analyzer" : "simple",
-                "payloads" : true
-            }
-          }
-    }
+		 "type_name": {
+					"properties": {
+							"id": {
+									"type": "long"
+							},
+						"name": {
+								"index": "not_analyzed",
+								"type": "string"
+							},
+						"suggest" : {
+								"type" : "completion",
+								"analyzer" : "simple",
+								"search_analyzer" : "simple",
+								"payloads" : true
+						}
+					}
+		}
 }
 }
 '
@@ -209,40 +209,40 @@ conn.create_index(''test-index')#新建一个索引
 
 #定义索引中type的结构
 mapping = { 
-              u'parsedtext': {
-    'boost': 1.0,
-    'index': 'analyzed',
-    'store': 'yes',
-    'type': u'string',
-    "term_vector" : "with_positions_offsets"
-    },
-              u'name': {
-    'boost': 1.0,
-    'index': 'analyzed',
-    'store': 'yes',
-    'type': u'string',
-    "term_vector" : "with_positions_offsets"
-                         },
-              u'title': {
-    'boost': 1.0,
-    'index': 'analyzed',
-    'store': 'yes',
-    'type': u'string',
-    "term_vector" : "with_positions_offsets"
-                         },
-              u'position': {
-    'store': 'yes',
-    'type': u'integer'
-                         },
-              u'uuid': {
-    'boost': 1.0,
-    'index': 'not_analyzed',
-    'store': 'yes',
-    'type': u'string'
-                        }
-        }
+							u'parsedtext': {
+		'boost': 1.0,
+		'index': 'analyzed',
+		'store': 'yes',
+		'type': u'string',
+		"term_vector" : "with_positions_offsets"
+		},
+							u'name': {
+		'boost': 1.0,
+		'index': 'analyzed',
+		'store': 'yes',
+		'type': u'string',
+		"term_vector" : "with_positions_offsets"
+												 },
+							u'title': {
+		'boost': 1.0,
+		'index': 'analyzed',
+		'store': 'yes',
+		'type': u'string',
+		"term_vector" : "with_positions_offsets"
+												 },
+							u'position': {
+		'store': 'yes',
+		'type': u'integer'
+												 },
+							u'uuid': {
+		'boost': 1.0,
+		'index': 'not_analyzed',
+		'store': 'yes',
+		'type': u'string'
+												}
+				}
 
-#定义test-type，类似表结构，参数一次为type名，type结构，所属索引
+#定义test-type，类似表结构，参数依次为type名，type结构，所属索引
 conn.put_mapping("test-type", {'properties':mapping}, ["test-index"])
 #从test-type继承
 conn.put_mapping("test-type2", {"_parent" : {"type" : "test-type"}}, ["test-index"])
@@ -269,19 +269,19 @@ q = pyes.TermQuery("name", "bill")
 #查询name中包含bill的记录
 results = conn.search(q)
 for r in results:
-    print r
+		print r
 
 #查询name中包含 百度 的数据
 q = pyes.StringQuery(u"百 度",'name')
 results = conn.search(q)
 for r in results:
-    print r
+		print r
 
 #查询name中包含 百度 或着 中度 的数据
 q = pyes.StringQuery(u"百 度 OR 中 度",'name')
 results = conn.search(q)
 for r in results:
-    print r
+		print r
 
 -----------------------------------------------------------
 es - python-suggest
@@ -291,30 +291,180 @@ from elasticsearch import Elasticsearch
 es = Elasticsearch()
 text = 'anythingyouwant' 
 suggDoc = {
-           "entity-suggest" : { #这里已经指明了type：entity（实体）
-                'text' : text,
-                "completion" : {
-                    "field" : "suggest"
-                }
-            }
-        }
+					 "entity-suggest" : { #这里已经指明了type：entity（实体）
+								'text' : text,
+								"completion" : {
+										"field" : "suggest"
+								}
+						}
+				}
 
 res = es.suggest(body=suggDoc, index="auto_sugg", params=None)  #注意这里仅仅指定了index，type隐藏在body中，“entity-suggest”
 print(res)
 
 #Make sure you have indexed each document with suggest field
-  sample_entity= {
-          'id' : 'test123',
-          'name': 'Ramtin Seraj',
-          'title' : 'XYZ',    
-          "suggest" : {
-              "input": [ 'Ramtin', 'Seraj', 'XYZ'],
-              "output": "Ramtin Seraj",
-              "weight" : 34   # a prior weight 
-          }
-        }
+	sample_entity= {
+					'id' : 'test123',
+					'name': 'Ramtin Seraj',
+					'title' : 'XYZ',    
+					"suggest" : {
+							"input": [ 'Ramtin', 'Seraj', 'XYZ'],
+							"output": "Ramtin Seraj",
+							"weight" : 34   # a prior weight 
+					}
+				}
 ----------------------------------------------------------
 关于es至此。
 
 
 curl -X GET http://www.ip138.com/ -d'{"proxies":""}'  #id=1  注：es中有关于自动建立索引的配置，默认为true
+
+-----------------------------
+curl -X PUT http://localhost:9200/xing -d'{
+"mappings": {
+		 "hang": {
+					"properties": {
+							"id": {
+									"type": "long"
+							},
+						"name": {
+								"index": "not_analyzed",
+								"type": "string"
+							},
+						"suggest" : {
+								"type" : "completion",
+								"analyzer" : "simple",
+								"search_analyzer" : "simple",
+								"payloads" : true
+						}
+					}
+		}
+}
+}'
+
+curl -X PUT 'localhost:9200/xing/hang/1?refresh=true' -d '{
+		"id" : 1234,
+		"name": "nanjing",
+		"suggest" : {
+				"input": [ "xinghangs", "wenyi", "nanjing" ],
+				"output": "xinghang",
+				"weight" : 100
+		}
+}'
+
+
+curl -X PUT http://localhost:9200/test -d'{
+"mappings": {
+		 "test": {
+					"properties": {
+							"id": {
+									"index": "analyzed",
+									"type": "integer"
+							},
+						"name": {
+								"index": "analyzed",
+								"type": "string"
+							},
+						"title": {
+								"index": "analyzed",
+								"type": "string"
+							},
+						"age": {
+									"index": "analyzed",
+									"type": "integer"
+							},
+						"suggest" : {
+								"type" : "completion",
+								"analyzer" : "simple",
+								"search_analyzer" : "simple",
+								"payloads" : true
+						}
+					}
+		}
+}
+}'
+
+
+
+curl -X PUT http://localhost:9200/test -d'{
+"settings": {
+		"analysis": {
+			"analyzer": {
+				"std_english": {
+					"type":      "standard",
+					"stopwords": "_english_"
+				}
+			}
+		}
+	},
+	"mappings": {
+		"test": {
+			"properties": {
+				"title": {
+					"analyzer": "std_englis", 
+				}
+			}
+		}
+	}
+}'
+
+
+
+
+"settings": {
+		"analysis": {
+			"analyzer": {
+				"std_english": {
+					"type":      "standard",
+					"stopwords": "_english_"
+				}
+			}
+		}
+	},
+	"mappings": {
+		"test": {
+			"properties": {
+				"title": {
+					"analyzer": "std_englis", 
+				}
+			}
+		}
+	}
+
+
+
+
+#es 竟然没有办法更改字段类型,报错,新增字段是可以的
+curl -X POST http://localhost:9200/test/test/_mappings?pretty -d'{
+"test": {
+      "properties": {
+        "title": {
+            "index": "analyzed",
+            "analyzer": "standard"
+          }
+      }
+}
+}'
+
+
+curl -X PUT http://localhost:9200/test -d'{
+"settings": {
+		"analysis": {
+			"analyzer": {
+				"std_english": {
+					"type":      "standard",
+					"stopwords": "_english_"
+				}
+			}
+		}
+	},
+	"mappings": {
+		"test": {
+			"properties": {
+				"title": {
+					"analyzer": "std_englis", 
+				}
+			}
+		}
+	}
+}'

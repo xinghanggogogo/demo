@@ -1,0 +1,440 @@
+Docker是一个新的容器化的技术，它轻巧，且易移植
+build once, configure once and run anywhere
+
+特点:
+速度飞快以及优雅的隔离框架
+物美价廉
+CPU/内存的低消耗
+快速开/关机
+跨云计算基础构架
+
+Docker有三个组件和三个基本元素
+三个组件:
+Docker Client 是用户界面，它支持用户与Docker Daemon之间通信。
+Docker Daemon运行于主机上，处理服务请求。
+Docker Index是中央registry，支持拥有公有与私有访问权限的Docker容器镜像的备份。
+三个基本要素分别是：
+Docker Containers负责应用程序的运行，包括操作系统、用户添加的文件以及元数据。
+Docker Images是一个只读模板，用来运行Docker容器。
+DockerFile是文件指令集，用来说明如何自动创建Docker镜像。
+
+ubuntu14.04安装docker:
+1.检查APT系统的HTTPS兼容性。如果usr/lib/apt/methods/https文件不存在，请安装apt-transport-https程序包
+$ sudo apt-get install apt-transport-https 
+2.在本地添加Docker Repositor密钥
+$ sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 36A1D7869245C8950F966E92D8576A8BA88D21E9 
+3.添加Docker Repository到APT源列表
+$ sudo bash -c "echo deb https://get.docker.io/ubuntu docker main > /etc/apt/sources.list.d/docker.list" 
+4.安装
+$ sudo apt-get update 
+$ sudo apt-get install lxc-docker
+
+检测是否安装成功:
+docker -v
+
+此时你的操作系统当中并没有容器和镜像,现在,pull一个docker自带的容器busybox,一个最简单的linux内核.
+xinghang@thunder:~$ sudo docker pull busybox
+Using default tag: latest
+latest: Pulling from library/busybox
+363a10951ae2: Pull complete 
+5356a35496ab: Pull complete 
+Digest: sha256:98a0bd48d22ff96ca23bfda2fe1cf72034ea803bd79e64a5a5f274aca0f9c51c
+Status: Downloaded newer image for busybox:latest
+
+检查一下,结果显示现在已经有两个image(镜像)了,这里不加sudo会提示链接不上docker deamon
+xinghang@thunder:~$ sudo docker info
+Containers: 0
+Images: 2
+Server Version: 1.9.1
+Storage Driver: aufs
+ Root Dir: /var/lib/docker/aufs
+ Backing Filesystem: extfs
+ Dirs: 2
+ Dirperm1 Supported: false
+Execution Driver: native-0.2
+Logging Driver: json-file
+Kernel Version: 3.13.0-24-generic
+Operating System: Ubuntu 14.04 LTS
+CPUs: 2
+Total Memory: 3.737 GiB
+Name: thunder
+ID: TFZ7:6FM7:I7WT:Z3Z6:5QNF:3RMN:WB6Z:JUOP:WHXD:5AKE:NR5W:ZPTK
+WARNING: No swap limit support
+
+检查所有镜像:
+xinghang@thunder:~$ sudo docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+busybox             latest              5356a35496ab        7 weeks ago         1.093 MB
+
+hello world!
+xinghang@thunder:~$ sudo docker run busybox /bin/echo Hello Docker
+Hello Docker
+
+权限不足:
+xinghang@thunder:~$ sample_job=$(docker run -d busybox /bin/sh -c "while true; do echo Docker; sleep 1; done")
+Cannot connect to the Docker daemon. Is the docker daemon running on this host?
+xinghang@thunder:~$ sudo sample_job=$(docker run -d busybox /bin/sh -c "while true; do echo Docker; sleep 1; done")
+Cannot connect to the Docker daemon. Is the docker daemon running on this host?
+
+切换至root
+sudo su -
+root@thunder:~# service docker start
+start: Job is already running: docker
+root@thunder:~# sample_job=$(docker run -d busybox /bin/sh -c "while true; do echo Docker; sleep 1; done")
+root@thunder:~# docker logs $sample_job
+Docker
+Docker
+Docker
+Docker
+Docker
+Docker
+Docker
+...
+停止该容器:
+root@thunder:~# docker stop $sample_job
+17a03399776bc918ee842526b492ad62e2c79d14d7ff49793d136ca9b79f1354
+
+commit镜像:
+root@thunder:~# docker commit $sample_job job1
+8aa5586dae85c8c22e741ecc7352d262ffc9af11fb7866b1b7147c8fb3224f87
+root@thunder:~# docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+job1                latest              8aa5586dae85        14 seconds ago      1.093 MB
+busybox             latest              5356a35496ab        7 weeks ago         1.093 MB
+
+push镜像:
+root@thunder:~# docker push root/job1
+The push refers to a repository [docker.io/root/job1] (len: 0)
+Repository does not exist: root/job1
+root@thunder:~# docker push xinghang/job1
+The push refers to a repository [docker.io/xinghang/job1] (len: 0)
+Repository does not exist: xinghang/job1
+然后,这样竟然可以了...
+root@thunder:~# docker push ./job1
+
+--------------------------------------------------------
+
+将网络上他人镜像上传至自己的docker hub
+登录:
+root@thunder:~# docker login
+Username: xinghanggogogo
+Password: 
+Email: 826820032@qq.com
+WARNING: login credentials saved in /root/.docker/config.json
+Login Succeeded
+
+查询可用镜像
+root@thunder:~# docker search tutorial
+NAME                                    DESCRIPTION                                     STARS     OFFICIAL   AUTOMATED
+georgeyord/reactjs-tutorial             This is the backend of the React comment b...   3                    [OK]
+egamas/docker-tutorial                  Funny manpages                                  2                    [OK]
+mjansche/tts-tutorial                   Software for a Text-to-Speech tutorial          1                    [OK]
+mhausenblas/kairosdb-tutorial           GitHub fetcher for KairosDB tutorial            1                    [OK]
+
+pull
+docker pull learn/tutorial
+
+查询imageid:
+xinghang@thunder:~$ sudo docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+job1                	latest              8aa5586dae85        3 hours ago        1.093 MB
+<none>              <none>           597c8de78f80         7 days ago          693.5 MB
+busybox             latest              5356a35496ab        7 weeks ago       1.093 MB
+learn/tutorial    latest              2d13ac7ee948         3 years ago 
+
+打上标签:
+xinghang@thunder:~$ sudo docker tag 2d13ac7ee948 xinghanggogogo/tutorial
+
+push
+xinghang@thunder:~$ sudo docker push xinghanggogogo/tutorial
+
+--------------------------------------------------------
+
+将自己的镜像上传至自己的docker hub
+
+先登录授权:
+xinghang@thunder:~$ sudo docker login
+Username: xinghanggogogo
+Password: 
+Email: 826820032@qq.com
+WARNING: login credentials saved in /home/xinghang/.docker/config.json
+Login Succeeded
+
+查看所有image(镜像):
+xinghang@thunder:~$ sudo docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+job1                	latest              8aa5586dae85        3 hours ago        1.093 MB
+<none>              <none>           597c8de78f80         7 days ago          693.5 MB
+busybox             latest              5356a35496ab        7 weeks ago       1.093 MB
+learn/tutorial    latest              2d13ac7ee948         3 years ago 
+
+将镜像打上标签(tag):
+xinghang@thunder:~$ docker tag 8aa5586dae85 xinghanggogogo/job1
+
+push:
+xinghang@thunder:~$ sudo docker push xinghang/job1
+
+--------------------------------------------------------
+
+Docker提供了Dockerfile来解决自动化的问题,下面讨论什么是Dockerfile，它能够做到的事情以及Dockerfile的一些基本语法
+
+--------------------------------------------------------
+制作一个ubuntu_scrapy的镜像:
+
+xinghang@thunder:~$ sudo docker info
+Containers: 3
+Images: 29
+Server Version: 1.9.1
+Storage Driver: aufs
+ Root Dir: /var/lib/docker/aufs
+ Backing Filesystem: extfs
+ Dirs: 35
+ Dirperm1 Supported: false
+Execution Driver: native-0.2
+Logging Driver: json-file
+Kernel Version: 3.13.0-24-generic
+Operating System: Ubuntu 14.04 LTS
+CPUs: 2
+Total Memory: 3.737 GiB
+Name: thunder
+ID: TFZ7:6FM7:I7WT:Z3Z6:5QNF:3RMN:WB6Z:JUOP:WHXD:5AKE:NR5W:ZPTK
+Username: xinghanggogogo
+Registry: https://index.docker.io/v1/
+WARNING: No swap limit support
+
+xinghang@thunder:~$ sudo docker run -i -t ubuntu /bin/bash
+(sudo docker run --name bob_the_container -i -t ubuntu /bin/bash 这条命令指定了容器姓名)
+Unable to find image 'ubuntu:latest' locally
+latest: Pulling from library/ubuntu
+594949f005fe: Pull complete 
+ed6ff6865688: Pull complete 
+2f5519d4ff74: Pull complete 
+67de889be945: Pull complete 
+0d2ba69dbe3e: Pull complete 
+bea8f41ae3e8: Pull complete 
+Digest: sha256:d77a034159b39dbdbc93f98117413598ff93afb1d06ff1d968d3b8e1d675233b
+Status: Downloaded newer image for ubuntu:latest
+
+root@a4607a2cb63d:/# hostname
+a4607a2cb63d
+
+root@a4607a2cb63d:/# cat /etc/hosts
+172.17.0.2	a4607a2cb63d
+127.0.0.1	localhost
+::1	localhost ip6-localhost ip6-loopback
+fe00::0	ip6-localnet
+ff00::0	ip6-mcastprefix
+ff02::1	ip6-allnodes
+ff02::2	ip6-allrouters
+
+root@a4607a2cb63d:/# ps aux
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root         1  0.0  0.0  18232  2012 ?        Ss   09:42   0:00 /bin/bash
+root        12  0.0  0.0  34416  1464 ?        R+   09:45   0:00 ps aux
+
+root@a4607a2cb63d:/# apt-get update && apt-get install vim
+
+root@a4607a2cb63d:/# exit
+exit
+
+附着到刚才的容器上:
+显示所有的容器:
+xinghang@thunder:~$ sudo docker ps -a
+a4607a2cb63d        ubuntu              "/bin/bash"              24 minutes ago      Exited (127) 10 minutes ago                       stoic_lichterman
+31a02315c26f        learn/tutorial      "echo 'hello word'"      2 hours ago         Exited (0) 2 hours ago                            gigantic_sinoussi
+17a03399776b        busybox             "/bin/sh -c 'while tr"   3 hours ago         Exited (137) 3 hours ago                          pensive_williams
+869423ed8e22        busybox             "/bin/echo Hello Dock"   3 hours ago         Exited (0) 3 hours ago                            distracted_leavitt
+
+xinghang@thunder:~$ sudo docker attach stoic_lichterman
+You cannot attach to a stopped container, start it first
+xinghang@thunder:~$ sudo docker start stoic_lichterman
+stoic_lichterman
+xinghang@thunder:~$ sudo docker attach stoic_lichterman
+root@a4607a2cb63d:/# 
+
+-------------------------------------------
+eg1:
+1.从网络上pull一个centos6镜像,利用这个镜像新建一个容器,并将容器命名为centos_test,然后打开命令行
+2.在该镜像当中安装tornado,将该镜像打上xinghangogogo/centos_test的tag,并上传至自己的docker_hub
+
+xinghang@thunder:~$ sudo docker pull centos:centos6
+centos6: Pulling from library/centos
+8aae2253a786: Pull complete 
+0e47cf6be18a: Pull complete 
+f1ee83ab02c6: Pull complete 
+9c95139afb21: Pull complete 
+Digest: sha256:25c9860b98433bed7d8fc38dce059d7ccec7649371004705651a7d7c371f332b
+Status: Downloaded newer image for centos:centos6
+
+xinghang@thunder:~$ sudo docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+centos              centos6             9c95139afb21        3 weeks ago         194.6 MB
+
+#这里用centos镜像去创建一个名为container的容器,docker并没有用我之前pull的镜像来创建,而是直接去下载最新版的centos镜像了...赶紧ctrl+z...
+xinghang@thunder:~$ sudo docker run --name container1 -it centos /bin/bash
+Unable to find image 'centos:latest' locally
+latest: Pulling from library/centos
+0b6751b19aed: Downloading [=>                                                 ] 2.156 MB/70.48 MB
+8a32e5155717: Download complete 
+0959a1e48323: Download complete 
+^Z
+[1]+  已停止               sudo docker run --name container1 -it centos /bin/bash
+
+#用镜像id成功成功创建:
+xinghang@thunder:~$ sudo docker run --name container1 -it 9c95139afb21  /bin/bash
+
+#另起终端,发现我刚才定义的容器container已经在运行了,然后附着到该容器上
+xinghang@thunder:~$ sudo docker ps 
+[sudo] password for xinghang: 
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+e08ef6829ea1        9c95139afb21        "/bin/bash"         2 minutes ago       Up 2 minutes                            container1
+xinghang@thunder:~$ sudo docker attach container1
+[root@e08ef6829ea1 /]# 
+
+#这时可以返回至之前的终端,也可以就在这个终端里操作:
+[root@e08ef6829ea1 /]# yum install wget
+[root@e08ef6829ea1 pip-1.5.5]# python setup.py install
+[root@e08ef6829ea1 /]# wget --no-check-certificate https://github.com/pypa/pip/archive/1.5.5.tar.gz
+[root@e08ef6829ea1 /]# cd pip-1.5.5/
+[root@e08ef6829ea1 pip-1.5.5]# python setup.py install
+[root@e08ef6829ea1 pip-1.5.5]# pip install tornado
+#测试:
+[root@e08ef6829ea1 pip-1.5.5]# python 
+Python 2.6.6 (r266:84292, Aug 18 2016, 15:13:37) 
+[GCC 4.4.7 20120313 (Red Hat 4.4.7-17)] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import tornado
+>>> 
+
+#利用该容器commit出一个新的镜像,然后用该镜像run一个新的container,这个新的container包含了之前container的所有
+xinghang@thunder:~$ sudo docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                     PORTS               NAMES
+cd90248437b2        9c95139afb21        "/bin/bash"         6 minutes ago       Up 6 minutes                                   container2
+e08ef6829ea1        9c95139afb21        "/bin/bash"         About an hour ago   Exited (1) 4 minutes ago                       container1
+
+xinghang@thunder:~$ sudo docker commit e08ef6829ea1 centos/v1_tornado
+7c8d2904b39f0b288c1c26b7e4e65910a7dff531663c696895e8adb03e961042
+
+xinghang@thunder:~$ sudo docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+centos/v1_tornado   latest              7c8d2904b39f        15 seconds ago      295.2 MB
+centos              centos6             9c95139afb21        3 weeks ago         194.6 MB
+
+xinghang@thunder:~$ sudo docker run --name container3 -it 7c8d2904b39f /bin/bash
+[root@9e52f8600540 /]# 
+检测,确实,之前容器内安装的tornado这里可以使用了
+[root@9e52f8600540 /]# python 
+Python 2.6.6 (r266:84292, Aug 18 2016, 15:13:37) 
+[GCC 4.4.7 20120313 (Red Hat 4.4.7-17)] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import tornado
+>>> 
+
+将刚才commit出的镜像打上xinghanggogogo/centos_tornado的tag,上传至我的docker hub
+xxinghang@thunder:~$ sudo docker tag 7c8d2904b39f xinghanggogogo/centos_tornado
+[sudo] password for xinghang: 
+xinghang@thunder:~$ sudo docker push xinghanggogogo/centos_tornado
+The push refers to a repository [docker.io/xinghanggogogo/centos_tornado] (len: 1)
+成功
+
+另:
+查看所有镜像:docker images
+查看正在运行的container:docker ps 
+查看所有container:docker ps -a
+删除镜像:docker rmi <image_id>
+删除container:docker rm <container_id>
+运行一个容器:dokcer start <container_name>,然后附着在该容易上 dockers attach <container_name>
+pull一个镜像:docker pull centos:centos6
+查看一个镜像的详细信息:docker inspect <image_id>
+使用镜像run一个container并命名,且打开命令行:docker run --<name> -it <image_id> /bin/bash
+用一个container commit出一个新的镜像并且标记上内容:docker commit -m='A new image' --author='Aomine' 614122c0aabb aoct/apache2
+用一个container commit出一个新的镜像不标记内容:docker commit <container_id> <new_image_name>
+将image打上标签:docker tag  <image_id>  <tag_name>  (注意:这里的tag name必须是 <user/resp_name>的形式, 你必须有dockhub的账号,并且已经在本地终端上登记过(docker login))
+push到自己的dokcer hub:docker push <tag_name>
+
+-------------------------------------------------------
+eg2,在上述镜像中安装mysql5.6(https://segmentfault.com/a/1190000003049498):
+----这种安装方法无法启动>..<
+wget dev.mysql.com/get/mysql-community-release-el6-5.noarch.rpm
+yum localinstall mysql-community-release-el6-5.noarch.rpm
+yum repolist all | grep mysql
+yum repolist enabled | grep mysql
+用rpm安装(未尝试)http://www.linuxidc.com/Linux/2015-04/116003.htm,关键是三个包:
+
+
+
+
+启动mysql
+[root@e08ef6829ea1 /]# service mysqld start
+重启mysql
+[root@e08ef6829ea1 /]# service mysqld restart
+设置root密码:
+[root@e08ef6829ea1 /]# mysqladmin -u root password 'xinghang'
+登录:
+[root@e08ef6829ea1 /]# mysql -u root -p
+建立一个数据库:
+
+
+------------------------------------------
+关于docker-machine,以及docker和pycharm的连接
+1.安装docker
+见上
+
+2.安装docker-machine
+$ curl -L https://github.com/docker/machine/releases/download/v0.8.2/docker-machine-`uname -s`-`uname -m` >/usr/local/bin/docker-machine && \
+chmod +x /usr/local/bin/docker-machine
+
+3.检查版本
+$ docker-machine version
+docker-machine version 0.8.2, build e18a919
+
+4.建立一个docker-machine,名字叫666
+$ docker-machine create --driver virtualbox 666
+这里出现的两个问题  
+第一,可能提示没有安装virtualbox,安装即可
+第二,提示你的电脑没有许可启用虚拟机,此时进入bios开启即可
+
+5.ls
+ $ docker-machine ls
+NAME      ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER   ERRORS
+666   *        virtualbox   Running   tcp://192.168.99.187:2376           v1.9.1
+
+6.Get the environment commands for your new VM.(As noted in the output of the docker-machine create command, you need to tell Docker to talk to the new machine. You can do this with the docker-machine env command.)
+xinghang@thunder:~$ docker-machine env 666
+export DOCKER_TLS_VERIFY="1"
+export DOCKER_HOST="tcp://192.168.99.101:2376"
+export DOCKER_CERT_PATH="/home/xinghang/.docker/machine/machines/666"
+export DOCKER_MACHINE_NAME="666"
+# Run this command to configure your shell: 
+# eval $(docker-machine env 666)
+
+7.更改用户权限..不要sudo
+xinghang@thunder:~$ sudo chown "xinghang":"xinghang" /home/"$USER"/.docker -R
+xinghang@thunder:~$ sudo chmod g+rw "/home/xinghang/.docker" -R
+
+8.Connect your shell to the new machine.
+xinghang@thunder:~$ eval $(docker-machine env 666)
+
+9.在此machine下,pull一个镜像当做你的程序的interpreter,这里我们pull minimum/docker-django-mysite,来当我们django工程的interpreter
+docker pull minimum/docker-django-mysite
+
+10.配置pycharm
+http://www.cnblogs.com/xiaouisme/p/5327794.html
+
+另: 启动一个docker-machine
+      $ docker-machine stop 666
+      Stopping "default"....
+      Machine "default" was stopped.
+
+      $ docker-machine start 666
+      Starting "default"...
+      (default) Waiting for an IP...
+      Machine "default" was started.
+      Started machines may have new IP addresses.  You may need to re-run the `docker-machine env` command.
+
+      $ eval $(docker-machine env)
+
+      $ docker-machine ip
+--------------------------------------------------------
+sslocal -s 107.191.45.229  -p 27364  -k "xinghang" -l 1080 -t 600 -m rc4-md5
+sslocal -s jp06-17.ssv7.net  -p 36651  -k "pxQ9Lpm59DHy" -l 8080 -t 600 -m aes-256-cfb

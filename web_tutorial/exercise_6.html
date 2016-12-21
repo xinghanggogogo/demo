@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Exercise_6</title>
+	<style>
+		* {
+			-webkit-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			box-sizing: border-box;
+		}
+		body, dl, dd, ul, ol, h1, h2, h3, h4, h5, h6, form, input, textarea, p, th, td {
+			margin: 0;
+			padding: 0;
+		}
+		.head {
+			position: relative;
+			height:120px;
+		}
+		.head .bar {
+			width: 1500px;
+			height: 200px;
+			margin: 0 auto;
+			padding-top: 20px;
+		}
+		.head .bar .logo {
+			float: left;
+			width: 500px;
+			height: 45px;
+			background: url(http://zhibo.sogou.com/web/images/spr.png)  0 -230px no-repeat;
+		}
+		.head .bar .logo a {
+			float: left;
+			width: 150px;
+			height: 200px;
+		}
+		.head .bar .search {
+			float: left;
+			width:500px;
+			height: 45px;
+			padding-top: 5px;
+		}
+		.head .bar .search .text {
+			float: left;
+			width: 350px;
+			height: 34px;
+			border: 1px solid #cdcdcd;
+			border-right: none;
+			border-radius: 2px 0 0 2px;
+			line-height: 34px;
+			font-size: 15px;
+			color: #333;
+			text-indent: 10px;
+		}
+		.head .bar .search .button {
+			margin-left: 0;
+			width: 74px;
+			height: 36px;
+			border: none;
+			background: url(http://zhibo.sogou.com/web2/images/sprite.png) -313px -258px no-repeat;
+		}
+		.head .bar .extra {
+			float: right;
+			font-size: 15px;
+			padding-top: 20px;
+			color: #333;
+		}
+		.head .bar .extra span.download {
+			padding-right: 20px;
+		}
+		.head .bar .extra em.download {
+			display: inline-block;
+			width: 16px;
+			height:16px;
+			margin-right: 5px;
+			background: url(http://zhibo.sogou.com/web/images/down.png) 0 0 no-repeat;
+		}
+		.head .bar .extra em.history {
+			display: inline-block;
+			width: 16px;
+			height:16px;
+			margin-right: 5px;
+			background: url(http://zhibo.sogou.com/web/images/down.png) 0 0 no-repeat;
+		}
+		.head .navi {
+			position: absolute;
+			left: 0;
+			bottom: 0;
+			width: 100%;
+			height: 40px;
+			line-height: 40px;
+			text-align: center;
+			padding-left: 150px;
+			font-size: 20px;
+			color: #fff;
+    			background-color: #242625;
+		}
+		.head .navi a {
+			float: left;
+			width: 100px;
+			border-radius: 5px 5px 0 0;
+			text-decoration: none;
+		}
+		.on {
+			background-color: red;
+		}
+		.content {
+			background: url(http://zhibo.sogou.com/web/images/zb-bg.jpg) 0 0 no-repeat;
+		}
+		.test {
+			margin: 0 auto;
+			width: 1200px;
+			height: 400px;
+			padding-top:30px;
+		}
+		.left {
+			float: left;
+			width:600+px;
+			height:400px;
+			background-color: #FFF;
+			box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+
+		}
+		.left .head-img{
+			margin: 0 auto;
+			width: 120px;
+			height: 120px;
+			margin-top: 20px;
+			border-radius: 60px;
+			overflow: hidden;
+		}
+		img {
+			width: 100%;
+			height: 100%;
+		}
+		.left .name {
+			width: 600px;
+			height: 22px;
+			margin-top: 0px;
+			line-height: 22px;
+			font-size: 22px;
+			color: #333;
+			text-align:center;
+		}
+		.left .name em {
+			display: inline-block;
+			width:20px;
+			height:20px;
+			background: url(http://zhibo.sogou.com/web/images/tip.png) -20px -90px no-repeat;
+			margin-left: 10px;
+			vertical-align: middle;
+		}
+		.left .desc {
+			width: 300px;
+			margin: 0 auto;
+			margin-top: 0px;
+			font-size:18px;
+			color: #666;
+			text-align: center;
+		}
+		.left .num {
+			width: 300px;
+			height: 24px;
+			margin: 0 auto;
+			font-size: 15px;
+			line-height: 24px;
+			color: #666;
+		}
+		.left .num em {
+			margin-right: 10px;
+			border: 1px solid #eee;
+		}
+		.left .num .hot {
+			float: left;
+		}
+		.left .num .fans {
+			float: right;
+		}
+		.left .action {
+			display: block;
+			width: 150px;
+			height: 32px;
+			margin: 20px auto 0;
+			padding: 0 10px;
+			text-align: center;
+			font-size: 30px;
+			line-height: 32px;
+			color: #FFF;
+			border-radius: 10px;
+			background: url(http://zhibo.sogou.com/web/images/dy.png) 0 0 no-repeat;
+		}
+		.right {
+			float: left;
+			width:600px;
+			height:400px;
+			background: url(http://zhibo.sogou.com/web/images/zb-wrap-bg.png) 0 0 no-repeat;
+			box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+		}
+		.right .p1 {
+			width: 600px;
+			margin-top: 50px;
+			text-align: center;
+			font-size: 30px;
+			color: #666;
+		}
+		.right .download {
+			display: block;
+			width: 280px;
+			height: 56px;
+			line-height: 56px;	
+			margin: 20px auto;
+			font-size: 22px;
+			text-indent: 105px;
+			color: #fff;
+			border-radius: 10px;
+			background: #ff550d url(http://zhibo.sogou.com/web/images/down-tip.png) 80px 18px no-repeat;
+			text-decoration: none
+		}
+		.shows {
+			margin: 0 auto;
+			padding: 50px 20px 0;
+		}
+		.shows .recommend {
+			float: left;
+			height: 25px;
+			margin-bottom: 10px;
+			text-indent: 26px;
+			font-size: 20px;
+			background: #ff3c17 url(http://zhibo.sogou.com/web/images/spr.png) -260px -100px no-repeat;
+		}
+		.shows .show {
+			position: relative;
+			float: left;
+			width: 300px;
+			margin: 0 50px 20px 0;
+			border: 1px solid #eee;
+			box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+
+		}
+		.shows .show .show-img{
+			width: 100%;
+			height: 200px;
+		}
+		.shows .show .head-img{
+			position: relative;
+			float: left;
+			margin: 0px;
+			width: 60px;
+			height: 60px;
+			border-radius: 50%;
+			overflow: hidden;
+		}
+		.shows .show .head-img img {
+			width: 100%;
+			height: 100%;
+		}
+		.show .msg {
+			float: left;
+			margin-left: 5px;
+			margin-top: 10px;
+			font-size: 15px;
+			color: #333;
+		}
+		.show .msg p {
+			width: 200px;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			overflow: hidden;
+		}
+		.show .msg  em.num {
+			display: inline-block;
+			margin-left: 20px;
+			padding-left: 20px;
+			vertical-align: middle;
+			width: 10px;
+			height: 10px;
+			line-height: 10px;
+			background: url(http://zhibo.sogou.com/web/images/spr.png) -250px 0 no-repeat;
+		}
+		.shows .show .source {
+			position: absolute;
+			right: 0;
+			bottom: 0;
+			color: #333;
+			background: #ff550d url(http://zhibo.sogou.com/web/images/down-tip.png) 80px 18px no-repeat;
+			border-radius: 3px;
+		}
+		.clear {
+			clear: both;
+		}	
+	</style>
+</head>
+<body>
+	<div class="head">
+		<div class="bar">
+			<div class="logo">
+				<a href=""></a>
+			</div>
+			<div class="search">
+				<input type="text" value="搜索全网主播" class="text">
+				<input type="text" class="button">
+			</div>
+			<div class="extra">
+				<span class="download"><em class="download"></em>下载app</span>
+				<span class="history"><em class="history"></em>观看历史</span>
+			</div>
+		</div>
+		<div class="navi">
+			<a href="" class="on">首页</a>
+			<a href="">游戏</a>
+			<a href="">娱乐</a>
+		</div>
+	</div>
+	<div class="content">
+		<div class="test">
+			<div class="left">
+				<p class="head-img">
+					<img src="http://img01.sogoucdn.com/app/a/100520071/cfc12de8bbd56023e6f666701f960514.jpg" alt="">
+				</p>
+				<p class="name">pdd<em></em></p>
+				<p class="desc">熊猫tv英雄联盟主播，前IG队长，世界一流上单</p>
+				<div class="num">
+					<span class="hot"><em>人气</em>123</span>
+					<span class="fans"><em>关注数</em>1234</span>
+				</div>
+				<a class="action">点我关注</a>
+			</div>
+			<div class="right">
+				<p class="p1">主播当前不在线</p>
+				<a href="" class="download">立即下载</a>
+			</div>
+		</div>
+		<div class="shows">
+			<p class="recommend">推荐直播:</p>
+			<div class="clear"></div>
+			<a href="" class="show">
+				<img src="http://screenshot.dwstatic.com/yysnapshot/afb9572bfe371a8beeb61461606ffb90f2dae302" alt="" class="show-img">
+					<p class="head-img">
+						<img src="http://img03.sogoucdn.com/app/a/100520071/8859bf0949e8fc27c1bfc21fe8049574" alt="">
+					</p>
+					<div class="msg">
+						<p class="title">这是标题这是标题这是标题这是标题这是标题这是标题这是标题</p>
+						<p class="anchor">这是主播名 <em class="num">123</em></p>
+					</div>
+					<p class="source">斗鱼</p>
+			</a>
+			<a href="" class="show">
+				<img src="http://screenshot.dwstatic.com/yysnapshot/afb9572bfe371a8beeb61461606ffb90f2dae302" alt="" class="show-img">
+				<p class="head-img">
+					<img src="http://img03.sogoucdn.com/app/a/100520071/8859bf0949e8fc27c1bfc21fe8049574" alt="">
+				</p>
+				<div class="msg">
+					<p class="title">这是标题这是标题这是标题这是标题这是标题这是标题这是标题</p>
+					<p class="anchor">这是主播名 <em class="num">123</em></p>
+				</div>
+				<p class="source">斗鱼</p>
+			</a>
+						<a href="" class="show">
+				<img src="http://screenshot.dwstatic.com/yysnapshot/afb9572bfe371a8beeb61461606ffb90f2dae302" alt="" class="show-img">
+				<p class="head-img">
+					<img src="http://img03.sogoucdn.com/app/a/100520071/8859bf0949e8fc27c1bfc21fe8049574" alt="">
+				</p>
+				<div class="msg">
+					<p class="title">这是标题这是标题这是标题这是标题这是标题这是标题这是标题</p>
+					<p class="anchor">这是主播名 <em class="num">123</em></p>
+				</div>
+				<p class="source">斗鱼</p>
+			</a>			<a href="" class="show">
+				<img src="http://screenshot.dwstatic.com/yysnapshot/afb9572bfe371a8beeb61461606ffb90f2dae302" alt="" class="show-img">
+				<p class="head-img">
+					<img src="http://img03.sogoucdn.com/app/a/100520071/8859bf0949e8fc27c1bfc21fe8049574" alt="">
+				</p>
+				<div class="msg">
+					<p class="title">这是标题这是标题这是标题这是标题这是标题这是标题这是标题</p>
+					<p class="anchor">这是主播名 <em class="num">123</em></p>
+				</div>
+				<p class="source">斗鱼</p>
+			</a>			<a href="" class="show">
+				<img src="http://screenshot.dwstatic.com/yysnapshot/afb9572bfe371a8beeb61461606ffb90f2dae302" alt="" class="show-img">
+				<p class="head-img">
+					<img src="http://img03.sogoucdn.com/app/a/100520071/8859bf0949e8fc27c1bfc21fe8049574" alt="">
+				</p>
+				<div class="msg">
+					<p class="title">这是标题这是标题这是标题这是标题这是标题这是标题这是标题</p>
+					<p class="anchor">这是主播名 <em class="num">123</em></p>
+				</div>
+				<p class="source">斗鱼</p>
+			</a>			<a href="" class="show">
+				<img src="http://screenshot.dwstatic.com/yysnapshot/afb9572bfe371a8beeb61461606ffb90f2dae302" alt="" class="show-img">
+				<p class="head-img">
+					<img src="http://img03.sogoucdn.com/app/a/100520071/8859bf0949e8fc27c1bfc21fe8049574" alt="">
+				</p>
+				<div class="msg">
+					<p class="title">这是标题这是标题这是标题这是标题这是标题这是标题这是标题</p>
+					<p class="anchor">这是主播名 <em class="num">123</em></p>
+				</div>
+				<p class="source">斗鱼</p>
+			</a>			<a href="" class="show">
+				<img src="http://screenshot.dwstatic.com/yysnapshot/afb9572bfe371a8beeb61461606ffb90f2dae302" alt="" class="show-img">
+				<p class="head-img">
+					<img src="http://img03.sogoucdn.com/app/a/100520071/8859bf0949e8fc27c1bfc21fe8049574" alt="">
+				</p>
+				<div class="msg">
+					<p class="title">这是标题这是标题这是标题这是标题这是标题这是标题这是标题</p>
+					<p class="anchor">这是主播名 <em class="num">123</em></p>
+				</div>
+				<p class="source">斗鱼</p>
+			</a>			<a href="" class="show">
+				<img src="http://screenshot.dwstatic.com/yysnapshot/afb9572bfe371a8beeb61461606ffb90f2dae302" alt="" class="show-img">
+				<p class="head-img">
+					<img src="http://img03.sogoucdn.com/app/a/100520071/8859bf0949e8fc27c1bfc21fe8049574" alt="">
+				</p>
+				<div class="msg">
+					<p class="title">这是标题这是标题这是标题这是标题这是标题这是标题这是标题</p>
+					<p class="anchor">这是主播名 <em class="num">123</em></p>
+				</div>
+				<p class="source">斗鱼</p>
+			</a>			<a href="" class="show">
+				<img src="http://screenshot.dwstatic.com/yysnapshot/afb9572bfe371a8beeb61461606ffb90f2dae302" alt="" class="show-img">
+				<p class="head-img">
+					<img src="http://img03.sogoucdn.com/app/a/100520071/8859bf0949e8fc27c1bfc21fe8049574" alt="">
+				</p>
+				<div class="msg">
+					<p class="title">这是标题这是标题这是标题这是标题这是标题这是标题这是标题</p>
+					<p class="anchor">这是主播名 <em class="num">123</em></p>
+				</div>
+				<p class="source">斗鱼</p>
+			</a>
+		</div>
+	</div>
+</body>
+</html>

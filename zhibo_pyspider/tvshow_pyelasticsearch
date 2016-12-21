@@ -1,0 +1,129 @@
+curl -X PUT http://localhost:9200/tvshow -d'{
+"mappings": {
+    	 "tvshow": {
+          	"properties": {
+            	"id": {
+                  	"index": "analyzed",
+                  	"type": "integer"
+              },
+            	"room_id": {
+                	"index": "analyzed",
+                	"type": "string"
+              },
+            	"title": {
+                	"index": "analyzed",
+                	"type": "string"
+              },
+            	"link": {
+                  	"index": "analyzed",
+                  	"type": "string"
+              },
+              "videl_link": {
+                  	"index": "analyzed",
+                  	"type": "string"
+              },            
+              "m3u8_link": {
+                  	"index": "analyzed",
+                  	"type": "string"
+              },           
+              "anchor": {
+                  	"index": "analyzed",
+                  	"type": "string"
+              },            
+              "head_img": {
+                  	"index": "analyzed",
+                  	"type": "string"
+              },            
+              "source": {
+                  	"index": "analyzed",
+                  	"type": "string"
+              },            
+              "category": {
+                  	"index": "analyzed",
+                  	"type": "string"
+              },
+              "num": {
+                  	"index": "analyzed",
+                  	"type": "integer"
+              },
+              "fans": {
+                  	"index": "analyzed",
+                  	"type": "integer"
+              },
+              "show_img": {
+                  	"index": "analyzed",
+                  	"type": "string"
+              },
+              "create_time": {
+                  	"index": "analyzed",
+                  	"type": "string"
+              },
+              "update_time": {
+                  	"index": "analyzed",
+                  	"type": "string"
+              },
+              "suggest" : {
+	              "type" : "completion",
+	              "analyzer" : "simple",
+	              "search_analyzer" : "simple",
+	              "payloads" : true
+            }
+          }
+    }
+}
+}'
+
+curl -X PUT http://localhost:9200/issue -d'{
+"mappings": {
+    	 "issue": {
+          	"properties": {
+            	"id": {
+                  	"index": "analyzed",
+                  	"type": "integer"
+              },
+            	"title": {
+                	"index": "analyzed",
+                	"type": "string"
+              },
+              "description": {
+                	"index": "analyzed",
+                	"type": "string"
+              },
+            	"link": {
+                  	"index": "analyzed",
+                  	"type": "string"
+              },
+              "img": {
+                  	"index": "analyzed",
+                  	"type": "string"
+              },
+              "author": {
+                  	"index": "analyzed",
+                  	"type": "string"
+              },
+              "source": {
+                  	"index": "analyzed",
+                  	"type": "string"
+              },
+              "md5": {
+                  	"index": "analyzed",
+                  	"type": "string"
+              },
+              "create_time": {
+                  	"index": "analyzed",
+                  	"type": "string"
+              },
+              "update_time": {
+                  	"index": "analyzed",
+                  	"type": "string"
+              },
+              "suggest" : {
+	              "type" : "completion",
+	              "analyzer" : "simple",
+	              "search_analyzer" : "simple",
+	              "payloads" : true
+            }
+          }
+    }
+}
+}'

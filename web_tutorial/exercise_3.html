@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Exercise_3</title>
+	<style>
+		body {
+			font-family: arial, stheiti, 'microsoft yahei', sans-serif;
+			min-width: 1185px;
+		}
+		div {
+			display: block;
+		}
+		a {
+			text-decoration: none;
+		}
+		button, input, select, textarea {
+			font-size: 100%;
+			margin: 0;
+			vertical-align: baseline;
+		}
+		.head {
+			position: relative;
+			width: 1500px;
+			height: 137px;
+			z-index: 1;
+			margin: 0 auto;
+		}
+		.head .head-left {
+			float: left;
+			width: 890px;
+			height: 106px;
+			padding-right: 268px;
+			padding-top: 31px;
+			background: url(http://zhibo.sogou.com/web2/images/retouch.png) right bottom no-repeat;
+		}
+		.head .logo {
+			position: absolute;
+			left: 0;
+			width: 300px;
+			height: 40px;
+			background: url(http://zhibo.sogou.com/web2/images/word.png) right center no-repeat;
+		}
+		.head .logo a {
+			display: inline-block;
+			width: 145px;
+			height: 40px;
+			overflow: hidden;
+			background: url("http://zhibo.sogou.com/web2/images/sprite.png") -313px 0px no-repeat;
+		}
+		.head .search {
+			position: relative;
+			float: left;
+			display: inline;
+			margin-left: 345px;
+			height: 36px;
+		}
+		.head .search input {
+			outline: none;
+		}
+		.head .search .text {
+			float: left;
+			width: 379px;
+			height: 34px;
+			border: 1px solid #ffaca0;
+			border-right: none;
+			border-radius: 2px 0 0 2px;
+			text-indent: 10px;
+			line-height: 34px;
+		}
+		.head .search .btn {
+			display: inline-block;
+			cursor: pointer;
+			border: none;
+			width: 74px;
+			height: 36px;
+			background: url("http://zhibo.sogou.com/web2/images/sprite.png") -219px -73px no-repeat;
+		}
+
+		.nav {
+			position: absolute;
+			height: 37px;
+			left: 0;
+			bottom: 0;
+			text-align: center;
+			font-size: 16px;
+			line-height: 39px;
+		}
+		.nav .on {
+			background: -webkit-linear-gradient(left, #fa5339 0, #fa2b54 100%);
+			color: #fff;
+		}
+
+		.nav a {
+			float: left;
+			width: 104px;
+			height: 37px;
+			color: #333;
+			border-radius: 5px 5px 0 0;
+		}
+		.tools {
+			position: relative;
+			float: right;
+			font-size: 12px;
+			color: #333;
+			height: 30px;
+			line-height: 30px;
+			margin-top: 31px;
+			margin-right: 19px;
+		}
+		.tools .download em {
+			display: inline-block;
+			margin-right: 3px;
+			vertical-align: middle;
+			width: 13px;
+			height: 13px;
+			background: url(http://zhibo.sogou.com/web2/images/sprite.png) -399px -298px no-repeat;
+		}
+		.complex {
+    			background: url(http://zhibo.sogou.com/web2/images/bg.png) center top no-repeat;
+		}
+		.row {
+    			width: 1500px;
+			margin: 0 auto;
+		}
+		.recommand {
+			overflow: hidden;
+			padding: 0 20px;
+		}
+		.recommand-bar {
+			padding: 5px 0;
+			height: 60px;
+			overflow: hidden;
+			font-size: 14px;
+			color: #fff;
+		}
+		.recommand-bar .tt {
+			float: left;
+			width: 70px;
+			height: 60px;
+			line-height: 60px;
+		}
+		.recommand-bar .recommand-list {
+			float: left;
+			width: 100%px;
+			height: 37px;
+			overflow: hidden;
+			margin: 13px 0 14px;
+		}
+		.recommand-bar .recommand-list a {
+			float: left;
+			margin-left: 25px;
+			height: 39px;
+			color: #fff;
+		}
+		.recommand-bar .recommand-list a .img {
+			float: left;
+			width: 33px;
+			height: 33px;
+			overflow: hidden;
+			border-radius: 50%;
+			margin-right: 8px;
+			box-shadow: 0 0 2px 2px rgba(0,0,0,0.1);
+		}
+		.recommand-bar .recommand-list a .name {
+			filter: alpha(opacity=60);
+			-moz-opacity: 0.6;
+			opacity: 0.6;
+			line-height: 39px;
+			white-space: nowrap;
+		}
+		.recommand-bar .more {
+			float: right;
+			width: 105px;
+		}
+		.recommand-bar .more s {
+    			float: left;
+			width: 11px;
+    			height: 64px;
+    			background: url(http://zhibo.sogou.com/web2/images/sprite.png) -131px -79px no-repeat;
+		}
+		.recommand-bar .more a {
+			float: right;
+			vertical-align: middle;
+			color: #fff;
+			line-height: 20px;
+			margin-top: 24px;
+		}
+		.recommand-vedio .item2, .recommand-vedio .item, .recommand-vedio .item3 {
+			position: relative;
+			float: left;
+			box-shadow: 0 0 3px 3px rgba(0,0,0,0.1);
+			overflow: hidden;
+			border-radius: 6px;
+		}
+		.recommand-vedio .item2 {
+			width: 573px;
+			height: 327px;
+		}
+		.recommand-vedio .msg {
+			position: absolute;
+			font-size: 12px;
+			width: 100%;
+			bottom: 0;
+			left: 0;
+			height: 60px;
+		}
+		.recommand-vedio .msg .dt {
+			position: absolute;
+			top: 10px;
+			left: 0;
+			width: 100%;
+			color: #fff;
+			line-height: 20px;
+			height: 20px;
+			text-indent: 10px;
+			font-size: 14px;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+		.recommand-vedio .msg .name {
+			position: absolute;
+			color: #fff;
+			left: 10px;
+			bottom: 10px;
+		}
+		.recommand-vedio .msg .forum {
+			position: absolute;
+			color: #ff512f;
+			right: 10px;
+			bottom: 10px;
+		}
+		.recommand-vedio .item {
+			width: 275px;
+			height: 156px;
+			margin-left: 20px;
+			margin-top: 15px;
+		}
+		.recommand-vedio .item2 .img, .recommand-vedio .item .img, .recommand-vedio .item3 .img {
+			display: block;
+			width: 100%;
+			height: 100%;
+		}
+		.recommand-vedio .recommand-box-right {
+			float: left;
+			width: 600px;
+			height: 327px;
+			margin-top: -15px;
+		}
+		.modular:before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 20px;
+			height: 332px;
+			background: url(http://zhibo.sogou.com/web2/images/sprite.png) -24px 0px no-repeat;
+		}
+		.modular {
+			position: relative;
+			margin-top: 19px;
+			padding: 0 20px;
+		}
+		.modular-box {
+			background-color: #FFF;
+			overflow: hidden;
+			padding-top: 22px;
+		}
+		.mixture {
+			float: left;
+			width: 500px;
+			height: 360px;
+			overflow: hidden;
+			margin-top: -5px;
+		}
+		.mixture h2 {
+			font-size: 22px;
+			font-weight: normal;
+			margin-left: 20px;
+			line-height: 32px;
+			margin-top: 11px;
+		}
+		.mixture-box {
+			margin-left: 5px;
+		}
+		.mixture-box li {
+			float: left;
+			width: 127px;
+			margin-left: 20px;
+			margin-top: 18px;
+			text-align: center;
+		}
+		.mixture-box li .img {
+			display: block;
+			border-radius: 5px;
+			overflow: hidden;
+			width: 100%;
+			height: 63px;
+		}
+		.news {
+			float: left;
+			width: 400px;
+			margin-left: 10px;
+		}
+		.news .news-tt span {
+			display: inline-block;
+			font-size: 20px;
+			color: #fff;
+			line-height: 38px;
+			text-align: center;
+			width: 107px;
+    			height: 47px;
+    			background: url(http://zhibo.sogou.com/web2/images/sprite.png) -313px -120px no-repeat;
+		}
+		.news .news-more {
+			float: right;
+			font-size: 13px;
+			color: #666;
+			margin-top: 10px;
+		}
+		.news-box {
+			overflow: hidden;
+			margin-top: -19px;
+		}
+		.news-box li {
+    			margin-top: 19px;
+		}
+		.news-box p {
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			line-height: 20px;
+		}
+		.news-box li div {
+			font-size: 12px;
+			line-height: 20px;
+			color: #bbb;
+			margin-top: 6px;
+		}
+		.news-box li .time {
+			display: inline-block;
+			width: 96px;
+		}
+		.news-box li .time em {
+			display: inline-block;
+			vertical-align: middle;
+			margin-top: -2px;
+			margin-right: 5px;
+			width: 13px;
+    			height: 13px;
+   			background: url(http://zhibo.sogou.com/web2/images/sprite.png) -331px -298px no-repeat;
+		}
+		.news-box li .num em {
+			display: inline-block;
+			vertical-align: middle;
+			margin-top: -2px;
+			margin-right: 5px;
+			width: 15px;
+    			height: 10px;
+    			background: url(http://zhibo.sogou.com/web2/images/sprite.png) -407px -104px no-repeat;
+		}
+		.modular-down {
+			float: left;
+			margin-left: 10px;
+			width: 253px;
+			height: 358px;
+			background: url(http://zhibo.sogou.com/web2/images/plat.png) no-repeat;
+			margin-bottom: 45px;
+		}
+		.pc-down {
+			display: block;
+			margin: 250px auto 0;
+			width: 190px;
+			height: 44px;
+			line-height: 44px;
+			color: #fff;
+			text-align: center;
+			background: #ff512f;
+			border-radius: 22px;
+		}
+		.wap-down {
+			position: relative;
+			display: block;
+			margin: 17px auto 0;
+			width: 120px;
+			font-size: 14px;
+			color: #999;
+			line-height: 20px;
+			height: 20px;
+		}
+		.pc-down em {
+			display: inline-block;
+			vertical-align: middle;
+			margin-right: 6px;
+			width: 20px;
+			height: 14px;
+			background: url(http://zhibo.sogou.com/web2/images/sprite.png) -424px -151px no-repeat;
+		}
+		ul, ol {
+			list-style: none;
+		}
+		img {
+			width: 100%;
+			height: 100%;
+		}
+		body, dl, dd, ul, ol, h1, h2, h3, h4, h5, h6, form, input, textarea, p, th, td {
+			margin: 0;
+			padding: 0;
+		}
+	</style>
+</head>
+<body>
+	<div class="head">
+		<div class="head-left">
+			<div class="logo">
+				<a href="http://zhibo.sogou.com/index.whtml"></a>
+			</div>
+			<div class="search">
+				<input id="searchInput" placeholder="搜索全网主播" type="text" value="" class="text">
+				<input id="searchBotton" type="" value="" class="btn">
+			</div>
+			<div class="nav">
+				<a  class="on" href="/index.whtml">首页</a>
+				<a href="/game.whtml">游戏</a>
+				<a href="/movie.whtml">影视</a>
+				<a href="/show.whtml">星秀</a>
+				<a href="/mm.whtml">美女</a>		
+				<a href="/outdoor.whtml">户外</a>
+				<a href="/sports.whtml">体育</a>
+				<a href="/other.whtml">大杂烩</a>
+			</div>
+		</div>
+		<div class="tools">
+			<div class="download">
+				<p class="title"><em></em><span>客户端下载</span></p>
+			</div>
+		</div>
+	</div>
+	<div class="complex">
+		<div class="row">
+			<div class="recommand">
+				<div class="recommand-bar">
+					<p class="tt">为你推荐：</p>
+					<div class="recommand-list">
+						<a target="_blank" href="http://www.huya.com/board?ptag=gouzai">
+							<span class="img">
+								<img src="http://img03.sogoucdn.com/app/a/100520071/8859bf0949e8fc27c1bfc21fe8049574" width="100%" height="100%" onerror="javascript:this.src='/web/assets/images/touxiang.png'" il="1">
+							</span>
+							<span class="name">炉石老板娘</span>
+						</a>
+						<a target="_blank" href="http://www.panda.tv/351560?ptag=gouzai">
+							<span class="img">
+								<img src="http://img02.sogoucdn.com/app/a/100520071/a4bd583883d271f4caac5ac6fb842ec9" width="100%" height="100%" onerror="javascript:this.src='/web/assets/images/touxiang.png'" il="1">
+							</span>
+							<span class="name">黄小明</span>
+						</a>
+					</div>
+					<div class="more">
+						<s></s>
+						<a href="/search.whtml?query=+&amp;tag=1">查看更多<i></i></a>
+					</div>
+				</div>
+				<div class="recommand-vedio">
+					<div class="item2">
+							<a target="_blank" href="http://www.huya.com/board?ptag=gouzai" class="img">
+								<img src="http://screenshot.dwstatic.com/yysnapshot/afb9572bfe371a8beeb61461606ffb90f2dae302" onerror="javascript:this.src='/web/images/default-s.png'" height="327" width="581" il="1" style="margin-left: -4px;">
+							</a>
+							<a target="_blank" href="http://www.huya.com/board?ptag=gouzai" class="msg">
+									<div class="grad-bg"></div>
+									<p class="dt">睡不着-.-</p>
+									<span class="name">炉石老板娘</span>
+									<span class="forum">虎牙</span> 
+							</a>
+					</div>
+					<div class="recommand-box-right">
+						<div class="item" channel_enum="1">
+							<a target="_blank" href="http://www.zhanqi.tv/aichitudou?ptag=gouzai" class="img">
+								<img src="https://img1.zhanqi.tv/live/20161216/23632_1gFr7_2016-12-16-08-58-26_big.jpg" onerror="javascript:this.src='/web/images/default-s.png'" height="156" width="276" il="1" style="margin-left: 0px;">	
+							</a>
+							<a target="_blank" href="http://www.zhanqi.tv/aichitudou?ptag=gouzai" class="msg">
+									<div class="grad-bg"></div>
+									<p class="dt">风车小鱼人王者800点,杀不到10个送2000点券!</p>
+									<span class="name">白色风车</span>
+									<span class="forum">战旗</span> 
+							</a>
+						</div>
+
+	   				</div>
+				</div>
+			</div>
+			<div class="modular">
+				<div class="modular-box">	
+					 <div class="mixture">
+						<h2>聚合分类</h2>
+						<ul class="mixture-box">
+							<li>
+								<a target="_blank" href="http://zhibo.sogou.com/gameZone_英雄联盟.whtml" class="img">
+									<img src="http://zhibo.sogou.com/web2/images/01.png" il="1" height="63" width="127">
+								</a>
+								<a target="_blank" href="http://zhibo.sogou.com/gameZone_英雄联盟.whtml" class="tt">英雄联盟</a>
+							</li>	
+							<li>
+								<a target="_blank" href="http://zhibo.sogou.com/show.whtml" class="img">
+									<img src="http://zhibo.sogou.com/web2/images/02.png" il="1" height="63" width="127">
+								</a>
+								<a target="_blank" href="http://zhibo.sogou.com/show.whtml" class="tt">娱乐星秀</a>
+							</li>
+							<li>
+								<a target="_blank" href="http://zhibo.sogou.com/show.whtml" class="img">
+									<img src="http://zhibo.sogou.com/web2/images/02.png" il="1" height="63" width="127">
+								</a>
+								<a target="_blank" href="http://zhibo.sogou.com/show.whtml" class="tt">娱乐星秀</a>
+							</li>
+							<li>
+								<a target="_blank" href="http://zhibo.sogou.com/show.whtml" class="img">
+									<img src="http://zhibo.sogou.com/web2/images/02.png" il="1" height="63" width="127">
+								</a>
+								<a target="_blank" href="http://zhibo.sogou.com/show.whtml" class="tt">娱乐星秀</a>
+							</li>
+						</ul>
+					</div>
+ 					<div class="news">
+						<p class="news-tt">
+							<span>主播头条</span>
+							<a href="/toutiao.whtml" class="news-more">查看更多头条<em></em></a>
+						</p>
+  						<ul class="news-box">
+							<li>
+							  	<p><a uigs="zhibo_web_index_toutiao_0" target="_blank" href="/toutiao_6919.whtml">看直播！录视频！现金红包、爱奇艺黄金会员任性送！</a></p>
+							  	<div>
+									<span class="time"><em></em>一周以前</span>
+									<span class="num"><em></em>146364</span>
+							  	</div>
+							</li>
+							
+							<li>
+							  	<p><a uigs="zhibo_web_index_toutiao_1" target="_blank" href="/toutiao_7019.whtml">为了拿回KT MATA账号，马园园的做法真是让人叹服！</a></p>
+							  	<div>
+									<span class="time"><em></em>1小时以内</span>
+									<span class="num"><em></em>0</span>
+							  	</div>
+							</li>
+						  </ul>
+					</div>
+ 					<div class="modular-down">
+  						<a uigs="zhibo_web_download_client_conent" target="_blank" href="http://data.iwan.sogou.com/gouzaizhibopc/PaparazzoLive200001.exe" class="pc-down"><em></em>下载PC客户端</a>
+  						<a href="#" class="wap-down web_action">
+  							<s></s>下载手机客户端
+							<div class="app web_action_tag" style="display: none;">
+	  							<em></em>
+	  							<p>扫描下载APP客户端</p>
+		  						<img src="/web/assets/images/index_top_code.png" onerror="javascript:this.src='/web2/images/code2.png'" width="109" height="109" il="1" style="margin-top: -1px;">
+		
+							</div>
+  						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Exercise_4</title>
+	<style>
+		a {
+			text-decoration: none;
+		}
+		body, dl, dd, ul, ol, h1, h2, h3, h4, h5, h6, form, input, textarea, p, th, td {
+			margin: 0;
+			padding: 0;
+		}
+		.modular {
+			position: relative;
+			padding: 0 20px;
+		}
+		.modular-box {
+			padding-top: 20px;
+			overflow: hidden;
+			background-color: #FFF
+		}
+		.mixture {
+			float: left;
+			width: 400px;
+			height: 360px;
+			overflow: hidden;
+		}
+		.mixture h2 {
+			margin-left: 10px;
+			font-size: 22px;
+			font-weight: normal;
+			line-height: 32px;
+
+		}
+		.mixture ul {
+			list-style: none;
+			overflow: hidden;
+		}
+		.mixture li {
+			position: relative;
+			float: left;
+			margin-top:15px;
+			margin-left: 15px;
+			width: 127px;
+			text-align: center;
+		}
+		.mixture li .img {
+			width: 100%;
+			height: 63px;
+			overflow: hidden;
+			border-radius: 5px;
+		}
+		.mixture li .img img {
+			width: 100%;
+			height: 100%;
+		}
+		.news {
+			float: left;
+			width: 400px;
+			height: 360px;
+			overflow: hidden;
+			margin-left: 15px;
+			margin-top: 5px;
+		}
+		.news p span {
+			float: left;
+			width: 107px;
+			height: 47px;
+			text-align: center;
+			font-size: 20px;
+			color: #FFF;
+			line-height: 38px;
+			background: url(http://zhibo.sogou.com/web2/images/sprite.png) -313px -120px no-repeat ;
+		}
+		.news p a {
+			float: right;
+			font-size: 13px;
+			color: #666;
+			margin-top: 10px;
+
+		}
+		.news ul {
+			clear: both;
+			list-style: none;
+			overflow: hidden;
+		}
+		.news li {
+			float: left;
+			margin-top: 15px;
+		}
+		.news li p {
+			line-height: 20px;
+			text-overflow: ellipsis;
+		}
+		.new li div {
+			font-size: 12px;
+			line-height: 20px;
+			color: #bbb;
+			margin-top:15px;
+		}
+		.news li .time {
+			float: left;
+		}
+		.news li .time em {
+			display: inline-block;
+			margin-right: 10px;
+			width: 13px;
+			height: 15px;
+			vertical-align: middle;
+			background: url(http://zhibo.sogou.com/web2/images/sprite.png)  -331px -298px no-repeat;
+		}
+		.news li .num {
+			float: left;
+			margin-left: 10px;
+			margin-top: 2px;
+		}
+		.news li .num em {
+			display: inline-block;
+			margin-right: 5px;
+			width: 15px;
+			height: 15px;
+			vertical-align: middle;
+			background: url(http://zhibo.sogou.com/web2/images/sprite.png) -407px -104px no-repeat;
+		}
+		.modular-down {
+			float: left;
+			width: 253px;
+			height: 360px;
+			margin-left: 15px;
+			background: url(http://zhibo.sogou.com/web2/images/plat.png) no-repeat;
+		}
+		.modular-down .pc-down {
+			display: block;
+			margin: 255px auto 0;
+			width: 190px;
+			height: 44px;
+			line-height: 44px;
+			text-align: center;
+			color: #fff;
+			background-color: #ff512f;
+			border-radius: 10px;
+		}
+		.modular-down .wap-down {
+			display: block;
+			position: relative;
+			margin: 17px auto 0;
+			width: 120px;
+			font-size: 14px;
+			color: #999;
+			line-height: 20px;
+			height: 20px;
+		}
+	</style>
+</head>
+<body>
+	<div class="modular">
+		<div class="modular-box">
+			<div class="mixture">
+				<h2>聚合分类</h2>
+				<ul class="mixture-box">
+					<li>
+						<a target="_blank" href="http://zhibo.sogou.com/gameZone_英雄联盟.whtml" class="img">
+							<img src="http://zhibo.sogou.com/web2/images/01.png" il="1" height="63" width="127">
+						</a>
+						<a target="_blank" href="http://zhibo.sogou.com/gameZone_英雄联盟.whtml" class="tt">英雄联盟</a>
+					</li>	
+					<li>
+						<a target="_blank" href="http://zhibo.sogou.com/show.whtml" class="img">
+							<img src="http://zhibo.sogou.com/web2/images/02.png" il="1" height="63" width="127">
+						</a>
+						<a target="_blank" href="http://zhibo.sogou.com/show.whtml" class="tt">娱乐星秀</a>
+					</li>
+					<li>
+						<a target="_blank" href="http://zhibo.sogou.com/show.whtml" class="img">
+							<img src="http://zhibo.sogou.com/web2/images/02.png" il="1" height="63" width="127">
+						</a>
+						<a target="_blank" href="http://zhibo.sogou.com/show.whtml" class="tt">娱乐星秀</a>
+					</li>
+					<li>
+						<a target="_blank" href="http://zhibo.sogou.com/show.whtml" class="img">
+							<img src="http://zhibo.sogou.com/web2/images/02.png" il="1" height="63" width="127">
+						</a>
+						<a target="_blank" href="http://zhibo.sogou.com/show.whtml" class="tt">娱乐星秀</a>
+					</li>
+				</ul>
+			</div>
+			<div class="news">
+				<p class="news-tt">
+					<span>主播头条</span>
+					<a href="/toutiao.whtml" class="news-more">查看更多头条<em></em></a>
+				</p>
+				<ul class="news-box">
+					<li>
+					  	<p><a uigs="zhibo_web_index_toutiao_0" target="_blank" href="/toutiao_6919.whtml">看直播！录视频！现金红包、爱奇艺黄金会员任性送！</a></p>
+					  	<div>
+							<span class="time"><em></em>一周以前</span>
+							<span class="num"><em></em>146364</span>
+					  	</div>
+					</li>
+					
+					<li>
+					  	<p><a uigs="zhibo_web_index_toutiao_1" target="_blank" href="/toutiao_7019.whtml">为了拿回KT MATA账号，马园园的做法真是让人叹服！</a></p>
+					  	<div>
+							<span class="time"><em></em>1小时以内</span>
+							<span class="num"><em></em>0</span>
+					  	</div>
+					</li>
+				</ul>
+			</div>
+			<div class="modular-down">
+				<a uigs="zhibo_web_download_client_conent" target="_blank" href="http://data.iwan.sogou.com/gouzaizhibopc/PaparazzoLive200001.exe" class="pc-down"><em></em>下载PC客户端</a>
+				<a href="#" class="wap-down web_action">
+  					<s></s>下载手机客户端
+  				</a>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -108,7 +108,6 @@ class OrderHandler(BaseHandler):
 	  	logging.error(e)
 	  	raise utils.APIError(errcode=19003)
 
-
   	@forbid_frequent_api_call(params={'cookie_keys': ['openid'], 'second': 5})
   	async def post(self):
 

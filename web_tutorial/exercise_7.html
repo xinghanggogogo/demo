@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Exercise_7</title>
+	<style>
+		body, dl, dd, ul, ol, h1, h2, h3, h4, h5, h6, form, input, textarea, p, th, td {
+			margin: 0;
+			padding: 0;
+		}
+		.head {
+			position: relative;
+			height:120px;
+		}
+		.head .bar {
+			width: 1500px;
+			height: 200px;
+			margin: 0 auto;
+			padding-top: 20px;
+		}
+		.head .bar .logo {
+			float: left;
+			width: 500px;
+			height: 45px;
+			background: url(http://zhibo.sogou.com/web/images/spr.png)  0 -230px no-repeat;
+		}
+		.head .bar .logo a {
+			float: left;
+			width: 150px;
+			height: 200px;
+		}
+		.head .bar .search {
+			float: left;
+			width:500px;
+			height: 45px;
+			padding-top: 5px;
+		}
+		.head .bar .search .text {
+			float: left;
+			width: 350px;
+			height: 34px;
+			border: 1px solid #cdcdcd;
+			border-right: none;
+			border-radius: 2px 0 0 2px;
+			line-height: 34px;
+			font-size: 15px;
+			color: #333;
+			text-indent: 10px;
+		}
+		.head .bar .search .button {
+			margin-left: 0;
+			width: 74px;
+			height: 36px;
+			border: none;
+			background: url(http://zhibo.sogou.com/web2/images/sprite.png) -313px -258px no-repeat;
+		}
+		.head .bar .extra {
+			float: right;
+			font-size: 15px;
+			padding-top: 20px;
+			color: #333;
+		}
+		.head .bar .extra span.download {
+			padding-right: 20px;
+		}
+		.head .bar .extra em.download {
+			display: inline-block;
+			width: 16px;
+			height:16px;
+			margin-right: 5px;
+			background: url(http://zhibo.sogou.com/web/images/down.png) 0 0 no-repeat;
+		}
+		.head .bar .extra em.history {
+			display: inline-block;
+			width: 16px;
+			height:16px;
+			margin-right: 5px;
+			background: url(http://zhibo.sogou.com/web/images/down.png) 0 0 no-repeat;
+		}
+		.head .navi {
+			position: absolute;
+			left: 0;
+			bottom: 0;
+			width: 100%;
+			height: 40px;
+			line-height: 40px;
+			text-align: center;
+			padding-left: 150px;
+			font-size: 20px;
+			color: #fff;
+    			background-color: #242625;
+		}
+		.head .navi a {
+			float: left;
+			width: 100px;
+			border-radius: 5px 5px 0 0;
+			text-decoration: none;
+		}
+		.on {
+			background-color: red;
+		}
+	</style>
+</head>
+<body>
+	<div class="head">
+		<div class="bar">
+			<div class="logo">
+				<a href=""></a>
+			</div>
+			<div class="search">
+				<input type="text" value="搜索全网主播" class="text">
+				<input type="text" class="button">
+			</div>
+			<div class="extra">
+				<span class="download"><em class="download"></em>下载app</span>
+				<span class="history"><em class="history"></em>观看历史</span>
+			</div>
+		</div>
+		<div class="navi">
+			<a href="" class="on">首页</a>
+			<a href="">游戏</a>
+			<a href="">娱乐</a>
+		</div>
+	</div>
+</body>
+</html>

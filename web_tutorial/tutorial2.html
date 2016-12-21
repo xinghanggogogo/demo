@@ -1,0 +1,33 @@
+<style type="text/css" media="screen">
+	.clearfix:after {
+		 content: "."; /* Older browser do not support empty content */
+		 visibility: hidden;
+		 display: block;
+		 height: 0;
+		 clear: both;
+	}
+	.clearfix {zoom: 1;} /* 针对 IE 不支持 :after */
+	body {
+		width: 930px;
+		margin: 0 auto; /* 横向居中 */
+	}
+	article {
+		width: 800px;
+		float: left;
+		margin-right: 10px;
+	}
+	aside {
+		width: 120px;
+		float: right;
+	}
+</style>
+<body class="clearfix">
+	<article>
+		<h1>Title</h1>
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, quam, fugit. Accusamus voluptates nesciunt in, autem ipsa assumenda a iusto, reiciendis earum repudiandae, nulla natus blanditiis, aliquam asperiores commodi qui.</p>
+	</article>
+	<aside>
+		<h3>Aside Title</h3>
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, molestiae!</p>
+	</aside>
+</body>

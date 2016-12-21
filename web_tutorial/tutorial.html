@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Turorial</title>
+	<style>
+		* {
+  			-webkit-box-sizing: border-box;
+     			    -moz-box-sizing: border-box;
+                                                        box-sizing: border-box;
+		}
+		div {
+			border-style:solid;
+		}
+		body {
+		  	margin-bottom: 120px;
+		}
+		.container {
+	  		position: relative;
+		}
+		.nav {
+		  	position: absolute;
+		 	left: 0px;
+		 	width: 25%;
+		}
+		.section {
+		  	/* position is static by default */
+		  	margin-left: 25%;
+		  	width: 50%;		  				
+
+		}
+		.section1 {
+			position: absolute;
+			top:0;
+			margin-left:75%;
+			width:25%;
+		}
+		.footer {
+			position: fixed;
+			bottom: 0;
+			left: 0;
+			height: 70px;
+			background-color: white;
+			width: 100%;
+		}
+		.module {
+			position: fixed;
+			bottom: 50%;
+			left: 40%;
+			width: 20%;
+			display: none;
+		}
+		input {
+			margin-top: 20px;
+			margin-bottom: 20px;
+			width: 100%;
+		}
+		.close {
+			position: absolute;
+			top: 0;
+			right: 0;
+			width: 5%;
+		}
+		.submit {
+			float: right;
+		}
+	</style>
+  	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+<body>
+	<div class="container">
+		<div class="nav">
+			<p>term1</p>
+			<p>term2</p>
+		</div>
+		<div class="section">
+			section 的 margin-left 样式确保了有足够的空间容纳 nav 元素。
+		</div>
+		<div class="section">
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula venenatis dolor. Maecenas nisl est, ultrices nec congue eget, auctor vitae massa. Fusce luctus vestibulum augue ut aliquet. Mauris ante ligula, facilisis sed ornare eu, lobortis in odio. Praesent convallis urna a lacus interdum ut hendrerit risus congue. Nunc sagittis dictum nisi, sed ullamcorper ipsum dignissim ac. In at libero sed nunc venenatis imperdiet sed ornare turpis. Donec vitae dui eget tellus gravida venenatis. Integer fringilla congue eros non fermentum. Sed dapibus pulvinar nibh tempor porta. Cras ac leo purus. Mauris quis diam velit.
+		</div>
+		<div class="section">
+			注意观察当你调整浏览器窗口时发生了什么。效果很赞！
+		</div>
+		<div class="section">
+			<p>test</p>
+		</div>
+		<div class="section">
+			test
+		</div>
+		<div class="section">
+			test
+		</div>
+		<div class="section1">
+			<p>test_section1</p>
+			<p>test_section2</p>
+		</div>
+		<div class="footer">
+			底部边框
+		</div>
+	</div>
+	<div class="module">
+		<div>module</div>
+		<div class="close">×</div>
+		<br>
+		<form action="">
+			<input type="text" value="xinghang"/>
+			<br>
+			<input type="text" value="xinghang2"/>
+			<br>
+			<button type="submit" class="submit">submit</button>
+		</form>
+	</div>
+</body>
+<script>
+	$('div.section1').click(function(){
+		$('div.module').show();
+	})
+	$('.close').click(function(){
+		$('div.module').hide();
+	})
+</script>
+</html>

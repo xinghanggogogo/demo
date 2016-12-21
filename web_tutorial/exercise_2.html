@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Exercise_2</title>
+	<style>
+		body {
+			line-height: 1.5;
+			font-family: arial,"\5b8b\4f53";
+			background: #fff;
+			font-size: 12px;
+		}
+		a {
+			text-decoration: none;
+		}
+		.logo {
+			float: left;
+			overflow: hidden;
+			text-indent: -999em;
+			width: 110px;
+			height: 55px;
+			background: url(http://img1.cache.netease.com/f2e/news/renjian/images/sprite.png) no-repeat;
+		}
+		.nav {
+			float: left;
+			padding: 20px 0 0 20px;
+			font: 14px/16px "Sim sun";
+		}
+		.rj_hd .search {
+			float: right;
+			width: 217px;
+			padding: 0 0 0 20px;
+			height: 55px;
+			border-left: 1px solid #c4c4c4;
+		}
+		.rj_hd .search .search_ipt {
+			float: left;
+			padding-top: 20px;
+			border: 0px;
+			background: 0;
+			height: 16px;
+			width: 150px;
+			font: 14px/16px "Sim sun";
+			color: #878890;
+		}
+		.rj_hd .search .search_sbm {
+			float: right;
+			width: 62px;
+			height: 55px;
+			border: 0;
+			background: url(http://img1.cache.netease.com/f2e/news/renjian/images/sprite.png) no-repeat -110px 0;
+			text-indent: -999px;
+			overflow: hidden;
+			cursor: pointer;
+		}
+		.func {
+			float: right;
+			padding: 20px 33px 0 0;
+			font: 14px/16px "Sim sun";
+		}
+		.rj_hd .func a {
+			float: left;
+			color: #000;
+		}
+		.rj_hd .func span {
+			padding: 0 10px;
+			float: left;
+			color: #c4c4c4;
+		}
+		.banner img {
+    			width: 100%;
+		}
+		.nav2 {
+			width: 100%;
+			height: 84px;
+			background: url(http://img1.cache.netease.com/f2e/news/renjian/images/bg.png) repeat;
+		}
+		.wrapper {
+			width: 1000px;
+			margin: 0 auto;
+			position: relative;
+		}
+		ul {
+    			list-style: none;
+		}
+		.nav2 ul li {
+			width: 200px;
+			float: left;
+			position: relative;
+			line-height: 84px;
+			text-align: center;
+		}
+		.nav2 ul li span {
+			width: 1px;
+			height: 15px;
+			position: absolute;
+			top: 0;
+			right: 0;
+			background-color: #adabb4;
+			display: block;
+		}
+		.nav2 ul li .current {
+    			color: #888;
+		}
+		.nav2 ul li a {
+			line-height: 84px;
+			font-size: 18px;
+			color: #444;
+			font-weight: bold;
+		}
+		.nav2 ul li span {
+			width: 1px;
+			height: 15px;
+			position: absolute;
+			top: 0;
+			right: 0;
+			background-color: #adabb4;
+			display: block;
+		}
+		.rj_side {
+			position: absolute;
+			left: 0;
+			top: 305px;
+			width: 310px;
+			padding-top: 55px;
+		}
+		.rj_side .workshop {
+			width: 210px;
+			margin: 0 auto;
+		}
+		.rj_side .workshop h2 {
+			font: 24px/26px "Sim sun";
+			color: #000;
+			font-weight: bold;
+			vertical-align: middle;
+			padding-left: 15px;
+			background: url(http://img1.cache.netease.com/f2e/news/renjianlist/images/dot.png) no-repeat -5px 3px;
+		}
+		.rj_side .workshop ul {
+			margin-top: 40px;
+			border-bottom: 1px dotted #ddd;
+		}
+		.rj_side .workshop li {
+			width: 210px;
+			padding: 15px 0;
+			border-top: 1px dotted #ddd;
+		}
+		.rj_side .workshop .img {
+			width: 40px;
+			height: 40px;
+			display: block;
+			border-radius: 20px;
+			overflow: hidden;
+			float: left;
+		}
+		.rj_side .workshop .img img {
+			width: 100%;
+			display: block;
+		}
+		.rj_side .workshop h3 {
+			padding-left: 50px;
+			font: 16px/26px "Microsoft Yahei";
+			color: #888;
+		}
+		.rj_side .workshop p {
+			padding-left: 50px;
+			font: 12px/26px "Sim sun";
+			color: #bfbfbf;
+		}
+		body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, button, textarea, p, blockquote, th, td {
+			margin: 0;
+			padding: 0;
+		}
+
+	</style>
+</head>
+<body>
+	<div class="rj_hd">
+		<div class="rj_hd_inner">
+			<a class="logo" href="http://renjian.163.com" title="人间">人间</a>
+			<div class="nav">
+				<a href="http://www.163.com">首页</a>
+				<span>|</span>
+				<a href="http://news.163.com">新闻</a>
+			</div>
+			<div class="search">
+				<form action="" onsubmit="return search_to();" id="top_form" target="_blank" name="nisearch_top" method="post">
+					<input type="text" class="search_ipt" value="输入要搜索的内容" id="searchInput_top">
+					<input type="submit" class="search_sbm">
+				</form>	
+			</div>
+			<div class="func" id="rj_func">
+				<a class="login" href="http://reg.email.163.com/mailregAll/reg0.jsp">注册</a>
+				<span>|</span>
+				<a class="reg" href="https://reg.163.com/logins.jsp?url=http://renjian.163.com/" target="_self">登录</a>
+			</div>
+		</div>
+		<div class="banner">
+			<img src="http://img1.cache.netease.com/cnews/2015/8/5/201508051833388df47.png" alt="banner_img" style="display:block;">
+		</div>
+	</div>
+	<div class="nav2">
+	<div class="wrapper">
+		<ul class="clearfix">
+			<li><span style="left:0;"></span><a href="http://renjian.163.com/special/renjian_texie/" class="current">特写</a><span></span></li>
+			<li><a href="http://renjian.163.com/special/renjian_jishi/" class="">记事</a><span></span></li>
+			<li><a href="http://renjian.163.com/special/renjian_daxie/" class="">大写</a><span></span></li>
+			<li><a href="http://renjian.163.com/special/renjian_haodu/" class="">好读</a><span></span></li>
+			<li><a href="http://renjian.163.com" class="">人间</a><span></span></li>
+		</ul>
+	</div>
+	</div>
+	<div class="rj_side">
+	            	<div class="workshop">
+			<h2>写作工作室</h2>
+			<ul>						
+				<li>
+					<a class="img" href="http://renjian.163.com/special/benliumagazine/" target="_blank"><img src="http://cms-bucket.nosdn.127.net/fc92eeed90e94f20a186d1522491655120161108165230.jpeg"></a>
+					<h3><a href="http://renjian.163.com/special/benliumagazine/" target="_blank">奔流杂志</a></h3>
+					<p>一群尚存新闻理想的人守在南方</p>
+				</li>
+				<li>
+					<a class="img" href="http://renjian.163.com/special/theturestory/" target="_blank"><img src="http://img5.cache.netease.com/cnews/2016/8/12/201608121802425d20d.jpg"></a>
+					<h3><a href="http://renjian.163.com/special/theturestory/" target="_blank">真实故事计划</a></h3>
+					<p>从生命里拿出故事</p>
+				</li>
+				<li>
+					<a class="img" href="http://renjian.163.com/special/metamorphosis/" target="_blank"><img src="http://img4.cache.netease.com/cnews/2015/10/12/2015101215055315297.png"></a>
+					<h3><a href="http://renjian.163.com/special/metamorphosis/" target="_blank">破茧计划</a></h3>
+					<p>写作如作茧自缚，这次我们破茧而出</p>
+				</li>
+				<li>
+					<a class="img" href="http://renjian.163.com/special/bodytalk/?1439530762908" target="_blank"><img src="http://img2.cache.netease.com/cnews/2015/8/14/201508141340209df55.png"></a>
+					<h3><a href="http://renjian.163.com/special/bodytalk/?1439530762908" target="_blank">让身体说话</a></h3>
+					<p>她的故事，跟身体有关</p>
+				</li>
+				<li>
+					<a class="img" href="http://renjian.163.com/special/rainbow/" target="_blank"><img src="http://img1.cache.netease.com/cnews/2015/8/3/201508031440525911a.png"></a>
+					<h3><a href="http://renjian.163.com/special/rainbow/" target="_blank">虹桥</a></h3>
+					<p>书写我们的彩虹故事</p>
+				</li>
+			</ul>
+		</div>
+        	</div>
+        	</div>
+</body>
+</html>
